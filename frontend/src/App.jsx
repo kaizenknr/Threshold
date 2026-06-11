@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
+const API = import.meta.env.VITE_API_URL || '';
+
 // ============================================================================
 // DESIGN TOKENS
 // ============================================================================
@@ -626,7 +628,7 @@ function SubmitReview({ propertyId, propertyName, onClose, onSuccess }) {
         actual_rent:     form.actual_rent     ? parseInt(form.actual_rent)     : undefined,
         renewal_hike_pct:form.renewal_hike_pct? parseFloat(form.renewal_hike_pct) : undefined,
       };
-      const res = await fetch('/api/reviews', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      const res = await fetch(`${API}/api/reviews`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       if (!res.ok) throw new Error(await res.text());
       onSuccess();
     } catch (e) {
@@ -820,7 +822,7 @@ function NeighborhoodView({ geoType, geoId, geoName, onBack }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/neighborhoods/${geoType}/${geoId}`)
+    fetch(`${API}/api/neighborhoods/${geoType}/${geoId}`)
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
@@ -902,7 +904,7 @@ export default function App() {
     if (!q?.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&sort=${s||sort}&limit=30`);
+      const res = await fetch(`${API}/api/search?q=${encodeURIComponent(q)}&sort=${s||sort}&limit=30`);
       const data = await res.json();
       setResults(data.data || []);
     } catch (e) {
@@ -916,7 +918,7 @@ export default function App() {
     setDetail(prop);
     setDetailData(null);
     try {
-      const res = await fetch(`/api/properties/${prop.id}`);
+      const res = await fetch(`${API}/api/properties/${prop.id}`);
       const data = await res.json();
       setDetailData(data);
     } catch (e) { console.error(e); }
