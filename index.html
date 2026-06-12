@@ -335,6 +335,25 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 .lcb:hover{border-color:rgba(139,105,20,0.35);background:var(--gdim)}
 .lcb input{accent-color:var(--green);cursor:pointer;flex-shrink:0}
 .lcb span{font-family:var(--body);font-size:.8rem;color:var(--sub)}
+
+/* NEIGHBORHOOD PILLS */
+.hood-pill{background:var(--surface);border:1.5px solid var(--line2);border-radius:100px;padding:.32rem .8rem;font-family:var(--mono);font-size:.65rem;color:var(--sub);cursor:pointer;transition:all .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:.3rem}
+.hood-pill:hover{border-color:rgba(139,105,20,0.4);color:var(--teal)}
+.hood-pill.active{border-color:#111;background:rgba(139,105,20,0.07);color:#111;font-weight:500}
+.neigh-tag{font-family:var(--mono);font-size:.58rem;color:var(--teal);cursor:pointer;text-decoration:underline;text-underline-offset:2px;transition:opacity .15s}
+.neigh-tag:hover{opacity:.7}
+
+/* SAVE BUTTON */
+.save-btn{background:none;border:1px solid var(--line2);border-radius:7px;padding:.32rem .7rem;font-family:var(--mono);font-size:.63rem;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.3rem;color:var(--muted)}
+.save-btn:hover{border-color:rgba(139,105,20,0.5);color:var(--teal)}
+.save-btn.saved{border-color:rgba(139,105,20,0.5);background:rgba(139,105,20,0.07);color:var(--teal)}
+
+/* SAVED PAGE */
+.saved-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem 1.25rem;margin-bottom:.65rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s}
+.saved-card:hover{background:var(--raised);border-color:rgba(139,105,20,0.28);transform:translateX(3px)}
+.saved-card-logo{width:42px;height:42px;border-radius:10px;background:rgba(139,105,20,0.12);border:1px solid rgba(139,105,20,0.18);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.05rem;font-weight:800;color:var(--teal);flex-shrink:0}
+.saved-card-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:.3rem;border-radius:6px;font-size:.9rem;transition:color .15s;flex-shrink:0}
+.saved-card-del:hover{color:var(--red)}
 </style>
 </head>
 <body>
@@ -463,6 +482,7 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
   <div class="nav-pills">
     <button class="ntab" onclick="go('search')" id="nt-search">Search</button>
     <button class="ntab" onclick="go('listings')" id="nt-listings">Listings</button>
+    <button class="ntab" onclick="go('saved')" id="nt-saved">Saved</button>
     <button class="ntab" onclick="go('report')" id="nt-report">Report</button>
     <button class="ntab" onclick="go('faq')" id="nt-faq">How it works</button>
   </div>
@@ -616,7 +636,9 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
       <h1>Find a space.</h1>
       <p>Community-posted rooms, sublets, and units — every landlord cross-checkable.</p>
       <div class="sch-bar">
-        <input id="lsCity" class="si" type="text" placeholder="City..." style="flex:1.5;min-width:150px" onkeydown="if(event.key==='Enter')loadListings()"/>
+        <input id="lsCity" class="si" type="text" placeholder="City..." style="flex:1.5;min-width:150px"
+          onkeydown="if(event.key==='Enter')loadListings()"
+          oninput="clearNeighborhoodFilter()" onblur="onCityBlur()"/>
         <select id="lsType" class="si" style="flex:1;min-width:150px;cursor:pointer">
           <option value="">Any space type</option>
           <option value="private_room">Private room</option>
@@ -628,10 +650,25 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
         <button onclick="loadListings()" class="btn btn-ghost" style="padding:.7rem 1.2rem">Search</button>
         <button onclick="go('postlisting')" class="btn btn-solid" style="padding:.7rem 1.2rem">+ Post a listing</button>
       </div>
+      <div id="lsNeighborhoodPills" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.85rem;min-height:0"></div>
     </div>
     <div class="sch-list">
       <div id="listResults"><div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">Loading listings...</div></div>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SAVED PAGE
+═══════════════════════════════════════ -->
+<div class="page" id="page-saved">
+  <div class="sch-page">
+    <div class="sch-hdr">
+      <div class="eyebrow">Your profile</div>
+      <h1 id="savedPageTitle">Saved</h1>
+      <p id="savedPageSub">Your saved landlord searches and profile.</p>
+    </div>
+    <div id="savedContent"></div>
   </div>
 </div>
 
@@ -871,7 +908,7 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 // ─────────────────────────────────────────────────────────────────────────────
 // NAVIGATION
 // ─────────────────────────────────────────────────────────────────────────────
-const tabMap = { search:'nt-search', listings:'nt-listings', report:'nt-report', faq:'nt-faq' };
+const tabMap = { search:'nt-search', listings:'nt-listings', saved:'nt-saved', report:'nt-report', faq:'nt-faq' };
 
 function go(page) {
   document.querySelectorAll('.page, .page-full').forEach(p => p.classList.remove('active'));
@@ -882,7 +919,8 @@ function go(page) {
   if (tabMap[page]) document.getElementById(tabMap[page])?.classList.add('active');
   window.scrollTo(0, 0);
   if (page === 'faq') renderFAQ();
-  if (page === 'listings') loadListings();
+  if (page === 'listings') { loadListings(); loadNeighborhoodPills(); }
+  if (page === 'saved') renderSavedPage();
 }
 
 window.addEventListener('scroll', () => {
@@ -984,6 +1022,14 @@ async function doSearch() {
 
     // Store for detail page
     window._lastLandlordData = { name: query, city, score, reports };
+
+    // Persist city to profile for pre-fill
+    if (city) {
+      try {
+        const p = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+        if (!p.city) { p.city = city; localStorage.setItem('threshold_profile', JSON.stringify(p)); }
+      } catch (_e) {}
+    }
 
   } catch (e) {
     results.innerHTML = `<div style="background:var(--rdim);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;color:var(--red)">Research failed: ${e.message}. Check your API key configuration.</div>`;
@@ -1096,6 +1142,9 @@ function renderScoreCard(name, score, reports, city) {
 
     <div style="margin-top:1.25rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
       <button class="btn btn-ghost" style="font-size:.72rem" onclick="go('report');prefillReport('${name.replace(/'/g,"\\'")}')">+ Report your experience</button>
+      <button id="saveBtn-${name.replace(/[^a-z0-9]/gi,'_')}" class="save-btn ${isSaved(name) ? 'saved' : ''}" onclick="toggleSaveLandlord('${name.replace(/'/g,"\\'")}','${(city||'').replace(/'/g,"\\'")}',${score.overall_score},${JSON.stringify(score.risk_level)})">
+        ${isSaved(name) ? '★ Saved' : '☆ Save'}
+      </button>
       <span style="font-family:var(--mono);font-size:.58rem;color:var(--muted)">Data quality: ${score.data_quality} · ${score.data_source === 'cache' ? 'cached' : 'live research'}</span>
     </div>
   </div>`;
@@ -1543,11 +1592,15 @@ async function loadListings() {
       const b = parseInt(String(profile.budget).replace(/[^0-9]/g, ''), 10);
       if (b > 0) document.getElementById('lsMaxRent').value = b;
     }
+    if (profile.city && !document.getElementById('lsCity').value) {
+      document.getElementById('lsCity').value = profile.city;
+    }
   }
 
   const city = document.getElementById('lsCity').value.trim();
   const space_type = document.getElementById('lsType').value;
   const max_rent = document.getElementById('lsMaxRent').value;
+  const neighborhood = window._activeNeighborhood || undefined;
 
   results.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Loading listings...</div>`;
 
@@ -1560,6 +1613,7 @@ async function loadListings() {
         city: city || undefined,
         space_type: space_type || undefined,
         max_rent: max_rent || undefined,
+        neighborhood,
       }),
     });
     if (!res.ok) throw new Error(`API ${res.status}`);
@@ -1613,11 +1667,16 @@ function renderListingCard(l) {
     : '';
   const landlordArg = l.landlord_name ? escListHtml(l.landlord_name).replace(/'/g, "\\'") : '';
 
+  const hoodArg = l.neighborhood ? escListHtml(l.neighborhood).replace(/'/g, "\\'") : '';
+
   return `
   <div class="glow-card" style="padding:1.4rem 1.5rem;margin-bottom:.85rem">
     <div style="display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap">
       <div style="flex:1;min-width:220px">
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">${typeLabel}${l.city ? ' · ' + escListHtml(l.city) : ''}</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">
+          ${typeLabel}${l.city ? ' · ' + escListHtml(l.city) : ''}
+          ${l.neighborhood ? ` · <span class="neigh-tag" onclick="filterByNeighborhood('${hoodArg}')">${escListHtml(l.neighborhood)}</span>` : ''}
+        </div>
         <div style="font-family:var(--display);font-size:1.15rem;font-weight:700;color:var(--white);letter-spacing:-.02em;margin-bottom:.3rem">${title}</div>
         ${meta.length ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">${meta.join(' · ')}</div>` : ''}
       </div>
@@ -1714,6 +1773,208 @@ function resetListingForm() {
   document.getElementById('plFeesDisclosed').checked = true;
   ['plUtilities','plFurnished','plPets','plTransit','plVouchers']
     .forEach(id => { document.getElementById(id).checked = false; });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NEIGHBORHOOD FILTER
+// ─────────────────────────────────────────────────────────────────────────────
+let _pillsCity = null;
+
+async function loadNeighborhoodPills(forceCity) {
+  const el = document.getElementById('lsNeighborhoodPills');
+  if (!el) return;
+  const city = forceCity || document.getElementById('lsCity')?.value.trim() || '';
+  if (!city || city === _pillsCity) { if (!city) el.innerHTML = ''; return; }
+  _pillsCity = city;
+  el.innerHTML = `<span style="font-family:var(--mono);font-size:.6rem;color:var(--muted)">Loading neighborhoods…</span>`;
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'neighborhoods', city }),
+    });
+    const d = res.ok ? await res.json() : {};
+    const hoods = d.neighborhoods || [];
+    if (!hoods.length) { el.innerHTML = ''; return; }
+    el.innerHTML = `<span style="font-family:var(--mono);font-size:.6rem;color:var(--muted);padding:.32rem 0">Neighborhoods:</span>` +
+      hoods.map(h => {
+        const safe = h.replace(/'/g,"\\'");
+        const active = window._activeNeighborhood === h ? ' active' : '';
+        return `<button class="hood-pill${active}" onclick="filterByNeighborhood('${safe}')" data-hood="${h.replace(/"/g,'&quot;')}">${h}</button>`;
+      }).join('');
+  } catch (_e) { el.innerHTML = ''; }
+}
+
+function filterByNeighborhood(hood) {
+  if (window._activeNeighborhood === hood) {
+    window._activeNeighborhood = null;
+  } else {
+    window._activeNeighborhood = hood;
+  }
+  document.querySelectorAll('.hood-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.hood === window._activeNeighborhood);
+  });
+  loadListings();
+}
+
+function clearNeighborhoodFilter() {
+  window._activeNeighborhood = null;
+  _pillsCity = null;
+}
+
+function onCityBlur() {
+  const city = document.getElementById('lsCity')?.value.trim();
+  if (city) loadNeighborhoodPills(city);
+  else document.getElementById('lsNeighborhoodPills').innerHTML = '';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SAVED LANDLORDS — 100% localStorage, infinite concurrent users, no auth
+// ─────────────────────────────────────────────────────────────────────────────
+const SAVED_KEY = 'threshold_saved_landlords';
+const MAX_SAVED = 30;
+
+function getSaved() {
+  try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch (_e) { return []; }
+}
+
+function isSaved(name) {
+  return getSaved().some(s => s.name.toLowerCase() === name.toLowerCase());
+}
+
+function toggleSaveLandlord(name, city, score, riskLevel) {
+  let saved = getSaved();
+  const idx = saved.findIndex(s => s.name.toLowerCase() === name.toLowerCase());
+  if (idx >= 0) {
+    saved.splice(idx, 1);
+    toast('Removed from saved', 'default');
+  } else {
+    saved.unshift({ name, city, score, risk_level: riskLevel, saved_at: new Date().toISOString() });
+    if (saved.length > MAX_SAVED) saved = saved.slice(0, MAX_SAVED);
+    toast('Saved! View in the Saved tab.', 'success');
+  }
+  localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
+  updateSavedBadge();
+  // Update button state inline
+  const btnId = 'saveBtn-' + name.replace(/[^a-z0-9]/gi,'_');
+  const btn = document.getElementById(btnId);
+  if (btn) {
+    const nowSaved = isSaved(name);
+    btn.textContent = nowSaved ? '★ Saved' : '☆ Save';
+    btn.classList.toggle('saved', nowSaved);
+  }
+}
+
+function renderSavedPage() {
+  const content = document.getElementById('savedContent');
+  const titleEl = document.getElementById('savedPageTitle');
+  const subEl = document.getElementById('savedPageSub');
+  if (!content) return;
+
+  const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+  const saved = getSaved();
+
+  // Update page header
+  if (profile.renter_type) {
+    titleEl.textContent = `Hi, ${profile.renter_type} renter`;
+    subEl.textContent = `${saved.length} saved landlord${saved.length !== 1 ? 's' : ''} · ${profile.city ? profile.city + ' · ' : ''}profile active`;
+  } else {
+    titleEl.textContent = 'Saved';
+    subEl.textContent = 'Your saved landlord searches.';
+  }
+
+  let html = '';
+
+  // Profile summary block
+  if (profile.renter_type) {
+    const concerns = (profile.concerns || []).slice(0, 3).join(', ') || 'none set';
+    const looking = (profile.looking_for || []).slice(0, 2).join(', ') || 'any';
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:.85rem">
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Your profile</div>
+        <button onclick="editProfile()" style="background:none;border:1px solid var(--line2);color:var(--muted);border-radius:7px;padding:.28rem .75rem;font-family:var(--mono);font-size:.62rem;cursor:pointer;transition:all .15s">Edit profile</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.65rem">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">Renter type</div>
+          <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--white)">${profile.renter_type}</div>
+        </div>
+        ${profile.city ? `<div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">City</div>
+          <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--white)">${profile.city}</div>
+        </div>` : ''}
+        ${profile.budget ? `<div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">Budget</div>
+          <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--white)">${profile.budget}</div>
+        </div>` : ''}
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">Top concerns</div>
+          <div style="font-size:.78rem;color:var(--sub)">${concerns}</div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    html += `<div style="background:var(--gdim);border:1px solid rgba(139,105,20,0.2);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <div style="flex:1;font-family:var(--mono);font-size:.72rem;color:var(--teal)">Set up your renter profile to get personalized scores and warnings.</div>
+      <button onclick="document.getElementById('obOverlay').classList.remove('hidden')" class="btn btn-solid" style="font-size:.75rem">Set up profile →</button>
+    </div>`;
+  }
+
+  // Saved landlords
+  html += `<div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Saved landlords (${saved.length}/${MAX_SAVED})</div>`;
+
+  if (!saved.length) {
+    html += `<div style="text-align:center;padding:2.5rem 1rem;background:var(--card);border:1px solid var(--line);border-radius:14px">
+      <div style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:.75rem">No saved landlords yet.</div>
+      <p style="font-size:.8rem;color:var(--sub);max-width:360px;margin:0 auto .75rem">Search any landlord and click "☆ Save" to track them here. All data stays on your device — no account needed.</p>
+      <button onclick="go('search')" class="btn btn-solid" style="font-size:.8rem">Search landlords →</button>
+    </div>`;
+  } else {
+    html += saved.map(s => {
+      const rl = s.risk_level || 'warn';
+      const ringColor = rl === 'safe' ? 'var(--green)' : rl === 'warn' ? 'var(--amber)' : 'var(--red)';
+      const riskLabel = rl === 'safe' ? 'Low risk' : rl === 'warn' ? 'Moderate' : 'High risk';
+      const savedDate = s.saved_at ? new Date(s.saved_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+      const nameSafe = s.name.replace(/'/g, "\\'");
+      const citySafe = (s.city || '').replace(/'/g, "\\'");
+      return `<div class="saved-card" onclick="recheckSaved('${nameSafe}','${citySafe}')">
+        <div class="saved-card-logo">${s.name[0].toUpperCase()}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.15rem">${s.name}</div>
+          <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">${s.city || 'No city'}${savedDate ? ' · Saved ' + savedDate : ''}</div>
+        </div>
+        <div style="text-align:center;flex-shrink:0">
+          <div style="font-family:var(--mono);font-size:1.05rem;font-weight:500;color:${ringColor}">${s.score || '—'}</div>
+          <div style="font-family:var(--mono);font-size:.55rem;color:var(--muted)">${riskLabel}</div>
+        </div>
+        <button class="saved-card-del" onclick="event.stopPropagation();removeSaved('${nameSafe}')" title="Remove">✕</button>
+      </div>`;
+    }).join('');
+  }
+
+  content.innerHTML = html;
+}
+
+function recheckSaved(name, city) {
+  document.getElementById('schQuery').value = name;
+  document.getElementById('schCity').value = city || '';
+  go('search');
+  doSearch();
+}
+
+function removeSaved(name) {
+  let saved = getSaved();
+  saved = saved.filter(s => s.name.toLowerCase() !== name.toLowerCase());
+  localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
+  renderSavedPage();
+  toast('Removed from saved');
+  // Update nav badge count
+  updateSavedBadge();
+}
+
+function updateSavedBadge() {
+  const count = getSaved().length;
+  const btn = document.getElementById('nt-saved');
+  if (btn) btn.textContent = count > 0 ? `Saved (${count})` : 'Saved';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1866,6 +2127,9 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     updateProfileChip();
   }
+
+  // Update saved count badge on load
+  updateSavedBadge();
 });
 </script>
 </body>

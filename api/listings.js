@@ -151,6 +151,27 @@ Return ONLY: {"ok":true|false,"reason":"string or null"}`
     return res.status(200).json({ ok: true });
   }
 
+  // ── Distinct neighborhoods for a city ────────────────────────────────────────
+  if (body.action === 'neighborhoods') {
+    const city = str(body.city, 100);
+    if (!city) return res.status(400).json({ error: 'city required' });
+    try {
+      const cityEnc = encodeURIComponent('*' + city + '*');
+      const r = await fetch(
+        `${SUPABASE_URL}/rest/v1/listings?status=eq.active&city=ilike.${cityEnc}&neighborhood=not.is.null&select=neighborhood&limit=300`,
+        { headers: hdrs }
+      );
+      if (!r.ok) return res.status(500).json({ error: 'Failed' });
+      const rows = await r.json();
+      const counts = {};
+      rows.forEach(row => { if (row.neighborhood?.trim()) counts[row.neighborhood.trim()] = (counts[row.neighborhood.trim()] || 0) + 1; });
+      const hoods = Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([n]) => n);
+      return res.status(200).json({ ok: true, neighborhoods: hoods.slice(0, 20) });
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+
   // ── Landlord history — all listings (any status) for a given landlord ──────
   if (body.action === 'landlord_history') {
     const landlord = str(body.landlord, 200);
@@ -198,6 +219,8 @@ Return ONLY: {"ok":true|false,"reason":"string or null"}`
     const city = str(body.city, 100);
     if (city) url += `&city=ilike.${encodeURIComponent('*' + city + '*')}`;
     if (SPACE_TYPES.includes(body.space_type)) url += `&space_type=eq.${body.space_type}`;
+    const neighborhood = str(body.neighborhood, 100);
+    if (neighborhood) url += `&neighborhood=ilike.${encodeURIComponent('*' + neighborhood + '*')}`;
 
     const maxRent = num(body.max_rent, 1, 50000);
     if (maxRent) url += `&rent=lte.${maxRent}`;
