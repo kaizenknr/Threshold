@@ -12,6 +12,7 @@
   "functions": {
     "api/landlord-score.js":    { "maxDuration": 45 },
     "api/apartment-reports.js": { "maxDuration": 20 },
-    "api/moderate-report.js":   { "maxDuration": 20 }
+    "api/moderate-report.js":   { "maxDuration": 20 },
+    "api/listings.js":          { "maxDuration": 20 }
   }
 }
