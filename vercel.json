@@ -1,0 +1,17 @@
+{
+  "headers": [
+    {
+      "source": "/",
+      "headers": [{ "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" }]
+    },
+    {
+      "source": "/index.html",
+      "headers": [{ "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" }]
+    }
+  ],
+  "functions": {
+    "api/landlord-score.js":    { "maxDuration": 45 },
+    "api/apartment-reports.js": { "maxDuration": 20 },
+    "api/moderate-report.js":   { "maxDuration": 20 }
+  }
+}

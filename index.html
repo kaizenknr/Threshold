@@ -1,0 +1,1037 @@
+[Resource from github at repo://kaizenknr/Threshold/sha/a7dda87a34835257ef50203fc905a40dc7deba54/contents/Threshold/index.html] <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Threshold — Know before you sign.</title>
+<meta name="description" content="Check any landlord's transparency score before you apply. Ghost rates, hidden fee alerts, mold reports, and real tenant reviews — free forever."/>
+<meta property="og:title" content="Threshold — Know before you sign."/>
+<meta property="og:description" content="No more surprise fees. No more ghost landlords. No more mold. Real tenant reviews, free forever."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="keywords" content="landlord transparency, apartment reviews, hidden fees, predatory application fee, mold report, tenant reviews, rental transparency"/>
+<meta name="robots" content="index, follow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#02040a;--void:#05070f;--surface:#0c0f1a;--card:rgba(255,255,255,0.03);--raised:rgba(255,255,255,0.05);
+  --line:rgba(255,255,255,0.08);--line2:rgba(255,255,255,0.12);--muted:#4b5563;--dim:#6b7280;
+  --sub:#9ca3af;--text:#e5e7eb;--white:#f9fafb;
+  --green:#10b981;--gdim:rgba(16,185,129,0.08);--gmid:rgba(16,185,129,0.15);
+  --red:#ef4444;--rdim:rgba(239,68,68,0.08);--rmid:rgba(239,68,68,0.15);
+  --amber:#f59e0b;--adim:rgba(245,158,11,0.08);--amid:rgba(245,158,11,0.15);
+  --teal:#0d9488;--tdim:rgba(13,148,136,0.1);--tmid:rgba(13,148,136,0.2);
+  --cyan:#22d3ee;--cydim:rgba(34,211,238,0.1);
+  --g-start:#0d9488;--g-mid:#059669;--g-end:#10b981;
+  --g-text-start:#5eead4;--g-text-mid:#34d399;--g-text-end:#6ee7b7;
+  --display:'Syne',sans-serif;--mono:'DM Mono',monospace;--body:'Instrument Sans',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--ink);background-image:radial-gradient(ellipse at 25% 0%,rgba(13,148,136,0.07) 0%,transparent 55%),radial-gradient(ellipse at 80% 100%,rgba(16,185,129,0.05) 0%,transparent 50%);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;width:100%;max-width:100%}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes auroraFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(2%,3%) scale(1.04)}66%{transform:translate(-2%,2%) scale(0.97)}}
+@keyframes auroraFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-3%,4%) scale(1.06)}}
+
+/* AURORA — teal/green cosmos */
+.aurora{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.aurora::before{content:'';position:absolute;top:-35%;left:-25%;width:80vw;height:80vh;border-radius:50%;background:radial-gradient(ellipse at center,rgba(13,148,136,0.22) 0%,rgba(5,150,105,0.12) 40%,rgba(16,185,129,0.04) 65%,transparent 80%);filter:blur(90px);animation:auroraFloat 16s ease-in-out infinite}
+.aurora::after{content:'';position:absolute;bottom:-25%;right:-20%;width:70vw;height:70vh;border-radius:50%;background:radial-gradient(ellipse at center,rgba(16,185,129,0.18) 0%,rgba(13,148,136,0.1) 40%,rgba(34,211,238,0.05) 65%,transparent 80%);filter:blur(80px);animation:auroraFloat2 20s ease-in-out infinite}
+
+/* GLASS */
+.glass{background:rgba(255,255,255,0.04);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,0.1);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.06);transition:box-shadow 0.25s ease,transform 0.2s ease}
+.glass:hover{box-shadow:0 16px 56px rgba(0,0,0,0.6),0 0 48px rgba(13,148,136,0.15);transform:translateY(-2px)}
+
+/* GLOW CARD */
+.glow-card{position:relative;overflow:hidden;background:linear-gradient(160deg,rgba(255,255,255,0.04) 0%,rgba(13,148,136,0.03) 100%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,0.1);border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,0.6),0 0 0 1px rgba(13,148,136,0.06),inset 0 1px 0 rgba(255,255,255,0.07);transition:all 0.3s ease}
+.glow-card>*{position:relative;z-index:1}
+.glow-card:hover{border-color:rgba(13,148,136,0.35);box-shadow:0 20px 64px rgba(0,0,0,0.7),0 0 60px rgba(16,185,129,0.15);transform:translateY(-3px)}
+
+/* GRADIENT TEXT */
+.grad-text{background:linear-gradient(135deg,var(--g-text-start) 0%,var(--g-text-mid) 55%,var(--g-text-end) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;background:rgba(6,6,8,0.55);backdrop-filter:blur(40px) saturate(180%);border-bottom:1px solid rgba(255,255,255,0.08);box-shadow:0 1px 0 rgba(255,255,255,0.04),0 4px 24px rgba(0,0,0,0.25);transition:background .3s ease}
+nav.nav-scrolled{background:rgba(6,6,8,0.82);border-bottom-color:rgba(255,255,255,0.11)}
+.logo{font-family:var(--display);font-size:1.2rem;font-weight:800;color:var(--white);text-decoration:none;letter-spacing:-.02em;display:flex;align-items:center;gap:.5rem}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px rgba(13,148,136,0.7);animation:pulse 2s infinite}
+.nav-pills{display:flex;gap:.08rem;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.ntab{background:none;border:none;padding:.35rem .62rem;font-family:var(--body);font-size:.73rem;font-weight:500;color:rgba(255,255,255,0.38);cursor:pointer;border-radius:10px;transition:color .18s ease;white-space:nowrap}
+.ntab:hover{color:rgba(255,255,255,0.68)}
+.ntab.active{color:#fff;font-weight:600;background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.35);outline:1px solid rgba(255,255,255,0.12)}
+.nav-right{display:flex;align-items:center;gap:.45rem}
+.btn{display:inline-flex;align-items:center;gap:.32rem;padding:.44rem 1rem;border-radius:8px;font-family:var(--body);font-weight:600;font-size:.76rem;cursor:pointer;text-decoration:none;transition:all .15s;border:none;white-space:nowrap}
+.btn-ghost{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--sub)}
+.btn-ghost:hover{background:rgba(13,148,136,0.08);border-color:rgba(13,148,136,0.4);color:var(--teal)}
+.btn-solid{background:linear-gradient(135deg,#0d9488 0%,#059669 55%,#10b981 100%);color:#fff;font-weight:700;box-shadow:0 0 24px rgba(13,148,136,0.35)}
+.btn-solid:hover{box-shadow:0 0 40px rgba(13,148,136,0.5);transform:translateY(-1px)}
+.btn-lg{padding:.72rem 1.75rem;font-size:.875rem}
+.btn-xl{padding:.9rem 2.25rem;font-size:.95rem}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:58px;box-sizing:border-box;overflow-x:hidden;width:100%}
+.page.active{display:block;animation:pageIn 0.25s cubic-bezier(0.22,1,0.36,1) both}
+.page-full{display:none;height:100vh;overflow:hidden;padding-top:58px;box-sizing:border-box;width:100%}
+.page-full.active{display:flex;flex-direction:column;animation:fadeIn .2s ease}
+.wrap{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+
+/* SHARED */
+.spinner{width:20px;height:20px;border:1.5px solid var(--line2);border-top-color:var(--teal);border-radius:50%;animation:spin .6s linear infinite}
+.skel{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite;border-radius:8px}
+.eyebrow{font-family:var(--mono);font-size:.62rem;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem}
+.section-h{font-family:var(--display);font-size:clamp(1.9rem,3.8vw,3rem);font-weight:800;color:var(--white);letter-spacing:-.03em;line-height:1.05;margin-bottom:.6rem}
+
+/* SCORE RING */
+.sring{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;border:2px solid;flex-shrink:0;position:relative}
+.sring::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid;opacity:.4}
+.sring.safe{border-color:var(--green);background:rgba(16,185,129,0.1);box-shadow:0 0 20px rgba(16,185,129,0.3)}.sring.safe::after{border-color:var(--green)}
+.sring.warn{border-color:var(--amber);background:var(--adim);box-shadow:0 0 20px rgba(245,158,11,0.3)}.sring.warn::after{border-color:var(--amber)}
+.sring.danger{border-color:var(--red);background:var(--rdim);box-shadow:0 0 20px rgba(239,68,68,0.3)}.sring.danger::after{border-color:var(--red)}
+.sring-n{font-family:var(--mono);font-weight:500;line-height:1}
+.sring.safe .sring-n{color:var(--green)}.sring.warn .sring-n{color:var(--amber)}.sring.danger .sring-n{color:var(--red)}
+.sring-l{font-family:var(--mono);font-size:.46rem;letter-spacing:.07em;margin-top:.08rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--line2);border-radius:10px;padding:.65rem 1.25rem;font-family:var(--mono);font-size:.72rem;color:var(--white);z-index:9999;opacity:0;transition:all .25s ease;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* SEARCH INPUT SHARED */
+.si{width:100%;background:var(--surface);border:1.5px solid var(--line2);border-radius:10px;padding:.75rem 1rem;color:var(--white);font-family:var(--body);font-size:.9rem;outline:none;caret-color:var(--teal);transition:border-color .2s}
+.si:focus{border-color:var(--teal)}
+.si::placeholder{color:var(--muted)}
+.sl{display:block;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:.32rem}
+
+/* LANDLORD CARD */
+.lcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;text-decoration:none}
+.lcard:hover{background:var(--raised);border-color:rgba(13,148,136,0.3);transform:translateX(3px)}
+.lcard-logo{width:44px;height:44px;border-radius:10px;background:rgba(13,148,136,0.15);border:1px solid rgba(13,148,136,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.1rem;font-weight:800;color:var(--teal);flex-shrink:0}
+.lcard-name{font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.18rem}
+.lcard-meta{font-family:var(--mono);font-size:.62rem;color:var(--muted)}
+.lcard-right{margin-left:auto;display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+
+/* ISSUE BADGE */
+.ibadge{display:inline-flex;align-items:center;gap:.28rem;font-family:var(--mono);font-size:.58rem;padding:.22rem .55rem;border-radius:6px;letter-spacing:.02em}
+.ibadge.red{background:var(--rdim);border:1px solid rgba(239,68,68,0.2);color:var(--red)}
+.ibadge.amber{background:var(--adim);border:1px solid rgba(245,158,11,0.2);color:var(--amber)}
+.ibadge.green{background:var(--gdim);border:1px solid rgba(16,185,129,0.2);color:var(--green)}
+.ibadge.teal{background:var(--tdim);border:1px solid rgba(13,148,136,0.2);color:var(--teal)}
+
+/* FORM STYLES */
+.fblock{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+.fb-hd{font-family:var(--mono);font-size:.65rem;font-weight:500;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.1rem}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.fg{margin-bottom:.75rem}
+.fl{display:block;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:.32rem}
+.fi-r{width:100%;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;padding:.6rem .85rem;color:var(--white);font-family:var(--body);font-size:.84rem;outline:none;caret-color:var(--teal);transition:border-color .2s}
+.fi-r:focus{border-color:var(--teal)}
+.fi-r::placeholder{color:var(--muted)}
+.fs-r{width:100%;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;padding:.6rem .85rem;color:var(--white);font-family:var(--body);font-size:.84rem;outline:none;cursor:pointer;appearance:none}
+.ft-r{width:100%;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;padding:.6rem .85rem;color:var(--white);font-family:var(--body);font-size:.82rem;outline:none;min-height:100px;resize:vertical;caret-color:var(--teal);line-height:1.6}
+.ft-r::placeholder{color:var(--muted)}
+
+/* ISSUE CHECKBOXES */
+.issue-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem}
+.issue-cb{display:flex;align-items:center;gap:.55rem;padding:.55rem .75rem;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;cursor:pointer;transition:all .15s;user-select:none}
+.issue-cb:hover{border-color:rgba(239,68,68,0.3);background:var(--rdim)}
+.issue-cb input{accent-color:var(--red);cursor:pointer;flex-shrink:0}
+.issue-cb.checked{border-color:rgba(239,68,68,0.4);background:var(--rdim)}
+.issue-cb span{font-family:var(--body);font-size:.8rem;color:var(--sub)}
+
+/* RADIO ROW */
+.radio-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.rb{display:flex;align-items:center;gap:.4rem}
+.rl{font-family:var(--body);font-size:.8rem;color:var(--sub);cursor:pointer;padding:.45rem .8rem;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;transition:all .15s}
+input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,136,0.5);color:var(--teal)}
+.rb input[type=radio]{display:none}
+
+/* SUBMIT BUTTON */
+.sub-btn{width:100%;padding:.95rem;background:linear-gradient(135deg,#0d9488 0%,#059669 55%,#10b981 100%);color:#fff;border:none;border-radius:10px;font-family:var(--display);font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 0 24px rgba(13,148,136,0.35);transition:all .2s;margin-top:.5rem}
+.sub-btn:hover{box-shadow:0 0 40px rgba(13,148,136,0.5);transform:translateY(-1px)}
+.sub-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* OK MESSAGE */
+.ok-msg{display:none;background:var(--gdim);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:1rem 1.25rem;font-family:var(--mono);font-size:.75rem;color:var(--green);margin-top:.75rem;line-height:1.6}
+
+/* STAT BLOCKS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin:1.5rem 0}
+.stat-block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem;text-align:center}
+.stat-n{font-family:var(--mono);font-size:1.4rem;font-weight:500;color:var(--white);margin-bottom:.2rem}
+.stat-l{font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* DETAIL PAGE */
+.det-wrap{max-width:900px;margin:0 auto;padding:2rem 1.25rem}
+.det-hdr{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.75rem;margin-bottom:1.25rem}
+.det-top{display:flex;align-items:flex-start;gap:1.25rem;flex-wrap:wrap}
+.det-logo{width:60px;height:60px;border-radius:14px;background:rgba(13,148,136,0.15);border:1px solid rgba(13,148,136,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--teal);flex-shrink:0}
+.det-name{font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--white);letter-spacing:-.025em;margin-bottom:.25rem}
+.det-meta{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.5rem}
+.det-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-top:1.25rem}
+.det-met{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.85rem;text-align:center}
+.det-met-n{font-family:var(--mono);font-size:1.2rem;font-weight:500;margin-bottom:.15rem}
+.det-met-l{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* TABS */
+.det-tabs{display:flex;gap:.3rem;margin-bottom:1rem;border-bottom:1px solid var(--line);padding-bottom:.6rem}
+.dtab{background:none;border:none;padding:.4rem .8rem;font-family:var(--body);font-size:.8rem;font-weight:500;color:var(--muted);cursor:pointer;border-radius:8px;transition:all .15s}
+.dtab:hover{color:var(--sub)}
+.dtab.active{color:var(--white);background:rgba(255,255,255,0.08)}
+
+/* REPORT CARD */
+.rcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem 1.25rem;margin-bottom:.6rem}
+.rcard-top{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;flex-wrap:wrap}
+.rcard-outcome{font-family:var(--mono);font-size:.65rem;font-weight:600;padding:.22rem .55rem;border-radius:6px}
+.rcard-role{font-family:var(--body);font-size:.8rem;color:var(--sub)}
+.rcard-text{font-size:.82rem;color:var(--sub);line-height:1.65;margin-top:.4rem}
+.rcard-issues{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem}
+.rcard-date{font-family:var(--mono);font-size:.58rem;color:var(--muted);margin-top:.5rem}
+
+/* WEB REVIEW QUOTE */
+.wrev{background:var(--surface);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:.85rem 1rem;margin-bottom:.65rem}
+.wrev-text{font-size:.82rem;color:var(--sub);line-height:1.7;font-style:italic;margin-bottom:.4rem}
+.wrev-meta{font-family:var(--mono);font-size:.58rem;color:var(--muted)}
+
+/* BACK BUTTON */
+.back-btn{background:none;border:1px solid var(--line2);color:var(--muted);border-radius:8px;padding:.4rem .9rem;font-family:var(--mono);font-size:.65rem;cursor:pointer;margin-bottom:1.5rem;transition:all .15s}
+.back-btn:hover{border-color:var(--teal);color:var(--teal)}
+
+/* REPORT PAGE WRAP */
+.rep-wrap{max-width:700px;margin:0 auto;padding:2.5rem 1.25rem}
+.rep-wrap h1{font-family:var(--display);font-size:2rem;font-weight:800;color:var(--white);letter-spacing:-.03em;margin-bottom:.4rem}
+.rep-wrap>p{color:var(--sub);font-size:.875rem;font-weight:300;line-height:1.8;margin-bottom:2rem}
+
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--line);padding:1.1rem 0}
+.faq-q{font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.75rem}
+.faq-a{font-size:.85rem;color:var(--sub);line-height:1.8;padding-top:.65rem;display:none}
+.faq-a.open{display:block;animation:fadeUp .2s ease}
+
+/* LANDING HERO */
+.hero{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 58px);text-align:center;padding:4rem 1.5rem 3rem;position:relative;z-index:1}
+.hero-pill{display:inline-flex;align-items:center;gap:.4rem;background:rgba(13,148,136,0.1);border:1px solid rgba(13,148,136,0.25);color:var(--teal);font-family:var(--mono);font-size:.63rem;padding:.28rem .9rem;border-radius:100px;margin-bottom:2rem;animation:fadeUp .5s ease}
+.hero h1{font-family:var(--display);font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1.08;letter-spacing:-.04em;color:var(--white);margin-bottom:1.1rem;animation:fadeUp .5s .06s ease both}
+.hero p{font-family:var(--mono);font-size:clamp(.68rem,1.4vw,.85rem);color:rgba(255,255,255,.45);letter-spacing:.02em;line-height:1.6;max-width:480px;margin:0 auto 2.5rem;animation:fadeUp .5s .12s ease both}
+.hero-search{width:100%;max-width:560px;position:relative;animation:fadeUp .5s .18s ease both}
+.hero-search input{width:100%;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:1rem 9rem 1rem 1.25rem;color:var(--white);font-family:var(--body);font-size:.95rem;outline:none;caret-color:var(--teal);transition:border-color .2s,box-shadow .2s}
+.hero-search input:focus{border-color:rgba(13,148,136,0.6);box-shadow:0 0 0 3px rgba(13,148,136,0.12)}
+.hero-search input::placeholder{color:rgba(255,255,255,.28)}
+.hero-search button{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#0d9488,#10b981);color:#fff;border:none;border-radius:10px;padding:.6rem 1.1rem;font-family:var(--display);font-weight:800;font-size:.82rem;cursor:pointer;transition:all .15s;white-space:nowrap}
+.hero-search button:hover{box-shadow:0 0 20px rgba(13,148,136,0.4);transform:translateY(calc(-50% - 1px))}
+
+/* RECENT FLAGS SECTION */
+.recent-section{padding:3rem 0;position:relative;z-index:1}
+.recent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.75rem;margin-top:1.25rem}
+
+/* SEARCH PAGE */
+.sch-page{max-width:900px;margin:0 auto;padding:2rem 1.25rem}
+.sch-hdr{margin-bottom:1.75rem}
+.sch-hdr h1{font-family:var(--display);font-size:1.75rem;font-weight:800;color:var(--white);letter-spacing:-.03em;margin-bottom:.3rem}
+.sch-hdr p{color:var(--sub);font-size:.875rem;font-weight:300}
+.sch-bar{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
+.sch-list{margin-top:1.25rem}
+.sch-ct{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.75rem}
+
+/* HOW IT WORKS STEPS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem}
+.step-n{font-family:var(--mono);font-size:.6rem;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
+.step-t{font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.4rem}
+.step-d{font-size:.8rem;color:var(--sub);line-height:1.65}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:800;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-ov.open{display:flex;animation:fadeIn .2s ease}
+.modal{background:var(--surface);border:1px solid var(--line2);border-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}
+.m-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--line)}
+.m-ti{font-family:var(--display);font-size:1.05rem;font-weight:700;color:var(--white)}
+.m-cl{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:.25rem;line-height:1;transition:color .15s}
+.m-cl:hover{color:var(--white)}
+.m-body{padding:1.5rem}
+
+@media(max-width:640px){
+  .f2{grid-template-columns:1fr}
+  .det-metrics{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:2.4rem}
+  .hero-search input{padding-right:6.5rem}
+  .hero-search button{font-size:.72rem;padding:.55rem .75rem}
+  .issue-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="logo" onclick="go('landing');return false"><span class="logo-dot"></span>Threshold</a>
+  <div class="nav-pills">
+    <button class="ntab" onclick="go('search')" id="nt-search">Search</button>
+    <button class="ntab" onclick="go('report')" id="nt-report">Report</button>
+    <button class="ntab" onclick="go('faq')" id="nt-faq">How it works</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-solid" onclick="go('report')">+ Add report</button>
+  </div>
+</nav>
+
+<!-- SEARCH MODAL -->
+<div class="modal-ov" id="modalOv" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="m-hdr"><div class="m-ti" id="mTitle">Researching...</div><button class="m-cl" onclick="closeModalDirect()">✕</button></div>
+    <div class="m-body" id="mBody"><div style="display:flex;justify-content:center;padding:3rem"><div class="spinner"></div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     LANDING
+═══════════════════════════════════════ -->
+<div class="page-full active" id="page-landing" style="overflow-y:auto">
+  <div class="hero">
+    <div class="hero-pill">
+      <span style="width:5px;height:5px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite;display:inline-block"></span>
+      Real tenant reviews · Free forever
+    </div>
+    <h1>Know before<br><span class="grad-text">you sign.</span></h1>
+    <p>Ghost rates. Hidden fee alerts. Mold reports. Predatory app fees. Check any landlord or property — before they get your money.</p>
+    <div class="hero-search">
+      <input id="heroSearch" type="text" placeholder="Search any landlord, building, or property manager..." onkeydown="if(event.key==='Enter')heroSearchGo()"/>
+      <button onclick="heroSearchGo()">Check it →</button>
+    </div>
+    <div style="margin-top:1.5rem;font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.22);letter-spacing:.04em;animation:fadeUp .5s .3s ease both">
+      100% anonymous · no account needed · community-powered
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="wrap recent-section" style="border-top:1px solid var(--line);padding-top:3rem">
+    <div class="eyebrow">How it works</div>
+    <h2 class="section-h">No more flying blind.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">01 — Search</div>
+        <div class="step-t">Look up any landlord</div>
+        <div class="step-d">Type a property manager, apartment complex name, or individual landlord. We search Reddit, ApartmentRatings, Yelp, and more.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">02 — Score</div>
+        <div class="step-t">See the full picture</div>
+        <div class="step-d">Transparency score, ghost rate, hidden fee percentage, mold complaints, average response time — all in one card.</div>
+      </div>
+      <div class="step">
+        <div class="step-n">03 — Report</div>
+        <div class="step-t">Pay it forward</div>
+        <div class="step-d">Had a bad experience? Took a non-refundable app fee and disappeared? Mold on move-in? Report it anonymously in 60 seconds.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT WE TRACK -->
+  <div class="wrap" style="padding:2rem 1.25rem 4rem">
+    <div class="eyebrow">What we track</div>
+    <h2 class="section-h">The stuff they <span style="color:var(--muted)">hope you don't know.</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-top:1.25rem">
+      <div class="glow-card" style="padding:1.1rem 1.25rem">
+        <div style="font-size:1.4rem;margin-bottom:.6rem">👻</div>
+        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Ghost Rate</div>
+        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">% of inquiries that get no response. Yours might be next.</div>
+      </div>
+      <div class="glow-card" style="padding:1.1rem 1.25rem">
+        <div style="font-size:1.4rem;margin-bottom:.6rem">💸</div>
+        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Hidden Fees</div>
+        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Admin fees, "amenity" fees, pet rent bait-and-switch — all flagged.</div>
+      </div>
+      <div class="glow-card" style="padding:1.1rem 1.25rem">
+        <div style="font-size:1.4rem;margin-bottom:.6rem">🟢</div>
+        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Mold & Maintenance</div>
+        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Unresolved maintenance requests. Mold discovered after signing.</div>
+      </div>
+      <div class="glow-card" style="padding:1.1rem 1.25rem">
+        <div style="font-size:1.4rem;margin-bottom:.6rem">🚩</div>
+        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">App Fee Theft</div>
+        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Non-refundable fees charged with zero intent to rent. We call it out.</div>
+      </div>
+      <div class="glow-card" style="padding:1.1rem 1.25rem">
+        <div style="font-size:1.4rem;margin-bottom:.6rem">📸</div>
+        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Listing Accuracy</div>
+        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Photos that don't match reality. Square footage lies. "Renovated" kitchens from 1994.</div>
+      </div>
+      <div class="glow-card" style="padding:1.1rem 1.25rem">
+        <div style="font-size:1.4rem;margin-bottom:.6rem">⏱</div>
+        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Response Time</div>
+        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Average days to respond. Because some landlords treat you like a bother.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SEARCH PAGE
+═══════════════════════════════════════ -->
+<div class="page" id="page-search">
+  <div class="sch-page">
+    <div class="sch-hdr">
+      <div class="eyebrow">Landlord search</div>
+      <h1>Find any landlord or property.</h1>
+      <p>Search by name, building, property management company, or city. We'll show their transparency score, red flags, and real tenant reviews.</p>
+      <div class="sch-bar">
+        <input id="schQuery" class="si" type="text" placeholder="Landlord or property name..." style="flex:2;min-width:200px" onkeydown="if(event.key==='Enter')doSearch()"/>
+        <input id="schCity" class="si" type="text" placeholder="City (optional)" style="flex:1;min-width:130px" onkeydown="if(event.key==='Enter')doSearch()"/>
+        <button onclick="doSearch()" class="btn btn-solid">Search →</button>
+      </div>
+    </div>
+    <div class="sch-list">
+      <div class="sch-ct" id="schCt"></div>
+      <div id="schResults"><div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">Search any landlord or property above to see their transparency score.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     LANDLORD DETAIL PAGE
+═══════════════════════════════════════ -->
+<div class="page" id="page-landlord">
+  <div class="det-wrap">
+    <button class="back-btn" onclick="history.back()">← back</button>
+    <div class="det-hdr" id="detHdr">
+      <div style="display:flex;justify-content:center;padding:2rem"><div class="spinner"></div></div>
+    </div>
+    <div class="det-tabs" id="detTabs" style="display:none">
+      <button class="dtab active" onclick="switchDetTab('overview',this)">Overview</button>
+      <button class="dtab" onclick="switchDetTab('reports',this)">Community reports</button>
+      <button class="dtab" onclick="switchDetTab('research',this)">Web research</button>
+    </div>
+    <div id="detContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     REPORT PAGE
+═══════════════════════════════════════ -->
+<div class="page" id="page-report">
+  <div class="rep-wrap">
+    <div class="eyebrow">Community report</div>
+    <h1>Report a landlord.</h1>
+    <p>60 seconds. Fully anonymous. Your report updates scores for your exact location — and tells the next renter what they're walking into.</p>
+
+    <div class="fblock">
+      <div class="fb-hd">01 — The property</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Landlord / Property Manager *</label><input class="fi-r" id="rLandlord" type="text" placeholder="e.g. Greystar, ABC Properties, John Smith"/></div>
+        <div class="fg"><label class="fl">Building / Address</label><input class="fi-r" id="rAddress" type="text" placeholder="e.g. 123 Main St or Riverside Apts"/></div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label class="fl">City * <span style="color:var(--teal)">(city & state)</span></label><input class="fi-r" id="rCity" type="text" placeholder="e.g. Austin, TX"/></div>
+        <div class="fg"><label class="fl">Unit type</label>
+          <select class="fs-r" id="rUnit">
+            <option value="">Select...</option>
+            <option>Studio</option>
+            <option>1 bedroom</option>
+            <option>2 bedroom</option>
+            <option>3 bedroom</option>
+            <option>4+ bedroom</option>
+            <option>House / Townhome</option>
+            <option>Room / Shared</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">How you found it</label>
+        <select class="fs-r" id="rPlatform">
+          <option value="">Select...</option>
+          <option>Zillow</option>
+          <option>Apartments.com</option>
+          <option>Craigslist</option>
+          <option>Facebook Marketplace</option>
+          <option>Realtor.com</option>
+          <option>Trulia</option>
+          <option>Direct / Word of mouth</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">02 — What happened</div>
+      <div class="fg"><label class="fl">Outcome</label>
+        <div class="radio-row">
+          <div class="rb"><input type="radio" name="outcome" id="o1" value="rented"/><label class="rl" for="o1">🏠 Rented here</label></div>
+          <div class="rb"><input type="radio" name="outcome" id="o2" value="passed"/><label class="rl" for="o2">🚶 Toured & passed</label></div>
+          <div class="rb"><input type="radio" name="outcome" id="o3" value="ghosted"/><label class="rl" for="o3">👻 Got ghosted</label></div>
+          <div class="rb"><input type="radio" name="outcome" id="o4" value="fee_lost"/><label class="rl" for="o4">💸 Paid fee, no unit</label></div>
+          <div class="rb"><input type="radio" name="outcome" id="o5" value="looking"/><label class="rl" for="o5">⏳ Still looking</label></div>
+        </div>
+      </div>
+      <div class="fg" style="margin-top:.75rem">
+        <label class="fl">Issues (check all that apply)</label>
+        <div class="issue-grid" id="issueGrid">
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="hidden_fees"/> <span>💸 Hidden fees at signing</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="listing_inaccurate"/> <span>📸 Listing photos inaccurate</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="mold"/> <span>🟢 Mold / moisture found</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="maintenance_ignored"/> <span>🔧 Maintenance ignored</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="predatory_app_fee"/> <span>🚩 Non-refundable app fee</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="deposit_withheld"/> <span>💰 Security deposit withheld</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="bait_switch"/> <span>🎣 Unit not as described</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="pressure_tactics"/> <span>⚡ Pressure tactics used</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="unit_not_ready"/> <span>🏚 Unit not ready at move-in</span>
+          </label>
+          <label class="issue-cb" onclick="toggleIssueCb(this)">
+            <input type="checkbox" value="no_response"/> <span>📵 Never responded to inquiry</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">03 — Application fee (if any)</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">App fee amount ($)</label><input class="fi-r" id="rFeeAmt" type="number" min="0" max="999" placeholder="e.g. 50"/></div>
+        <div class="fg"><label class="fl">Was it refunded?</label>
+          <select class="fs-r" id="rFeeRef">
+            <option value="na">N/A — no fee charged</option>
+            <option value="yes">Yes — refunded</option>
+            <option value="no">No — not refunded</option>
+            <option value="partial">Partial refund</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Your experience (optional — helps future renters most)</label>
+        <textarea class="ft-r" id="rExp" placeholder="What happened? What should the next person know? Any details — fees discovered, condition of unit, how communication went — help someone avoid a bad situation."></textarea>
+      </div>
+    </div>
+
+    <button class="sub-btn" id="subBtn" onclick="submitReport()">Submit anonymously →</button>
+    <div class="ok-msg" id="repOk">✓ Submitted. Score updated. You just helped someone find a better place to live.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FAQ / HOW IT WORKS
+═══════════════════════════════════════ -->
+<div class="page" id="page-faq">
+  <div style="max-width:720px;margin:0 auto;padding:3rem 1.25rem">
+    <div class="eyebrow">Help center</div>
+    <h1 style="font-family:var(--display);font-size:2rem;font-weight:800;color:var(--white);letter-spacing:-.03em;margin-bottom:.4rem">How Threshold works.</h1>
+    <p style="color:var(--sub);font-size:.875rem;font-weight:300;margin-bottom:2.5rem;line-height:1.8">Everything you need to know about scores, reports, and your privacy.</p>
+    <div id="faqList"></div>
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.5rem;margin-top:2rem;text-align:center">
+      <div style="font-family:var(--display);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.4rem">Questions? Issues?</div>
+      <p style="color:var(--sub);font-size:.82rem;font-weight:300;margin-bottom:1rem">We're a small team building something that matters. We read every email.</p>
+      <a href="mailto:hello@threshold.app" class="btn btn-solid">Email us →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────────────────────────────────────
+const tabMap = { search:'nt-search', report:'nt-report', faq:'nt-faq' };
+
+function go(page) {
+  document.querySelectorAll('.page, .page-full').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (!el) { console.warn('Page not found: page-' + page); return; }
+  el.classList.add('active');
+  document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+  if (tabMap[page]) document.getElementById(tabMap[page])?.classList.add('active');
+  window.scrollTo(0, 0);
+  if (page === 'faq') renderFAQ();
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('nav-scrolled', window.scrollY > 20);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOAST
+// ─────────────────────────────────────────────────────────────────────────────
+function toast(msg, type = 'default') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = type === 'error' ? 'rgba(239,68,68,0.12)' : type === 'success' ? 'rgba(16,185,129,0.12)' : 'var(--surface)';
+  t.style.borderColor = type === 'error' ? 'rgba(239,68,68,0.3)' : type === 'success' ? 'rgba(16,185,129,0.3)' : 'var(--line2)';
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────────────────────────────────────────
+function openModal(title, bodyHtml) {
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mBody').innerHTML = bodyHtml;
+  document.getElementById('modalOv').classList.add('open');
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOv')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOv').classList.remove('open');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HERO SEARCH
+// ─────────────────────────────────────────────────────────────────────────────
+function heroSearchGo() {
+  const q = document.getElementById('heroSearch').value.trim();
+  if (!q) { toast('Enter a landlord or property name', 'error'); return; }
+  document.getElementById('schQuery').value = q;
+  document.getElementById('schCity').value = '';
+  go('search');
+  doSearch();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SEARCH PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+let _currentSearch = null;
+
+async function doSearch() {
+  const query = document.getElementById('schQuery').value.trim();
+  const city  = document.getElementById('schCity').value.trim();
+  if (!query) { toast('Enter a landlord or property name', 'error'); return; }
+
+  _currentSearch = query;
+  const ct = document.getElementById('schCt');
+  const results = document.getElementById('schResults');
+
+  ct.textContent = '';
+  results.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Researching "${query}"...</div>`;
+
+  try {
+    const res = await fetch('/api/landlord-score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: query, location: city || undefined }),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Score failed');
+
+    const score = data.score;
+
+    // Also fetch community reports
+    let reports = [];
+    try {
+      const rRes = await fetch('/api/apartment-reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ landlord: query, city: city || undefined }),
+      });
+      if (rRes.ok) { const rd = await rRes.json(); reports = rd.reports || []; }
+    } catch (_e) {}
+
+    ct.textContent = `Score for: ${query}${city ? ' · ' + city : ''}`;
+    results.innerHTML = renderScoreCard(query, score, reports, city);
+
+    // Store for detail page
+    window._lastLandlordData = { name: query, city, score, reports };
+
+  } catch (e) {
+    results.innerHTML = `<div style="background:var(--rdim);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;color:var(--red)">Research failed: ${e.message}. Check your API key configuration.</div>`;
+  }
+}
+
+function renderScoreCard(name, score, reports, city) {
+  const rl = score.risk_level;
+  const ringColor = rl === 'safe' ? 'var(--green)' : rl === 'warn' ? 'var(--amber)' : 'var(--red)';
+  const riskLabel = rl === 'safe' ? 'Low risk' : rl === 'warn' ? 'Moderate risk' : 'High risk';
+
+  // Top issues from community reports
+  const issueCounts = {};
+  reports.forEach(r => { (r.issues || []).forEach(i => { issueCounts[i] = (issueCounts[i] || 0) + 1; }); });
+  const topIssues = Object.entries(issueCounts).sort((a,b) => b[1]-a[1]).slice(0,4);
+  const issueLabels = {
+    hidden_fees: 'Hidden fees', listing_inaccurate: 'Listing inaccurate',
+    mold: 'Mold reported', maintenance_ignored: 'Maintenance ignored',
+    predatory_app_fee: 'Predatory app fee', deposit_withheld: 'Deposit withheld',
+    bait_switch: 'Bait & switch', pressure_tactics: 'Pressure tactics',
+    unit_not_ready: 'Unit not ready', no_response: 'No response',
+  };
+
+  const communityGhost = reports.length > 0 ? reports.filter(r => r.outcome === 'ghosted' || r.outcome === 'fee_lost').length / reports.length : null;
+  const ghostDisplay = communityGhost !== null ? Math.round(communityGhost * 100) + '%' : Math.round(score.ghost_rate * 100) + '%';
+  const feeDisplay = Math.round(score.hidden_fee_rate * 100) + '%';
+  const moldDisplay = Math.round(score.mold_rate * 100) + '%';
+  const responseDisplay = score.avg_response_days + 'd avg';
+
+  const reportCount = reports.length > 0 ? reports.length : score.report_count;
+
+  return `
+  <div class="glow-card" style="padding:1.75rem">
+    <div style="display:flex;align-items:flex-start;gap:1.25rem;flex-wrap:wrap">
+      <div class="sring ${rl}" style="width:80px;height:80px">
+        <span class="sring-n" style="font-size:1.5rem">${score.overall_score}</span>
+        <span class="sring-l">${riskLabel}</span>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:.2rem">${name}</div>
+        <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.65rem">${score.property_type || 'Landlord / Property Manager'}${city ? ' · ' + city : ''} · ${reportCount} data points</div>
+        ${score.app_fee_predatory ? `<span class="ibadge red" style="margin-bottom:.5rem">🚩 Predatory app fees flagged</span>` : ''}
+        <p style="font-size:.82rem;color:var(--sub);line-height:1.65;max-width:520px">${score.summary || 'No summary available.'}</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.65rem;margin-top:1.25rem">
+      <div class="det-met">
+        <div class="det-met-n" style="color:${parseFloat(ghostDisplay) > 40 ? 'var(--red)' : 'var(--green)'}">${ghostDisplay}</div>
+        <div class="det-met-l">Ghost rate</div>
+      </div>
+      <div class="det-met">
+        <div class="det-met-n" style="color:${parseFloat(feeDisplay) > 30 ? 'var(--red)' : 'var(--green)'}">${feeDisplay}</div>
+        <div class="det-met-l">Hidden fees</div>
+      </div>
+      <div class="det-met">
+        <div class="det-met-n" style="color:${parseFloat(moldDisplay) > 20 ? 'var(--red)' : 'var(--sub)'}">${moldDisplay}</div>
+        <div class="det-met-l">Mold reports</div>
+      </div>
+      <div class="det-met">
+        <div class="det-met-n" style="color:var(--sub)">${responseDisplay}</div>
+        <div class="det-met-l">Response time</div>
+      </div>
+      <div class="det-met">
+        <div class="det-met-n" style="color:${score.red_flag_score > 50 ? 'var(--red)' : score.red_flag_score > 25 ? 'var(--amber)' : 'var(--green)'}">${score.red_flag_score}</div>
+        <div class="det-met-l">Red flag score</div>
+      </div>
+    </div>
+
+    ${topIssues.length > 0 ? `
+    <div style="margin-top:1.1rem">
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top reported issues</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.35rem">
+        ${topIssues.map(([k,v]) => `<span class="ibadge red">${issueLabels[k] || k} · ${v}</span>`).join('')}
+      </div>
+    </div>` : ''}
+
+    ${reports.length > 0 ? `
+    <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--line)">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Recent community reports (${reports.length})</div>
+      ${reports.slice(0,3).map(r => renderMiniReport(r)).join('')}
+      ${reports.length > 3 ? `<button onclick="viewAllReports()" style="background:none;border:none;font-family:var(--mono);font-size:.65rem;color:var(--teal);cursor:pointer;margin-top:.35rem">View all ${reports.length} reports →</button>` : ''}
+    </div>` : ''}
+
+    ${score.web_reviews?.length > 0 ? `
+    <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--line)">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">From the web · Reddit, ApartmentRatings, Yelp</div>
+      ${score.web_reviews.slice(0,3).map(r => `
+      <div class="wrev">
+        <div class="wrev-text">"${r.text}"</div>
+        <div class="wrev-meta">${r.source || 'Community'} · ${r.year || ''} · <span style="color:${r.sentiment==='positive'?'var(--green)':r.sentiment==='negative'?'var(--red)':'var(--amber)'}">${r.sentiment}</span></div>
+      </div>`).join('')}
+    </div>` : ''}
+
+    <div style="margin-top:1.25rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-ghost" style="font-size:.72rem" onclick="go('report');prefillReport('${name.replace(/'/g,"\\'")}')">+ Report your experience</button>
+      <span style="font-family:var(--mono);font-size:.58rem;color:var(--muted)">Data quality: ${score.data_quality} · ${score.data_source === 'cache' ? 'cached' : 'live research'}</span>
+    </div>
+  </div>`;
+}
+
+function renderMiniReport(r) {
+  const outcomeLabels = { rented:'🏠 Rented', passed:'🚶 Passed', ghosted:'👻 Ghosted', fee_lost:'💸 Fee lost', looking:'⏳ Looking', unknown:'?' };
+  const outcomeColors = { rented:'green', passed:'teal', ghosted:'red', fee_lost:'red', looking:'amber', unknown:'amber' };
+  const oc = outcomeColors[r.outcome] || 'amber';
+  const issues = (r.issues || []).slice(0, 3);
+  const issueLabels = { hidden_fees:'Hidden fees', listing_inaccurate:'Inaccurate listing', mold:'Mold', maintenance_ignored:'Maintenance ignored', predatory_app_fee:'Predatory fee', deposit_withheld:'Deposit withheld', bait_switch:'Bait & switch', pressure_tactics:'Pressure tactics', unit_not_ready:'Not ready', no_response:'No response' };
+  return `
+  <div class="rcard">
+    <div class="rcard-top">
+      <span class="rcard-outcome ibadge ${oc}">${outcomeLabels[r.outcome] || r.outcome}</span>
+      ${r.unit_type ? `<span class="ibadge teal">${r.unit_type}</span>` : ''}
+      ${r.city ? `<span class="rcard-role">📍 ${r.city}</span>` : ''}
+    </div>
+    ${issues.length > 0 ? `<div class="rcard-issues">${issues.map(i => `<span class="ibadge red">${issueLabels[i]||i}</span>`).join('')}</div>` : ''}
+    ${r.experience_text ? `<div class="rcard-text">${r.experience_text.slice(0,200)}${r.experience_text.length>200?'...':''}</div>` : ''}
+    ${r.app_fee && r.app_fee_refunded === 'no' ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--red);margin-top:.4rem">$${r.app_fee} fee — not refunded</div>` : ''}
+    <div class="rcard-date">${r.created_at ? new Date(r.created_at).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : ''} · via Threshold</div>
+  </div>`;
+}
+
+function viewAllReports() {
+  if (!window._lastLandlordData) return;
+  go('landlord');
+  loadLandlordDetail(window._lastLandlordData.name, window._lastLandlordData.score, window._lastLandlordData.reports, window._lastLandlordData.city);
+  setTimeout(() => switchDetTab('reports', document.querySelectorAll('.dtab')[1]), 300);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LANDLORD DETAIL PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+function loadLandlordDetail(name, score, reports, city) {
+  const hdr = document.getElementById('detHdr');
+  const tabs = document.getElementById('detTabs');
+  const content = document.getElementById('detContent');
+
+  tabs.style.display = 'flex';
+  window._detData = { name, score, reports, city };
+
+  const rl = score.risk_level;
+  hdr.innerHTML = `
+  <div class="det-top">
+    <div class="det-logo">${name[0].toUpperCase()}</div>
+    <div style="flex:1">
+      <div class="det-name">${name}</div>
+      <div class="det-meta">${score.property_type || 'Landlord / Property Manager'}${city ? ' · ' + city : ''}</div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem">
+        ${score.app_fee_predatory ? '<span class="ibadge red">🚩 Predatory app fees</span>' : ''}
+        <span class="ibadge ${rl === 'safe' ? 'green' : rl === 'warn' ? 'amber' : 'red'}">${rl === 'safe' ? '✓ Transparent' : rl === 'warn' ? '⚠ Use caution' : '✕ High risk'}</span>
+      </div>
+    </div>
+    <div class="sring ${rl}" style="width:70px;height:70px">
+      <span class="sring-n" style="font-size:1.4rem">${score.overall_score}</span>
+      <span class="sring-l">Transparency</span>
+    </div>
+  </div>
+  <div class="det-metrics">
+    <div class="det-met">
+      <div class="det-met-n" style="color:${score.ghost_rate > 0.4 ? 'var(--red)' : 'var(--green)'}">${Math.round(score.ghost_rate * 100)}%</div>
+      <div class="det-met-l">Ghost rate</div>
+    </div>
+    <div class="det-met">
+      <div class="det-met-n" style="color:${score.hidden_fee_rate > 0.3 ? 'var(--red)' : 'var(--green)'}">${Math.round(score.hidden_fee_rate * 100)}%</div>
+      <div class="det-met-l">Hidden fees</div>
+    </div>
+    <div class="det-met">
+      <div class="det-met-n" style="color:${score.mold_rate > 0.2 ? 'var(--red)' : 'var(--sub)'}">${Math.round(score.mold_rate * 100)}%</div>
+      <div class="det-met-l">Mold reports</div>
+    </div>
+    <div class="det-met">
+      <div class="det-met-n" style="color:var(--sub)">${score.avg_response_days}d</div>
+      <div class="det-met-l">Avg response</div>
+    </div>
+    <div class="det-met">
+      <div class="det-met-n" style="color:${score.red_flag_score > 50 ? 'var(--red)' : score.red_flag_score > 25 ? 'var(--amber)' : 'var(--green)'}">${score.red_flag_score}</div>
+      <div class="det-met-l">Red flag score</div>
+    </div>
+    <div class="det-met">
+      <div class="det-met-n" style="color:var(--sub)">${score.report_count}</div>
+      <div class="det-met-l">Data points</div>
+    </div>
+  </div>`;
+
+  renderDetTab('overview');
+}
+
+function switchDetTab(tab, btn) {
+  document.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderDetTab(tab);
+}
+
+function renderDetTab(tab) {
+  const content = document.getElementById('detContent');
+  const d = window._detData;
+  if (!d) return;
+
+  if (tab === 'overview') {
+    const issueMap = {};
+    (d.reports || []).forEach(r => { (r.issues || []).forEach(i => { issueMap[i] = (issueMap[i] || 0) + 1; }); });
+    const issueLabels = { hidden_fees:'Hidden fees', listing_inaccurate:'Listing inaccurate', mold:'Mold reported', maintenance_ignored:'Maintenance ignored', predatory_app_fee:'Predatory app fee', deposit_withheld:'Deposit withheld', bait_switch:'Bait & switch', pressure_tactics:'Pressure tactics', unit_not_ready:'Unit not ready', no_response:'No response' };
+    const sorted = Object.entries(issueMap).sort((a,b) => b[1]-a[1]);
+
+    content.innerHTML = `
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem">Summary</div>
+      <p style="font-size:.85rem;color:var(--sub);line-height:1.7">${d.score.summary || 'No summary available.'}</p>
+    </div>
+    ${sorted.length > 0 ? `
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Reported issues breakdown</div>
+      ${sorted.map(([k,v]) => `
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem">
+        <div style="font-size:.8rem;color:var(--sub);min-width:160px">${issueLabels[k]||k}</div>
+        <div style="flex:1;background:var(--line);border-radius:4px;height:6px;overflow:hidden">
+          <div style="height:100%;width:${Math.min(100,v/Math.max(1,d.reports.length)*100)}%;background:var(--red);border-radius:4px"></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted);min-width:30px;text-align:right">${v}x</div>
+      </div>`).join('')}
+    </div>` : ''}
+    <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="go('report');prefillReport('${d.name.replace(/'/g,"\\'")}')">+ Add your experience</button>`;
+
+  } else if (tab === 'reports') {
+    if (!d.reports?.length) {
+      content.innerHTML = `<div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">No community reports yet. Be the first.</div>
+      <div style="text-align:center;margin-top:1rem"><button class="btn btn-solid" onclick="go('report');prefillReport('${d.name.replace(/'/g,"\\'")}')">Add a report →</button></div>`;
+      return;
+    }
+    content.innerHTML = d.reports.map(r => renderMiniReport(r)).join('');
+
+  } else if (tab === 'research') {
+    const revs = d.score.web_reviews || [];
+    if (!revs.length) {
+      content.innerHTML = `<div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">No web research available for this landlord.</div>`;
+      return;
+    }
+    content.innerHTML = `
+    <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">From Reddit, ApartmentRatings, Yelp, Google Reviews</div>
+    ${revs.map(r => `
+    <div class="wrev">
+      <div class="wrev-text">"${r.text}"</div>
+      <div class="wrev-meta">${r.source||'Community'} · ${r.year||''} · <span style="color:${r.sentiment==='positive'?'var(--green)':r.sentiment==='negative'?'var(--red)':'var(--amber)'}">${r.sentiment}</span></div>
+    </div>`).join('')}`;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REPORT FORM
+// ─────────────────────────────────────────────────────────────────────────────
+function prefillReport(landlord) {
+  const el = document.getElementById('rLandlord');
+  if (el && landlord) el.value = landlord;
+}
+
+function toggleIssueCb(label) {
+  const cb = label.querySelector('input[type=checkbox]');
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  label.classList.toggle('checked', cb.checked);
+}
+
+async function submitReport() {
+  const landlord = document.getElementById('rLandlord').value.trim();
+  const city     = document.getElementById('rCity').value.trim();
+  if (!landlord) { toast('Landlord name is required', 'error'); return; }
+  if (!city)     { toast('City is required', 'error'); return; }
+
+  const outcome  = document.querySelector('input[name="outcome"]:checked')?.value || 'unknown';
+  const issues   = [...document.querySelectorAll('#issueGrid input[type=checkbox]:checked')].map(c => c.value);
+  const address  = document.getElementById('rAddress').value.trim();
+  const unit     = document.getElementById('rUnit').value;
+  const platform = document.getElementById('rPlatform').value;
+  const feeAmt   = document.getElementById('rFeeAmt').value;
+  const feeRef   = document.getElementById('rFeeRef').value;
+  const exp      = document.getElementById('rExp').value.trim();
+
+  const btn = document.getElementById('subBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    // Moderate first
+    const modRes = await fetch('/api/moderate-report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ landlord, city, experience_text: exp }),
+    });
+    if (modRes.ok) {
+      const mod = await modRes.json();
+      if (!mod.city_valid) { toast('City not recognized — try "Austin, TX"', 'error'); btn.disabled = false; btn.textContent = 'Submit anonymously →'; return; }
+      if (!mod.content_ok) { toast('Content flagged: ' + (mod.flags?.[0] || 'policy violation'), 'error'); btn.disabled = false; btn.textContent = 'Submit anonymously →'; return; }
+    }
+
+    const res = await fetch('/api/apartment-reports', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'submit',
+        landlord, city, address, unit_type: unit, platform, outcome, issues,
+        app_fee: feeAmt || null, app_fee_refunded: feeRef, experience_text: exp,
+      }),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const d = await res.json();
+    if (!d.ok) throw new Error(d.error || 'Submit failed');
+
+    document.getElementById('repOk').style.display = 'block';
+    btn.textContent = '✓ Submitted';
+    toast('Report submitted. Thank you.', 'success');
+
+    // Reset form
+    setTimeout(() => {
+      document.getElementById('rLandlord').value = '';
+      document.getElementById('rAddress').value = '';
+      document.getElementById('rCity').value = '';
+      document.getElementById('rUnit').value = '';
+      document.getElementById('rPlatform').value = '';
+      document.getElementById('rFeeAmt').value = '';
+      document.getElementById('rFeeRef').value = 'na';
+      document.getElementById('rExp').value = '';
+      document.querySelectorAll('input[name="outcome"]').forEach(r => r.checked = false);
+      document.querySelectorAll('#issueGrid input[type=checkbox]').forEach(c => { c.checked = false; c.closest('label')?.classList.remove('checked'); });
+      document.getElementById('repOk').style.display = 'none';
+      btn.disabled = false;
+      btn.textContent = 'Submit anonymously →';
+    }, 4000);
+
+  } catch (e) {
+    toast('Submit failed: ' + e.message, 'error');
+    btn.disabled = false;
+    btn.textContent = 'Submit anonymously →';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FAQ
+// ─────────────────────────────────────────────────────────────────────────────
+const FAQ_DATA = [
+  { q: 'How is the Transparency Score calculated?', a: 'The score (0–100) weighs: response rate to inquiries (+40 pts), ghost rate (−30 pts), hidden fee report rate (−15 pts), and community report volume (+5 pts for each doubling of reports). Scores ≥70 are "low risk", 40–69 are "moderate", below 40 are "high risk".' },
+  { q: 'What is the Red Flag Score?', a: 'A separate 0–100 metric measuring probability of a bad experience. It weighs: ghost rate (×30), mold/maintenance reports (×35), hidden fees (×25), and bait-and-switch reports (×20). High means proceed very carefully.' },
+  { q: 'Are reports anonymous?', a: 'Yes. We collect no email, no phone number, no name. There\'s no account required. We use session-based spam prevention only.' },
+  { q: 'Where does the web research come from?', a: 'We use AI (Claude) to search Reddit (r/renting, r/landlord, r/Tenant), ApartmentRatings.com, Yelp, and Google Reviews. The score is computed from patterns in those posts. We cache results for 30 days.' },
+  { q: 'What counts as a "hidden fee"?', a: 'Any fee not prominently disclosed in the listing price. Examples: admin fees, amenity fees, "utility admin" markups, pet rent added after interest shown, parking fees not in the listing, trash/valet/package fees.' },
+  { q: 'What should I do if I paid a non-refundable app fee and got nothing?', a: 'Report it here — it helps others avoid the same trap. In many states, landlords are legally required to refund application fees if they don\'t rent to you. Check your state\'s tenant rights laws. Organizations like local tenant unions can help you recover it.' },
+  { q: 'Can a landlord dispute their score?', a: 'They can email us to flag concerns. We don\'t remove accurate reports, but we will review reports that appear fraudulent or violate our content guidelines. Scores update automatically as new reports come in.' },
+  { q: 'How do I know the AI research is accurate?', a: 'We search live web sources for each query and ground our summaries in real posts. We label data quality as high/medium/low based on how many sources we found. Low data quality means take the AI research with a grain of salt — community reports are always more reliable.' },
+  { q: 'Is this legal?', a: 'Yes. Reports are user-generated content protected under Section 230 of the CDA. We moderate for hate speech, doxxing, and fake content — but accurate factual reports about landlord behavior are protected speech and reporting.' },
+];
+
+function renderFAQ() {
+  const el = document.getElementById('faqList');
+  if (!el || el.innerHTML) return;
+  el.innerHTML = FAQ_DATA.map((f, i) => `
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(${i})">
+      <span>${f.q}</span>
+      <span id="faq-icon-${i}" style="color:var(--teal);flex-shrink:0">+</span>
+    </div>
+    <div class="faq-a" id="faq-a-${i}">${f.a}</div>
+  </div>`).join('');
+}
+
+function toggleFaq(i) {
+  const a = document.getElementById('faq-a-' + i);
+  const ic = document.getElementById('faq-icon-' + i);
+  const open = a.classList.toggle('open');
+  ic.textContent = open ? '−' : '+';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore last page if navigating back
+  window.addEventListener('popstate', e => {
+    if (e.state?.page) go(e.state.page);
+  });
+});
+</script>
+</body>
+</html>
+
