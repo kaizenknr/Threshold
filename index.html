@@ -389,7 +389,10 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 <!-- ONBOARDING OVERLAY -->
 <div class="ob-overlay hidden" id="obOverlay">
   <div class="ob-inner">
-    <button class="ob-skip" onclick="skipOnboarding()">Skip for now</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:.25rem">
+      <button class="ob-skip" onclick="skipOnboarding()">Skip for now</button>
+      <button onclick="skipOnboarding();openAuth()" style="background:none;border:none;font-family:var(--mono);font-size:.65rem;color:var(--teal);cursor:pointer;text-decoration:underline">Sign in →</button>
+    </div>
 
     <!-- STEP 1 -->
     <div class="ob-step active" id="obStep1">
@@ -2137,7 +2140,16 @@ function obFinish() {
   localStorage.setItem('threshold_profile', JSON.stringify(obData));
   document.getElementById('obOverlay').classList.add('hidden');
   updateProfileChip();
-  toast('Profile saved!', 'success');
+  if (!isLoggedIn()) {
+    // Prompt to create account to sync across devices
+    setTimeout(() => {
+      toast('Profile saved! Sign in to sync across devices.', 'success');
+      setTimeout(() => openAuth(), 2200);
+    }, 300);
+  } else {
+    toast('Profile saved!', 'success');
+    syncProfileToCloud();
+  }
 }
 
 function skipOnboarding() {
