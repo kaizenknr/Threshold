@@ -12,24 +12,24 @@
 <meta name="robots" content="index, follow"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --ink:#02040a;--void:#05070f;--surface:#0c0f1a;--card:rgba(255,255,255,0.03);--raised:rgba(255,255,255,0.05);
-  --line:rgba(255,255,255,0.08);--line2:rgba(255,255,255,0.12);--muted:#4b5563;--dim:#6b7280;
-  --sub:#9ca3af;--text:#e5e7eb;--white:#f9fafb;
-  --green:#10b981;--gdim:rgba(16,185,129,0.08);--gmid:rgba(16,185,129,0.15);
-  --red:#ef4444;--rdim:rgba(239,68,68,0.08);--rmid:rgba(239,68,68,0.15);
-  --amber:#f59e0b;--adim:rgba(245,158,11,0.08);--amid:rgba(245,158,11,0.15);
-  --teal:#0d9488;--tdim:rgba(13,148,136,0.1);--tmid:rgba(13,148,136,0.2);
-  --cyan:#22d3ee;--cydim:rgba(34,211,238,0.1);
-  --g-start:#0d9488;--g-mid:#059669;--g-end:#10b981;
-  --g-text-start:#5eead4;--g-text-mid:#34d399;--g-text-end:#6ee7b7;
-  --display:'Syne',sans-serif;--mono:'DM Mono',monospace;--body:'Instrument Sans',sans-serif;
+  --ink:#f9f8f5;--void:#ffffff;--surface:#ffffff;--card:#ffffff;--raised:#f4f3ef;
+  --line:rgba(0,0,0,0.07);--line2:rgba(0,0,0,0.12);--muted:#c0bdb8;--dim:#9a9690;
+  --sub:#6b6760;--text:#2c2a27;--white:#111111;
+  --green:#8b6914;--gdim:rgba(139,105,20,0.08);--gmid:rgba(139,105,20,0.15);
+  --red:#991b1b;--rdim:rgba(153,27,27,0.07);--rmid:rgba(153,27,27,0.13);
+  --amber:#92400e;--adim:rgba(146,64,14,0.08);--amid:rgba(146,64,14,0.14);
+  --teal:#111111;--tdim:rgba(17,17,17,0.05);--tmid:rgba(17,17,17,0.10);
+  --cyan:#111111;--cydim:rgba(17,17,17,0.05);
+  --g-start:#111111;--g-mid:#333333;--g-end:#555555;
+  --g-text-start:#111111;--g-text-mid:#444444;--g-text-end:#777777;
+  --display:'Cormorant Garamond',Georgia,serif;--mono:'DM Mono',monospace;--body:'Inter',-apple-system,sans-serif;
 }
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--ink);background-image:radial-gradient(ellipse at 25% 0%,rgba(13,148,136,0.07) 0%,transparent 55%),radial-gradient(ellipse at 80% 100%,rgba(16,185,129,0.05) 0%,transparent 50%);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;width:100%;max-width:100%}
+body{background:var(--ink);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;width:100%;max-width:100%}
 
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -37,41 +37,41 @@ body{background:var(--ink);background-image:radial-gradient(ellipse at 25% 0%,rg
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 @keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes auroraFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(2%,3%) scale(1.04)}66%{transform:translate(-2%,2%) scale(0.97)}}
-@keyframes auroraFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-3%,4%) scale(1.06)}}
+@keyframes none_anim{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(2%,3%) scale(1.04)}66%{transform:translate(-2%,2%) scale(0.97)}}
+@keyframes none_anim2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-3%,4%) scale(1.06)}}
 
 /* AURORA — teal/green cosmos */
-.aurora{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.aurora::before{content:'';position:absolute;top:-35%;left:-25%;width:80vw;height:80vh;border-radius:50%;background:radial-gradient(ellipse at center,rgba(13,148,136,0.22) 0%,rgba(5,150,105,0.12) 40%,rgba(16,185,129,0.04) 65%,transparent 80%);filter:blur(90px);animation:auroraFloat 16s ease-in-out infinite}
-.aurora::after{content:'';position:absolute;bottom:-25%;right:-20%;width:70vw;height:70vh;border-radius:50%;background:radial-gradient(ellipse at center,rgba(16,185,129,0.18) 0%,rgba(13,148,136,0.1) 40%,rgba(34,211,238,0.05) 65%,transparent 80%);filter:blur(80px);animation:auroraFloat2 20s ease-in-out infinite}
+.aurora{display:none}
+
+
 
 /* GLASS */
-.glass{background:rgba(255,255,255,0.04);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,0.1);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.06);transition:box-shadow 0.25s ease,transform 0.2s ease}
-.glass:hover{box-shadow:0 16px 56px rgba(0,0,0,0.6),0 0 48px rgba(13,148,136,0.15);transform:translateY(-2px)}
+.glass{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);transition:box-shadow 0.25s ease,transform 0.2s ease}
+.glass:hover{box-shadow:0 8px 32px rgba(0,0,0,0.10),0 2px 8px rgba(0,0,0,0.06);transform:translateY(-2px)}
 
 /* GLOW CARD */
-.glow-card{position:relative;overflow:hidden;background:linear-gradient(160deg,rgba(255,255,255,0.04) 0%,rgba(13,148,136,0.03) 100%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,0.1);border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,0.6),0 0 0 1px rgba(13,148,136,0.06),inset 0 1px 0 rgba(255,255,255,0.07);transition:all 0.3s ease}
+.glow-card{position:relative;overflow:hidden;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,0.07),0 1px 4px rgba(0,0,0,0.04);transition:all 0.3s ease}
 .glow-card>*{position:relative;z-index:1}
-.glow-card:hover{border-color:rgba(13,148,136,0.35);box-shadow:0 20px 64px rgba(0,0,0,0.7),0 0 60px rgba(16,185,129,0.15);transform:translateY(-3px)}
+.glow-card:hover{border-color:rgba(0,0,0,0.16);box-shadow:0 12px 40px rgba(0,0,0,0.11),0 2px 8px rgba(0,0,0,0.06);transform:translateY(-3px)}
 
 /* GRADIENT TEXT */
-.grad-text{background:linear-gradient(135deg,var(--g-text-start) 0%,var(--g-text-mid) 55%,var(--g-text-end) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-text{color:#111111;-webkit-text-fill-color:#111111}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;background:rgba(6,6,8,0.55);backdrop-filter:blur(40px) saturate(180%);border-bottom:1px solid rgba(255,255,255,0.08);box-shadow:0 1px 0 rgba(255,255,255,0.04),0 4px 24px rgba(0,0,0,0.25);transition:background .3s ease}
-nav.nav-scrolled{background:rgba(6,6,8,0.82);border-bottom-color:rgba(255,255,255,0.11)}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;background:rgba(249,248,245,0.92);backdrop-filter:blur(24px) saturate(160%);border-bottom:1px solid rgba(0,0,0,0.07);box-shadow:0 1px 0 rgba(0,0,0,0.04);transition:background .3s ease}
+nav.nav-scrolled{background:rgba(249,248,245,0.98);border-bottom-color:rgba(0,0,0,0.09)}
 .logo{font-family:var(--display);font-size:1.2rem;font-weight:800;color:var(--white);text-decoration:none;letter-spacing:-.02em;display:flex;align-items:center;gap:.5rem}
-.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px rgba(13,148,136,0.7);animation:pulse 2s infinite}
+.logo-dot{width:6px;height:6px;border-radius:50%;background:#111111}
 .nav-pills{display:flex;gap:.08rem;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
-.ntab{background:none;border:none;padding:.35rem .62rem;font-family:var(--body);font-size:.73rem;font-weight:500;color:rgba(255,255,255,0.38);cursor:pointer;border-radius:10px;transition:color .18s ease;white-space:nowrap}
-.ntab:hover{color:rgba(255,255,255,0.68)}
-.ntab.active{color:#fff;font-weight:600;background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.35);outline:1px solid rgba(255,255,255,0.12)}
+.ntab{background:none;border:none;padding:.35rem .62rem;font-family:var(--body);font-size:.73rem;font-weight:500;color:rgba(0,0,0,0.38);cursor:pointer;border-radius:10px;transition:color .18s ease;white-space:nowrap}
+.ntab:hover{color:rgba(0,0,0,0.72)}
+.ntab.active{color:#111;font-weight:600;background:rgba(0,0,0,0.07);border-radius:10px;outline:1px solid rgba(0,0,0,0.10)}
 .nav-right{display:flex;align-items:center;gap:.45rem}
 .btn{display:inline-flex;align-items:center;gap:.32rem;padding:.44rem 1rem;border-radius:8px;font-family:var(--body);font-weight:600;font-size:.76rem;cursor:pointer;text-decoration:none;transition:all .15s;border:none;white-space:nowrap}
-.btn-ghost{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--sub)}
-.btn-ghost:hover{background:rgba(13,148,136,0.08);border-color:rgba(13,148,136,0.4);color:var(--teal)}
-.btn-solid{background:linear-gradient(135deg,#0d9488 0%,#059669 55%,#10b981 100%);color:#fff;font-weight:700;box-shadow:0 0 24px rgba(13,148,136,0.35)}
-.btn-solid:hover{box-shadow:0 0 40px rgba(13,148,136,0.5);transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.15);color:var(--sub)}
+.btn-ghost:hover{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.25);color:#111}
+.btn-solid{background:#111111;color:#ffffff;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.18)}
+.btn-solid:hover{background:#000000;box-shadow:0 4px 20px rgba(0,0,0,0.25);transform:translateY(-1px)}
 .btn-lg{padding:.72rem 1.75rem;font-size:.875rem}
 .btn-xl{padding:.9rem 2.25rem;font-size:.95rem}
 
@@ -91,7 +91,7 @@ nav.nav-scrolled{background:rgba(6,6,8,0.82);border-bottom-color:rgba(255,255,25
 /* SCORE RING */
 .sring{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;border:2px solid;flex-shrink:0;position:relative}
 .sring::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid;opacity:.4}
-.sring.safe{border-color:var(--green);background:rgba(16,185,129,0.1);box-shadow:0 0 20px rgba(16,185,129,0.3)}.sring.safe::after{border-color:var(--green)}
+.sring.safe{border-color:var(--green);background:rgba(139,105,20,0.1);box-shadow:0 0 20px rgba(139,105,20,0.3)}.sring.safe::after{border-color:var(--green)}
 .sring.warn{border-color:var(--amber);background:var(--adim);box-shadow:0 0 20px rgba(245,158,11,0.3)}.sring.warn::after{border-color:var(--amber)}
 .sring.danger{border-color:var(--red);background:var(--rdim);box-shadow:0 0 20px rgba(239,68,68,0.3)}.sring.danger::after{border-color:var(--red)}
 .sring-n{font-family:var(--mono);font-weight:500;line-height:1}
@@ -110,8 +110,8 @@ nav.nav-scrolled{background:rgba(6,6,8,0.82);border-bottom-color:rgba(255,255,25
 
 /* LANDLORD CARD */
 .lcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s;text-decoration:none}
-.lcard:hover{background:var(--raised);border-color:rgba(13,148,136,0.3);transform:translateX(3px)}
-.lcard-logo{width:44px;height:44px;border-radius:10px;background:rgba(13,148,136,0.15);border:1px solid rgba(13,148,136,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.1rem;font-weight:800;color:var(--teal);flex-shrink:0}
+.lcard:hover{background:var(--raised);border-color:rgba(139,105,20,0.3);transform:translateX(3px)}
+.lcard-logo{width:44px;height:44px;border-radius:10px;background:rgba(139,105,20,0.15);border:1px solid rgba(139,105,20,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.1rem;font-weight:800;color:var(--teal);flex-shrink:0}
 .lcard-name{font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.18rem}
 .lcard-meta{font-family:var(--mono);font-size:.62rem;color:var(--muted)}
 .lcard-right{margin-left:auto;display:flex;align-items:center;gap:.75rem;flex-shrink:0}
@@ -120,8 +120,8 @@ nav.nav-scrolled{background:rgba(6,6,8,0.82);border-bottom-color:rgba(255,255,25
 .ibadge{display:inline-flex;align-items:center;gap:.28rem;font-family:var(--mono);font-size:.58rem;padding:.22rem .55rem;border-radius:6px;letter-spacing:.02em}
 .ibadge.red{background:var(--rdim);border:1px solid rgba(239,68,68,0.2);color:var(--red)}
 .ibadge.amber{background:var(--adim);border:1px solid rgba(245,158,11,0.2);color:var(--amber)}
-.ibadge.green{background:var(--gdim);border:1px solid rgba(16,185,129,0.2);color:var(--green)}
-.ibadge.teal{background:var(--tdim);border:1px solid rgba(13,148,136,0.2);color:var(--teal)}
+.ibadge.green{background:var(--gdim);border:1px solid rgba(139,105,20,0.2);color:var(--green)}
+.ibadge.teal{background:var(--tdim);border:1px solid rgba(139,105,20,0.2);color:var(--teal)}
 
 /* FORM STYLES */
 .fblock{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
@@ -148,16 +148,16 @@ nav.nav-scrolled{background:rgba(6,6,8,0.82);border-bottom-color:rgba(255,255,25
 .radio-row{display:flex;gap:.5rem;flex-wrap:wrap}
 .rb{display:flex;align-items:center;gap:.4rem}
 .rl{font-family:var(--body);font-size:.8rem;color:var(--sub);cursor:pointer;padding:.45rem .8rem;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;transition:all .15s}
-input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,136,0.5);color:var(--teal)}
+input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,20,0.5);color:var(--teal)}
 .rb input[type=radio]{display:none}
 
 /* SUBMIT BUTTON */
-.sub-btn{width:100%;padding:.95rem;background:linear-gradient(135deg,#0d9488 0%,#059669 55%,#10b981 100%);color:#fff;border:none;border-radius:10px;font-family:var(--display);font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 0 24px rgba(13,148,136,0.35);transition:all .2s;margin-top:.5rem}
-.sub-btn:hover{box-shadow:0 0 40px rgba(13,148,136,0.5);transform:translateY(-1px)}
+.sub-btn{width:100%;padding:.95rem;background:linear-gradient(135deg,#8b6914 0%,#8b6914 55%,#8b6914 100%);color:#fff;border:none;border-radius:10px;font-family:var(--display);font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 0 24px rgba(139,105,20,0.35);transition:all .2s;margin-top:.5rem}
+.sub-btn:hover{box-shadow:0 0 40px rgba(139,105,20,0.5);transform:translateY(-1px)}
 .sub-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* OK MESSAGE */
-.ok-msg{display:none;background:var(--gdim);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:1rem 1.25rem;font-family:var(--mono);font-size:.75rem;color:var(--green);margin-top:.75rem;line-height:1.6}
+.ok-msg{display:none;background:var(--gdim);border:1px solid rgba(139,105,20,0.25);border-radius:10px;padding:1rem 1.25rem;font-family:var(--mono);font-size:.75rem;color:var(--green);margin-top:.75rem;line-height:1.6}
 
 /* STAT BLOCKS */
 .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin:1.5rem 0}
@@ -169,7 +169,7 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,13
 .det-wrap{max-width:900px;margin:0 auto;padding:2rem 1.25rem}
 .det-hdr{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.75rem;margin-bottom:1.25rem}
 .det-top{display:flex;align-items:flex-start;gap:1.25rem;flex-wrap:wrap}
-.det-logo{width:60px;height:60px;border-radius:14px;background:rgba(13,148,136,0.15);border:1px solid rgba(13,148,136,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--teal);flex-shrink:0}
+.det-logo{width:60px;height:60px;border-radius:14px;background:rgba(139,105,20,0.15);border:1px solid rgba(139,105,20,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--teal);flex-shrink:0}
 .det-name{font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--white);letter-spacing:-.025em;margin-bottom:.25rem}
 .det-meta{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.5rem}
 .det-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-top:1.25rem}
@@ -214,15 +214,15 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,13
 
 /* LANDING HERO */
 .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 58px);text-align:center;padding:4rem 1.5rem 3rem;position:relative;z-index:1}
-.hero-pill{display:inline-flex;align-items:center;gap:.4rem;background:rgba(13,148,136,0.1);border:1px solid rgba(13,148,136,0.25);color:var(--teal);font-family:var(--mono);font-size:.63rem;padding:.28rem .9rem;border-radius:100px;margin-bottom:2rem;animation:fadeUp .5s ease}
+.hero-pill{display:inline-flex;align-items:center;gap:.4rem;background:rgba(139,105,20,0.1);border:1px solid rgba(139,105,20,0.25);color:var(--teal);font-family:var(--mono);font-size:.63rem;padding:.28rem .9rem;border-radius:100px;margin-bottom:2rem;animation:fadeUp .5s ease}
 .hero h1{font-family:var(--display);font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1.08;letter-spacing:-.04em;color:var(--white);margin-bottom:1.1rem;animation:fadeUp .5s .06s ease both}
 .hero p{font-family:var(--mono);font-size:clamp(.68rem,1.4vw,.85rem);color:rgba(255,255,255,.45);letter-spacing:.02em;line-height:1.6;max-width:480px;margin:0 auto 2.5rem;animation:fadeUp .5s .12s ease both}
 .hero-search{width:100%;max-width:560px;position:relative;animation:fadeUp .5s .18s ease both}
 .hero-search input{width:100%;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:1rem 9rem 1rem 1.25rem;color:var(--white);font-family:var(--body);font-size:.95rem;outline:none;caret-color:var(--teal);transition:border-color .2s,box-shadow .2s}
-.hero-search input:focus{border-color:rgba(13,148,136,0.6);box-shadow:0 0 0 3px rgba(13,148,136,0.12)}
+.hero-search input:focus{border-color:rgba(139,105,20,0.6);box-shadow:0 0 0 3px rgba(139,105,20,0.12)}
 .hero-search input::placeholder{color:rgba(255,255,255,.28)}
-.hero-search button{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#0d9488,#10b981);color:#fff;border:none;border-radius:10px;padding:.6rem 1.1rem;font-family:var(--display);font-weight:800;font-size:.82rem;cursor:pointer;transition:all .15s;white-space:nowrap}
-.hero-search button:hover{box-shadow:0 0 20px rgba(13,148,136,0.4);transform:translateY(calc(-50% - 1px))}
+.hero-search button{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#8b6914,#8b6914);color:#fff;border:none;border-radius:10px;padding:.6rem 1.1rem;font-family:var(--display);font-weight:800;font-size:.82rem;cursor:pointer;transition:all .15s;white-space:nowrap}
+.hero-search button:hover{box-shadow:0 0 20px rgba(139,105,20,0.4);transform:translateY(calc(-50% - 1px))}
 
 /* RECENT FLAGS SECTION */
 .recent-section{padding:3rem 0;position:relative;z-index:1}
@@ -262,11 +262,216 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,13
   .hero-search button{font-size:.72rem;padding:.55rem .75rem}
   .issue-grid{grid-template-columns:1fr 1fr}
 }
+
+/* ONBOARDING OVERLAY */
+.ob-overlay{position:fixed;inset:0;z-index:2000;background:#f9f8f5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;animation:fadeIn .25s ease}
+.ob-overlay.hidden{display:none}
+.ob-inner{width:100%;max-width:640px;position:relative}
+.ob-skip{position:absolute;top:-3rem;right:0;background:none;border:none;font-family:var(--body);font-size:.75rem;color:var(--dim);cursor:pointer;padding:.25rem .5rem;text-decoration:underline;text-underline-offset:3px}
+.ob-skip:hover{color:var(--sub)}
+.ob-step{display:none}
+.ob-step.active{display:block;animation:fadeUp .22s ease}
+.ob-eyebrow{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:.6rem}
+.ob-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:#111111;letter-spacing:-.03em;margin-bottom:.35rem;line-height:1.1}
+.ob-sub{font-family:var(--body);font-size:.85rem;color:var(--sub);margin-bottom:1.75rem;line-height:1.6}
+.ob-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:.65rem;margin-bottom:1.5rem}
+@media(min-width:560px){.ob-tiles{grid-template-columns:repeat(5,1fr)}}
+.ob-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.45rem;padding:1.1rem .75rem;background:#ffffff;border:1.5px solid rgba(0,0,0,0.10);border-radius:14px;cursor:pointer;transition:all .15s;text-align:center;user-select:none}
+.ob-tile:hover{border-color:rgba(0,0,0,0.25);background:#fafaf8}
+.ob-tile.selected{border-color:#111111;background:rgba(139,105,20,0.07);box-shadow:0 0 0 2px rgba(139,105,20,0.18)}
+.ob-tile-icon{font-size:1.5rem;line-height:1}
+.ob-tile-label{font-family:var(--body);font-size:.75rem;font-weight:500;color:#2c2a27;line-height:1.3}
+.ob-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.ob-pill{display:inline-flex;align-items:center;padding:.42rem .9rem;background:#ffffff;border:1.5px solid rgba(0,0,0,0.12);border-radius:100px;font-family:var(--body);font-size:.77rem;color:var(--sub);cursor:pointer;transition:all .15s;user-select:none}
+.ob-pill:hover{border-color:rgba(0,0,0,0.28);color:#111}
+.ob-pill.selected{border-color:#111111;background:rgba(139,105,20,0.08);color:#111111;font-weight:500}
+.ob-budget{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:1.5rem}
+@media(max-width:480px){.ob-budget{grid-template-columns:1fr}}
+.ob-budget-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);display:block;margin-bottom:.3rem}
+.ob-budget-input{width:100%;background:#ffffff;border:1.5px solid rgba(0,0,0,0.12);border-radius:8px;padding:.6rem .85rem;color:#111;font-family:var(--body);font-size:.88rem;outline:none;transition:border-color .2s}
+.ob-budget-input:focus{border-color:#111111}
+.ob-budget-input::placeholder{color:var(--muted)}
+.ob-budget-select{width:100%;background:#ffffff;border:1.5px solid rgba(0,0,0,0.12);border-radius:8px;padding:.6rem .85rem;color:#111;font-family:var(--body);font-size:.88rem;outline:none;appearance:none;cursor:pointer;transition:border-color .2s}
+.ob-budget-select:focus{border-color:#111111}
+.ob-progress{display:flex;gap:.35rem;margin-bottom:1.75rem}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.14);transition:background .2s}
+.ob-dot.active{background:#111111;width:18px;border-radius:3px}
+.ob-actions{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.ob-btn-back{background:none;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;padding:.6rem 1.25rem;font-family:var(--body);font-size:.82rem;color:var(--sub);cursor:pointer;transition:all .15s}
+.ob-btn-back:hover{border-color:rgba(0,0,0,0.28);color:#111}
+.ob-btn-next{background:#111111;color:#ffffff;border:none;border-radius:8px;padding:.6rem 1.75rem;font-family:var(--body);font-weight:600;font-size:.85rem;cursor:pointer;transition:all .15s;margin-left:auto}
+.ob-btn-next:hover{background:#000000;transform:translateY(-1px)}
+
+/* PROFILE CHIP */
+.profile-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .7rem;background:rgba(139,105,20,0.09);border:1px solid rgba(139,105,20,0.22);border-radius:100px;font-family:var(--mono);font-size:.62rem;color:#8b6914;cursor:pointer;transition:all .15s;white-space:nowrap}
+.profile-chip:hover{background:rgba(139,105,20,0.15);border-color:rgba(139,105,20,0.4)}
+
+/* PROFILE CONTEXT BANNER */
+.profile-banner{background:rgba(139,105,20,0.06);border:1px solid rgba(139,105,20,0.18);border-radius:10px;padding:.7rem 1rem;font-family:var(--mono);font-size:.65rem;color:#8b6914;margin-bottom:1rem;line-height:1.5}
+
+/* PROFILE CALLOUT */
+.profile-callout{background:rgba(146,64,14,0.06);border:1px solid rgba(146,64,14,0.20);border-radius:10px;padding:.85rem 1rem;margin-top:1rem;font-family:var(--body);font-size:.8rem;color:#92400e;line-height:1.6}
+.profile-callout strong{font-weight:600}
+
+/* LAHD / HUD / GOV SECTIONS */
+.violation-item{padding:.65rem .85rem;background:rgba(153,27,27,0.04);border:1px solid rgba(153,27,27,0.14);border-radius:8px;margin-bottom:.4rem;font-size:.78rem;color:var(--sub);line-height:1.5}
+.violation-item .vi-status{display:inline-block;font-family:var(--mono);font-size:.57rem;padding:.18rem .45rem;border-radius:4px;margin-left:.45rem;text-transform:uppercase;letter-spacing:.04em}
+.vi-status.open{background:rgba(153,27,27,0.10);color:var(--red)}.vi-status.closed{background:rgba(0,0,0,0.06);color:var(--dim)}
+.permit-item{padding:.65rem .85rem;background:rgba(0,0,0,0.025);border:1px solid rgba(0,0,0,0.08);border-radius:8px;margin-bottom:.4rem;font-size:.78rem;color:var(--sub);line-height:1.5}
+.hud-inspection-box{background:rgba(139,105,20,0.05);border:1px solid rgba(139,105,20,0.18);border-radius:10px;padding:.85rem 1rem;margin-top:.75rem}
+.corp-info-box{background:rgba(0,0,0,0.025);border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:.85rem 1rem;margin-bottom:.55rem}
+.corp-status{display:inline-block;font-family:var(--mono);font-size:.58rem;padding:.18rem .5rem;border-radius:5px;text-transform:uppercase;letter-spacing:.04em}
+.corp-status.active{background:rgba(139,105,20,0.10);color:var(--green)}.corp-status.inactive{background:rgba(153,27,27,0.09);color:var(--red)}
+.price-hist-row{display:flex;align-items:center;gap:.5rem;padding:.45rem 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.67rem;color:var(--sub)}
+.price-hist-row:last-child{border-bottom:none}
+.price-hist-rent{font-weight:500;color:var(--white);min-width:60px}
+.listing-hist-card{padding:.6rem .85rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:.4rem;display:flex;gap:.75rem;align-items:center;font-size:.78rem;color:var(--sub)}
+.listing-hist-card .lhc-rent{font-family:var(--mono);font-weight:500;color:var(--white);flex-shrink:0}
+.listing-hist-card .lhc-badge{font-family:var(--mono);font-size:.55rem;padding:.15rem .4rem;border-radius:4px;flex-shrink:0}
+.lhc-badge.active-badge{background:rgba(139,105,20,0.10);color:var(--green)}.lhc-badge.old-badge{background:rgba(0,0,0,0.06);color:var(--dim)}
+
+/* LISTING FORM CHECKBOX */
+.lcb{display:flex;align-items:center;gap:.55rem;padding:.55rem .75rem;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;cursor:pointer;transition:all .15s;user-select:none}
+.lcb:hover{border-color:rgba(139,105,20,0.35);background:var(--gdim)}
+.lcb input{accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.lcb span{font-family:var(--body);font-size:.8rem;color:var(--sub)}
+
+/* NEIGHBORHOOD PILLS */
+.hood-pill{background:var(--surface);border:1.5px solid var(--line2);border-radius:100px;padding:.32rem .8rem;font-family:var(--mono);font-size:.65rem;color:var(--sub);cursor:pointer;transition:all .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:.3rem}
+.hood-pill:hover{border-color:rgba(139,105,20,0.4);color:var(--teal)}
+.hood-pill.active{border-color:#111;background:rgba(139,105,20,0.07);color:#111;font-weight:500}
+.neigh-tag{font-family:var(--mono);font-size:.58rem;color:var(--teal);cursor:pointer;text-decoration:underline;text-underline-offset:2px;transition:opacity .15s}
+.neigh-tag:hover{opacity:.7}
+
+/* SAVE BUTTON */
+.save-btn{background:none;border:1px solid var(--line2);border-radius:7px;padding:.32rem .7rem;font-family:var(--mono);font-size:.63rem;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.3rem;color:var(--muted)}
+.save-btn:hover{border-color:rgba(139,105,20,0.5);color:var(--teal)}
+.save-btn.saved{border-color:rgba(139,105,20,0.5);background:rgba(139,105,20,0.07);color:var(--teal)}
+
+/* SAVED PAGE */
+.saved-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem 1.25rem;margin-bottom:.65rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s}
+.saved-card:hover{background:var(--raised);border-color:rgba(139,105,20,0.28);transform:translateX(3px)}
+.saved-card-logo{width:42px;height:42px;border-radius:10px;background:rgba(139,105,20,0.12);border:1px solid rgba(139,105,20,0.18);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.05rem;font-weight:800;color:var(--teal);flex-shrink:0}
+.saved-card-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:.3rem;border-radius:6px;font-size:.9rem;transition:color .15s;flex-shrink:0}
+.saved-card-del:hover{color:var(--red)}
 </style>
 </head>
 <body>
 
 <div class="aurora"></div>
+
+<!-- ONBOARDING OVERLAY -->
+<div class="ob-overlay hidden" id="obOverlay">
+  <div class="ob-inner">
+    <button class="ob-skip" onclick="skipOnboarding()">Skip for now</button>
+
+    <!-- STEP 1 -->
+    <div class="ob-step active" id="obStep1">
+      <div class="ob-progress">
+        <div class="ob-dot active" id="obDot0"></div>
+        <div class="ob-dot" id="obDot1"></div>
+        <div class="ob-dot" id="obDot2"></div>
+      </div>
+      <div class="ob-eyebrow">Step 1 of 3</div>
+      <div class="ob-title">Who's renting?</div>
+      <div class="ob-sub">We'll personalize what matters most for your situation.</div>
+      <div class="ob-tiles" id="obRenterTiles">
+        <div class="ob-tile" data-value="Solo" onclick="selectTile(this,'obRenterTiles')">
+          <span class="ob-tile-icon">🧍</span>
+          <span class="ob-tile-label">Solo</span>
+        </div>
+        <div class="ob-tile" data-value="Couple" onclick="selectTile(this,'obRenterTiles')">
+          <span class="ob-tile-icon">👫</span>
+          <span class="ob-tile-label">Couple</span>
+        </div>
+        <div class="ob-tile" data-value="Roommates" onclick="selectTile(this,'obRenterTiles')">
+          <span class="ob-tile-icon">🏠</span>
+          <span class="ob-tile-label">Roommates</span>
+        </div>
+        <div class="ob-tile" data-value="Family" onclick="selectTile(this,'obRenterTiles')">
+          <span class="ob-tile-icon">👨‍👩‍👧</span>
+          <span class="ob-tile-label">Family</span>
+        </div>
+        <div class="ob-tile" data-value="Student" onclick="selectTile(this,'obRenterTiles')">
+          <span class="ob-tile-icon">🎓</span>
+          <span class="ob-tile-label">Student</span>
+        </div>
+      </div>
+      <div class="ob-actions">
+        <button class="ob-btn-next" onclick="obNext(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="ob-step" id="obStep2">
+      <div class="ob-progress">
+        <div class="ob-dot" id="obDot2_0"></div>
+        <div class="ob-dot active" id="obDot2_1"></div>
+        <div class="ob-dot" id="obDot2_2"></div>
+      </div>
+      <div class="ob-eyebrow">Step 2 of 3</div>
+      <div class="ob-title">What are you looking for?</div>
+      <div class="ob-sub">Select all that apply.</div>
+      <div class="ob-pills" id="obLookingPills">
+        <div class="ob-pill" data-value="Whole apartment or unit" onclick="togglePill(this)">Whole apartment or unit</div>
+        <div class="ob-pill" data-value="Private room in shared house" onclick="togglePill(this)">Private room in shared house</div>
+        <div class="ob-pill" data-value="Studio / efficiency" onclick="togglePill(this)">Studio / efficiency</div>
+        <div class="ob-pill" data-value="Short-term or flexible lease" onclick="togglePill(this)">Short-term or flexible lease</div>
+        <div class="ob-pill" data-value="Near campus / university" onclick="togglePill(this)">Near campus / university</div>
+        <div class="ob-pill" data-value="Near public transit" onclick="togglePill(this)">Near public transit</div>
+        <div class="ob-pill" data-value="Pet-friendly required" onclick="togglePill(this)">Pet-friendly required</div>
+        <div class="ob-pill" data-value="Accepts vouchers / Section 8" onclick="togglePill(this)">Accepts vouchers / Section 8</div>
+      </div>
+      <div class="ob-actions">
+        <button class="ob-btn-back" onclick="obBack(2)">← Back</button>
+        <button class="ob-btn-next" onclick="obNext(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="ob-step" id="obStep3">
+      <div class="ob-progress">
+        <div class="ob-dot" id="obDot3_0"></div>
+        <div class="ob-dot" id="obDot3_1"></div>
+        <div class="ob-dot active" id="obDot3_2"></div>
+      </div>
+      <div class="ob-eyebrow">Step 3 of 3</div>
+      <div class="ob-title">What worries you most?</div>
+      <div class="ob-sub">Pick up to 3. We'll highlight what matters for you.</div>
+      <div class="ob-pills" id="obConcernPills">
+        <div class="ob-pill" data-value="Mold & habitability" onclick="togglePillMax(this,'obConcernPills',3)">Mold &amp; habitability</div>
+        <div class="ob-pill" data-value="Hidden fees at signing" onclick="togglePillMax(this,'obConcernPills',3)">Hidden fees at signing</div>
+        <div class="ob-pill" data-value="Landlord ghosting" onclick="togglePillMax(this,'obConcernPills',3)">Landlord ghosting</div>
+        <div class="ob-pill" data-value="Rent hikes at renewal" onclick="togglePillMax(this,'obConcernPills',3)">Rent hikes at renewal</div>
+        <div class="ob-pill" data-value="Bait & switch listings" onclick="togglePillMax(this,'obConcernPills',3)">Bait &amp; switch listings</div>
+        <div class="ob-pill" data-value="Predatory application fees" onclick="togglePillMax(this,'obConcernPills',3)">Predatory application fees</div>
+        <div class="ob-pill" data-value="Security deposit theft" onclick="togglePillMax(this,'obConcernPills',3)">Security deposit theft</div>
+        <div class="ob-pill" data-value="Ignored maintenance" onclick="togglePillMax(this,'obConcernPills',3)">Ignored maintenance</div>
+      </div>
+      <div class="ob-budget">
+        <div>
+          <label class="ob-budget-label">Monthly budget (optional)</label>
+          <input class="ob-budget-input" id="obBudget" type="text" placeholder="$1,500"/>
+        </div>
+        <div>
+          <label class="ob-budget-label">Max app fee willing to pay</label>
+          <select class="ob-budget-select" id="obMaxFee">
+            <option value="">Any</option>
+            <option value="$0 free only">$0 — free only</option>
+            <option value="up to $50">Up to $50</option>
+            <option value="up to $100">Up to $100</option>
+            <option value="any amount">Any amount</option>
+          </select>
+        </div>
+      </div>
+      <div class="ob-actions">
+        <button class="ob-btn-back" onclick="obBack(3)">← Back</button>
+        <button class="ob-btn-next" onclick="obFinish()">Finish →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -276,9 +481,12 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,13
   <a href="#" class="logo" onclick="go('landing');return false"><span class="logo-dot"></span>Threshold</a>
   <div class="nav-pills">
     <button class="ntab" onclick="go('search')" id="nt-search">Search</button>
+    <button class="ntab" onclick="go('listings')" id="nt-listings">Listings</button>
+    <button class="ntab" onclick="go('saved')" id="nt-saved">Saved</button>
     <button class="ntab" onclick="go('report')" id="nt-report">Report</button>
     <button class="ntab" onclick="go('faq')" id="nt-faq">How it works</button>
   </div>
+  <button class="profile-chip" id="profileChip" onclick="editProfile()" style="display:none"></button>
   <div class="nav-right">
     <button class="btn btn-solid" onclick="go('report')">+ Add report</button>
   </div>
@@ -309,6 +517,9 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,13
     </div>
     <div style="margin-top:1.5rem;font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.22);letter-spacing:.04em;animation:fadeUp .5s .3s ease both">
       100% anonymous · no account needed · community-powered
+    </div>
+    <div style="margin-top:.9rem;animation:fadeUp .5s .36s ease both">
+      <a href="#" onclick="go('listings');return false" style="font-family:var(--body);font-size:.8rem;color:var(--sub);text-decoration:underline;text-underline-offset:3px">Looking for a room or sublet? Browse community listings →</a>
     </div>
   </div>
 
@@ -409,8 +620,154 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,13
       <button class="dtab active" onclick="switchDetTab('overview',this)">Overview</button>
       <button class="dtab" onclick="switchDetTab('reports',this)">Community reports</button>
       <button class="dtab" onclick="switchDetTab('research',this)">Web research</button>
+      <button class="dtab" onclick="switchDetTab('records',this)">Gov records</button>
     </div>
     <div id="detContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     LISTINGS BOARD
+═══════════════════════════════════════ -->
+<div class="page" id="page-listings">
+  <div class="sch-page">
+    <div class="sch-hdr">
+      <div class="eyebrow">Community listings</div>
+      <h1>Find a space.</h1>
+      <p>Community-posted rooms, sublets, and units — every landlord cross-checkable.</p>
+      <div class="sch-bar">
+        <input id="lsCity" class="si" type="text" placeholder="City..." style="flex:1.5;min-width:150px"
+          onkeydown="if(event.key==='Enter')loadListings()"
+          oninput="clearNeighborhoodFilter()" onblur="onCityBlur()"/>
+        <select id="lsType" class="si" style="flex:1;min-width:150px;cursor:pointer">
+          <option value="">Any space type</option>
+          <option value="private_room">Private room</option>
+          <option value="whole_unit">Whole unit</option>
+          <option value="studio">Studio</option>
+          <option value="sublet">Sublet</option>
+        </select>
+        <input id="lsMaxRent" class="si" type="number" min="0" max="50000" placeholder="Max rent $" style="flex:1;min-width:110px" onkeydown="if(event.key==='Enter')loadListings()"/>
+        <button onclick="loadListings()" class="btn btn-ghost" style="padding:.7rem 1.2rem">Search</button>
+        <button onclick="go('postlisting')" class="btn btn-solid" style="padding:.7rem 1.2rem">+ Post a listing</button>
+      </div>
+      <div id="lsNeighborhoodPills" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.85rem;min-height:0"></div>
+    </div>
+    <div class="sch-list">
+      <div id="listResults"><div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">Loading listings...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SAVED PAGE
+═══════════════════════════════════════ -->
+<div class="page" id="page-saved">
+  <div class="sch-page">
+    <div class="sch-hdr">
+      <div class="eyebrow">Your profile</div>
+      <h1 id="savedPageTitle">Saved</h1>
+      <p id="savedPageSub">Your saved landlord searches and profile.</p>
+    </div>
+    <div id="savedContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     POST LISTING PAGE
+═══════════════════════════════════════ -->
+<div class="page" id="page-postlisting">
+  <div class="rep-wrap">
+    <button class="back-btn" onclick="go('listings')">← back to listings</button>
+    <div class="eyebrow">Community listing</div>
+    <h1>Post a space.</h1>
+    <p>Free, anonymous-friendly. Help the next renter skip the Facebook-group chaos.</p>
+
+    <div class="fblock">
+      <div class="fb-hd">01 — The space</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Space type *</label>
+          <select class="fs-r" id="plType">
+            <option value="">Select...</option>
+            <option value="private_room">Private room</option>
+            <option value="whole_unit">Whole unit</option>
+            <option value="studio">Studio</option>
+            <option value="sublet">Sublet</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Title</label><input class="fi-r" id="plTitle" type="text" maxlength="120" placeholder="e.g. Sunny room in quiet 3BR"/></div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label class="fl">City *</label><input class="fi-r" id="plCity" type="text" placeholder="e.g. Los Angeles, CA"/></div>
+        <div class="fg"><label class="fl">Neighborhood</label><input class="fi-r" id="plHood" type="text" maxlength="100" placeholder="e.g. Koreatown"/></div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Monthly rent ($) *</label><input class="fi-r" id="plRent" type="number" min="1" max="50000" placeholder="e.g. 1100"/></div>
+        <div class="fg"><label class="fl">Current roommates</label>
+          <select class="fs-r" id="plRoommates">
+            <option value="0">0 — no roommates</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8+</option>
+          </select>
+        </div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Bedrooms</label><input class="fi-r" id="plBeds" type="number" min="0" max="20" placeholder="e.g. 3"/></div>
+        <div class="fg"><label class="fl">Bathrooms</label><input class="fi-r" id="plBaths" type="number" min="0" max="20" step="0.5" placeholder="e.g. 1.5"/></div>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">02 — Money</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Application fee ($)</label><input class="fi-r" id="plAppFee" type="number" min="0" max="50000" placeholder="0 if none"/></div>
+        <div class="fg"><label class="fl">Security deposit ($)</label><input class="fi-r" id="plDeposit" type="number" min="0" max="50000" placeholder="e.g. 1100"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.5rem">
+        <label class="lcb"><input type="checkbox" id="plFeesDisclosed" checked/> <span>All fees are disclosed upfront</span></label>
+        <label class="lcb"><input type="checkbox" id="plUtilities"/> <span>Utilities included in rent</span></label>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">03 — Details</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Lease term</label>
+          <select class="fs-r" id="plLease">
+            <option value="">Select...</option>
+            <option value="month_to_month">Month-to-month</option>
+            <option value="semester">Semester</option>
+            <option value="6_month">6-month</option>
+            <option value="12_month">12-month</option>
+            <option value="flexible">Flexible</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Available date</label><input class="fi-r" id="plAvail" type="date"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem;margin-bottom:.75rem">
+        <label class="lcb"><input type="checkbox" id="plFurnished"/> <span>Furnished</span></label>
+        <label class="lcb"><input type="checkbox" id="plPets"/> <span>Pets ok</span></label>
+        <label class="lcb"><input type="checkbox" id="plTransit"/> <span>Near public transit</span></label>
+        <label class="lcb"><input type="checkbox" id="plVouchers"/> <span>Vouchers / Section 8 ok</span></label>
+      </div>
+      <div class="fg"><label class="fl">Near campus? Which one?</label><input class="fi-r" id="plCampus" type="text" maxlength="120" placeholder="e.g. USC, UCLA, LACC"/></div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">04 — Landlord &amp; contact</div>
+      <div class="fg"><label class="fl">Landlord / property manager</label><input class="fi-r" id="plLandlord" type="text" maxlength="200" placeholder="e.g. ABC Properties, John Smith"/>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);margin-top:.3rem">We'll cross-check them against our transparency database.</div>
+      </div>
+      <div class="fg"><label class="fl">Contact method</label><input class="fi-r" id="plContact" type="text" maxlength="200" placeholder="How should interested renters reach you? Email, IG, etc. — optional"/></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="ft-r" id="plDesc" maxlength="2000" placeholder="The space, the vibe, the house rules, who you're hoping to find..."></textarea></div>
+    </div>
+
+    <button class="sub-btn" id="plSubBtn" onclick="submitListing()">Post listing →</button>
   </div>
 </div>
 
@@ -549,9 +906,15 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(13,148,13
 
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
+// HTML ESCAPING — use for ALL data from APIs, DB, or localStorage → innerHTML
+// ─────────────────────────────────────────────────────────────────────────────
+const escHtml = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const VALID_UNIT_TYPES_FE = ['studio','1br','2br','3br','4br+','room','condo','townhouse','house','other',''];
+
+// ─────────────────────────────────────────────────────────────────────────────
 // NAVIGATION
 // ─────────────────────────────────────────────────────────────────────────────
-const tabMap = { search:'nt-search', report:'nt-report', faq:'nt-faq' };
+const tabMap = { search:'nt-search', listings:'nt-listings', saved:'nt-saved', report:'nt-report', faq:'nt-faq' };
 
 function go(page) {
   document.querySelectorAll('.page, .page-full').forEach(p => p.classList.remove('active'));
@@ -562,6 +925,8 @@ function go(page) {
   if (tabMap[page]) document.getElementById(tabMap[page])?.classList.add('active');
   window.scrollTo(0, 0);
   if (page === 'faq') renderFAQ();
+  if (page === 'listings') { loadListings(); loadNeighborhoodPills(); }
+  if (page === 'saved') renderSavedPage();
 }
 
 window.addEventListener('scroll', () => {
@@ -574,8 +939,8 @@ window.addEventListener('scroll', () => {
 function toast(msg, type = 'default') {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.style.background = type === 'error' ? 'rgba(239,68,68,0.12)' : type === 'success' ? 'rgba(16,185,129,0.12)' : 'var(--surface)';
-  t.style.borderColor = type === 'error' ? 'rgba(239,68,68,0.3)' : type === 'success' ? 'rgba(16,185,129,0.3)' : 'var(--line2)';
+  t.style.background = type === 'error' ? 'rgba(239,68,68,0.12)' : type === 'success' ? 'rgba(139,105,20,0.12)' : 'var(--surface)';
+  t.style.borderColor = type === 'error' ? 'rgba(239,68,68,0.3)' : type === 'success' ? 'rgba(139,105,20,0.3)' : 'var(--line2)';
   t.classList.add('show');
   clearTimeout(t._timer);
   t._timer = setTimeout(() => t.classList.remove('show'), 3000);
@@ -623,13 +988,23 @@ async function doSearch() {
   const results = document.getElementById('schResults');
 
   ct.textContent = '';
-  results.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Researching "${query}"...</div>`;
+
+  // Show profile context banner
+  const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+  let bannerHtml = '';
+  if (profile.renter_type) {
+    const lookingStr = (profile.looking_for || []).slice(0,2).map(escHtml).join(', ') || 'a rental';
+    const concernStr = (profile.concerns || []).slice(0,1).map(escHtml).join(', ') || 'general quality';
+    bannerHtml = `<div class="profile-banner">Searching as: <strong>${escHtml(profile.renter_type)}</strong> looking for ${lookingStr} · Top concern: ${concernStr.toLowerCase()}</div>`;
+  }
+
+  results.innerHTML = bannerHtml + `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Researching "${query}"...</div>`;
 
   try {
     const res = await fetch('/api/landlord-score', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: query, location: city || undefined }),
+      body: JSON.stringify({ name: query, location: city || undefined, renter_type: profile.renter_type, concerns: profile.concerns, looking_for: profile.looking_for }),
     });
     if (!res.ok) throw new Error(`API ${res.status}`);
     const data = await res.json();
@@ -649,10 +1024,18 @@ async function doSearch() {
     } catch (_e) {}
 
     ct.textContent = `Score for: ${query}${city ? ' · ' + city : ''}`;
-    results.innerHTML = renderScoreCard(query, score, reports, city);
+    results.innerHTML = bannerHtml + renderScoreCard(query, score, reports, city);
 
     // Store for detail page
     window._lastLandlordData = { name: query, city, score, reports };
+
+    // Persist city to profile for pre-fill
+    if (city) {
+      try {
+        const p = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+        if (!p.city) { p.city = city; localStorage.setItem('threshold_profile', JSON.stringify(p)); }
+      } catch (_e) {}
+    }
 
   } catch (e) {
     results.innerHTML = `<div style="background:var(--rdim);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;color:var(--red)">Research failed: ${e.message}. Check your API key configuration.</div>`;
@@ -692,10 +1075,10 @@ function renderScoreCard(name, score, reports, city) {
         <span class="sring-l">${riskLabel}</span>
       </div>
       <div style="flex:1;min-width:200px">
-        <div style="font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:.2rem">${name}</div>
-        <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.65rem">${score.property_type || 'Landlord / Property Manager'}${city ? ' · ' + city : ''} · ${reportCount} data points</div>
+        <div style="font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:.2rem">${escHtml(name)}</div>
+        <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.65rem">${escHtml(score.property_type || 'Landlord / Property Manager')}${city ? ' · ' + escHtml(city) : ''} · ${reportCount} data points</div>
         ${score.app_fee_predatory ? `<span class="ibadge red" style="margin-bottom:.5rem">🚩 Predatory app fees flagged</span>` : ''}
-        <p style="font-size:.82rem;color:var(--sub);line-height:1.65;max-width:520px">${score.summary || 'No summary available.'}</p>
+        <p style="font-size:.82rem;color:var(--sub);line-height:1.65;max-width:520px">${escHtml(score.summary || 'No summary available.')}</p>
       </div>
     </div>
 
@@ -742,16 +1125,68 @@ function renderScoreCard(name, score, reports, city) {
       <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">From the web · Reddit, ApartmentRatings, Yelp</div>
       ${score.web_reviews.slice(0,3).map(r => `
       <div class="wrev">
-        <div class="wrev-text">"${r.text}"</div>
-        <div class="wrev-meta">${r.source || 'Community'} · ${r.year || ''} · <span style="color:${r.sentiment==='positive'?'var(--green)':r.sentiment==='negative'?'var(--red)':'var(--amber)'}">${r.sentiment}</span></div>
+        <div class="wrev-text">"${escHtml(r.text)}"</div>
+        <div class="wrev-meta">${escHtml(r.source || 'Community')} · ${escHtml(r.year || '')} · <span style="color:${r.sentiment==='positive'?'var(--green)':r.sentiment==='negative'?'var(--red)':'var(--amber)'}">${escHtml(r.sentiment)}</span></div>
       </div>`).join('')}
+    </div>` : ''}
+
+    ${renderProfileCallout(score)}
+
+    ${(score.lahd_violations?.length || score.building_permits?.length || score.business_info?.length || score.hud_inspection) ? `
+    <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--line)">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">
+          Government records available:
+          ${score.lahd_violations?.length ? `<span style="color:var(--red)">⚠ ${score.lahd_violations.length} LAHD violation${score.lahd_violations.length !== 1 ? 's' : ''}</span>` : ''}
+          ${score.building_permits?.length ? `<span style="color:var(--sub)"> · ${score.building_permits.length} permit${score.building_permits.length !== 1 ? 's' : ''}</span>` : ''}
+          ${score.business_info?.length ? `<span style="color:var(--sub)"> · Corp filing found</span>` : ''}
+          ${score.hud_inspection ? `<span style="color:var(--teal)"> · HUD inspection</span>` : ''}
+        </div>
+        <button onclick="window._lastLandlordData && loadLandlordDetail(window._lastLandlordData.name,window._lastLandlordData.score,window._lastLandlordData.reports,window._lastLandlordData.city);go('landlord');setTimeout(()=>{ document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active')); const tb=document.querySelectorAll('.dtab')[3]; if(tb){tb.classList.add('active');switchDetTab('records',tb);}},150)" style="background:none;border:1px solid var(--line2);color:var(--muted);border-radius:7px;padding:.32rem .75rem;font-family:var(--mono);font-size:.62rem;cursor:pointer;transition:all .15s">View all records →</button>
+      </div>
     </div>` : ''}
 
     <div style="margin-top:1.25rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
       <button class="btn btn-ghost" style="font-size:.72rem" onclick="go('report');prefillReport('${name.replace(/'/g,"\\'")}')">+ Report your experience</button>
+      <button id="saveBtn-${name.replace(/[^a-z0-9]/gi,'_')}" class="save-btn ${isSaved(name) ? 'saved' : ''}" onclick="toggleSaveLandlord('${name.replace(/'/g,"\\'")}','${(city||'').replace(/'/g,"\\'")}',${score.overall_score},${JSON.stringify(score.risk_level)})">
+        ${isSaved(name) ? '★ Saved' : '☆ Save'}
+      </button>
       <span style="font-family:var(--mono);font-size:.58rem;color:var(--muted)">Data quality: ${score.data_quality} · ${score.data_source === 'cache' ? 'cached' : 'live research'}</span>
     </div>
   </div>`;
+}
+
+function renderProfileCallout(score) {
+  const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+  if (!profile.renter_type) return '';
+  const rt = profile.renter_type;
+  const concerns = profile.concerns || [];
+  const msgs = [];
+
+  if ((rt === 'Student' || concerns.includes('Predatory application fees')) && score.app_fee_predatory) {
+    msgs.push('⚠ Predatory app fees flagged — students and first-time renters are frequent targets. Do not pay any fee before seeing the unit in person.');
+  }
+  if ((rt === 'Family' || concerns.includes('Mold & habitability')) && score.mold_rate > 0.2) {
+    msgs.push('⚠ Mold reports above threshold (' + Math.round(score.mold_rate * 100) + '%) — especially important for families with children and anyone with respiratory concerns.');
+  }
+  if ((rt === 'Roommates' || concerns.includes('Hidden fees at signing')) && score.hidden_fee_rate > 0.3) {
+    msgs.push('⚠ High hidden fee rate (' + Math.round(score.hidden_fee_rate * 100) + '%) — get a full itemized fee schedule in writing before signing anything.');
+  }
+  if ((rt === 'Couple' || concerns.includes('Landlord ghosting')) && score.ghost_rate > 0.4) {
+    msgs.push('⚠ High ghost rate (' + Math.round(score.ghost_rate * 100) + '%) — start communication early and have a backup option ready.');
+  }
+  if (rt === 'Solo') {
+    msgs.push('Response time for this landlord: ' + score.avg_response_days + ' days average. ' + (score.avg_response_days > 5 ? 'Slower than typical — follow up proactively.' : 'Reasonable — keep records of all communication.'));
+  }
+  if (concerns.includes('Bait & switch listings') && score.bait_switch_rate > 0.25) {
+    msgs.push('⚠ Bait & switch rate is elevated (' + Math.round(score.bait_switch_rate * 100) + '%) — verify the exact unit and photos before paying any fee.');
+  }
+  if (concerns.includes('Security deposit theft') && score.hidden_fee_rate > 0.3) {
+    msgs.push('⚠ Hidden fee history suggests potential deposit disputes — document unit condition thoroughly at move-in.');
+  }
+
+  if (msgs.length === 0) return '';
+  return `<div class="profile-callout"><strong>For you (${rt}):</strong><br>${msgs.join('<br>')}</div>`;
 }
 
 function renderMiniReport(r) {
@@ -763,13 +1198,13 @@ function renderMiniReport(r) {
   return `
   <div class="rcard">
     <div class="rcard-top">
-      <span class="rcard-outcome ibadge ${oc}">${outcomeLabels[r.outcome] || r.outcome}</span>
-      ${r.unit_type ? `<span class="ibadge teal">${r.unit_type}</span>` : ''}
-      ${r.city ? `<span class="rcard-role">📍 ${r.city}</span>` : ''}
+      <span class="rcard-outcome ibadge ${oc}">${escHtml(outcomeLabels[r.outcome] || r.outcome)}</span>
+      ${r.unit_type && VALID_UNIT_TYPES_FE.includes(r.unit_type) ? `<span class="ibadge teal">${escHtml(r.unit_type)}</span>` : ''}
+      ${r.city ? `<span class="rcard-role">📍 ${escHtml(r.city)}</span>` : ''}
     </div>
-    ${issues.length > 0 ? `<div class="rcard-issues">${issues.map(i => `<span class="ibadge red">${issueLabels[i]||i}</span>`).join('')}</div>` : ''}
-    ${r.experience_text ? `<div class="rcard-text">${r.experience_text.slice(0,200)}${r.experience_text.length>200?'...':''}</div>` : ''}
-    ${r.app_fee && r.app_fee_refunded === 'no' ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--red);margin-top:.4rem">$${r.app_fee} fee — not refunded</div>` : ''}
+    ${issues.length > 0 ? `<div class="rcard-issues">${issues.map(i => `<span class="ibadge red">${escHtml(issueLabels[i] || i)}</span>`).join('')}</div>` : ''}
+    ${r.experience_text ? `<div class="rcard-text">${escHtml(r.experience_text.slice(0,200))}${r.experience_text.length>200?'…':''}</div>` : ''}
+    ${r.app_fee && r.app_fee_refunded === 'no' ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--red);margin-top:.4rem">$${Number(r.app_fee).toFixed(0)} fee — not refunded</div>` : ''}
     <div class="rcard-date">${r.created_at ? new Date(r.created_at).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : ''} · via Threshold</div>
   </div>`;
 }
@@ -797,8 +1232,8 @@ function loadLandlordDetail(name, score, reports, city) {
   <div class="det-top">
     <div class="det-logo">${name[0].toUpperCase()}</div>
     <div style="flex:1">
-      <div class="det-name">${name}</div>
-      <div class="det-meta">${score.property_type || 'Landlord / Property Manager'}${city ? ' · ' + city : ''}</div>
+      <div class="det-name">${escHtml(name)}</div>
+      <div class="det-meta">${escHtml(score.property_type || 'Landlord / Property Manager')}${city ? ' · ' + escHtml(city) : ''}</div>
       <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem">
         ${score.app_fee_predatory ? '<span class="ibadge red">🚩 Predatory app fees</span>' : ''}
         <span class="ibadge ${rl === 'safe' ? 'green' : rl === 'warn' ? 'amber' : 'red'}">${rl === 'safe' ? '✓ Transparent' : rl === 'warn' ? '⚠ Use caution' : '✕ High risk'}</span>
@@ -859,26 +1294,26 @@ function renderDetTab(tab) {
     content.innerHTML = `
     <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
       <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem">Summary</div>
-      <p style="font-size:.85rem;color:var(--sub);line-height:1.7">${d.score.summary || 'No summary available.'}</p>
+      <p style="font-size:.85rem;color:var(--sub);line-height:1.7">${escHtml(d.score.summary || 'No summary available.')}</p>
     </div>
     ${sorted.length > 0 ? `
     <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
       <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Reported issues breakdown</div>
       ${sorted.map(([k,v]) => `
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem">
-        <div style="font-size:.8rem;color:var(--sub);min-width:160px">${issueLabels[k]||k}</div>
+        <div style="font-size:.8rem;color:var(--sub);min-width:160px">${escHtml(issueLabels[k]||k)}</div>
         <div style="flex:1;background:var(--line);border-radius:4px;height:6px;overflow:hidden">
           <div style="height:100%;width:${Math.min(100,v/Math.max(1,d.reports.length)*100)}%;background:var(--red);border-radius:4px"></div>
         </div>
         <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted);min-width:30px;text-align:right">${v}x</div>
       </div>`).join('')}
     </div>` : ''}
-    <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="go('report');prefillReport('${d.name.replace(/'/g,"\\'")}')">+ Add your experience</button>`;
+    <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="go('report');prefillReport('${escHtml(d.name).replace(/'/g,"\\'")}')">+ Add your experience</button>`;
 
   } else if (tab === 'reports') {
     if (!d.reports?.length) {
       content.innerHTML = `<div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">No community reports yet. Be the first.</div>
-      <div style="text-align:center;margin-top:1rem"><button class="btn btn-solid" onclick="go('report');prefillReport('${d.name.replace(/'/g,"\\'")}')">Add a report →</button></div>`;
+      <div style="text-align:center;margin-top:1rem"><button class="btn btn-solid" onclick="go('report');prefillReport('${escHtml(d.name).replace(/'/g,"\\'")}')">Add a report →</button></div>`;
       return;
     }
     content.innerHTML = d.reports.map(r => renderMiniReport(r)).join('');
@@ -893,9 +1328,162 @@ function renderDetTab(tab) {
     <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">From Reddit, ApartmentRatings, Yelp, Google Reviews</div>
     ${revs.map(r => `
     <div class="wrev">
-      <div class="wrev-text">"${r.text}"</div>
-      <div class="wrev-meta">${r.source||'Community'} · ${r.year||''} · <span style="color:${r.sentiment==='positive'?'var(--green)':r.sentiment==='negative'?'var(--red)':'var(--amber)'}">${r.sentiment}</span></div>
+      <div class="wrev-text">"${escHtml(r.text)}"</div>
+      <div class="wrev-meta">${escHtml(r.source||'Community')} · ${escHtml(String(r.year||''))} · <span style="color:${r.sentiment==='positive'?'var(--green)':r.sentiment==='negative'?'var(--red)':'var(--amber)'}">${escHtml(r.sentiment)}</span></div>
     </div>`).join('')}`;
+
+  } else if (tab === 'records') {
+    const sc = d.score;
+    const hasGov = (sc.lahd_violations?.length || sc.building_permits?.length || sc.business_info?.length || sc.hud_inspection);
+
+    content.innerHTML = `<div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem">Public records · Government data sources</div>
+    ${renderGovRecords(sc)}
+    <div id="listingHistSection"><div style="display:flex;align-items:center;gap:.75rem;padding:1.5rem 0;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Loading listing history...</div></div>`;
+
+    // Async: fetch listing history
+    loadListingHistory(d.name, d.city);
+  }
+}
+
+function renderGovRecords(sc) {
+  let html = '';
+
+  // Business registration (OpenCorporates)
+  if (sc.business_info?.length) {
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Business registration · California Secretary of State</div>
+      ${sc.business_info.map(co => `
+      <div class="corp-info-box">
+        <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:.3rem">
+          <span style="font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white)">${escHtml(co.name)}</span>
+          <span class="corp-status ${co.inactive || co.status?.toLowerCase().includes('dissolv') || co.status?.toLowerCase().includes('inactiv') ? 'inactive' : 'active'}">${escHtml(co.status || 'Unknown')}</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">
+          ${co.type ? escHtml(co.type) + ' · ' : ''}${co.incorporated ? 'Incorporated ' + escHtml(co.incorporated) : ''}${co.inactive ? ' · <span style="color:var(--red)">Dissolved / Inactive</span>' : ''}
+        </div>
+        ${co.registered_address ? `<div style="font-size:.76rem;color:var(--sub);margin-top:.25rem">${escHtml(co.registered_address)}</div>` : ''}
+      </div>`).join('')}
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: OpenCorporates · Public company registry data</div>
+    </div>`;
+  }
+
+  // LAHD Code Violations
+  if (sc.lahd_violations?.length) {
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">⚠ LAHD Code Violations (${sc.lahd_violations.length}) · Los Angeles Housing Dept</div>
+      ${sc.lahd_violations.map(v => {
+        const isOpen = !v.closed && (!v.status || v.status.toLowerCase().includes('open') || v.status === '');
+        return `<div class="violation-item">
+          <div style="display:flex;align-items:flex-start;gap:.5rem;flex-wrap:wrap">
+            <div style="flex:1">
+              ${v.description ? `<div style="font-weight:500;color:var(--white);margin-bottom:.2rem">${escHtml(v.description)}</div>` : ''}
+              ${v.address ? `<div style="font-size:.72rem;color:var(--muted)">${escHtml(v.address)}</div>` : ''}
+              ${v.case_number ? `<div style="font-family:var(--mono);font-size:.6rem;color:var(--dim)">Case ${escHtml(v.case_number)}${v.opened ? ' · Opened ' + escHtml(v.opened.slice(0,10)) : ''}${v.closed ? ' · Closed ' + escHtml(v.closed.slice(0,10)) : ''}</div>` : ''}
+            </div>
+            <span class="vi-status ${isOpen ? 'open' : 'closed'}">${isOpen ? 'Open' : 'Closed'}</span>
+          </div>
+        </div>`;
+      }).join('')}
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: data.lacity.org · Housing + Community Investment Dept</div>
+    </div>`;
+  }
+
+  // Building Permits
+  if (sc.building_permits?.length) {
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Building & Safety Permits · Los Angeles</div>
+      ${sc.building_permits.map(p => `
+      <div class="permit-item">
+        <div style="display:flex;align-items:flex-start;gap:.5rem;flex-wrap:wrap">
+          <div style="flex:1">
+            ${p.description ? `<div style="font-weight:500;color:var(--white);margin-bottom:.15rem">${escHtml(p.description)}</div>` : ''}
+            ${p.address ? `<div style="font-size:.72rem;color:var(--muted)">${escHtml(p.address)}</div>` : ''}
+            <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim)">${p.type ? escHtml(p.type) + ' · ' : ''}${p.permit_number ? 'Permit ' + escHtml(p.permit_number) : ''}${p.issued ? ' · ' + escHtml(p.issued.slice(0,10)) : ''}</div>
+          </div>
+          ${p.status ? `<span style="font-family:var(--mono);font-size:.57rem;padding:.18rem .45rem;border-radius:4px;background:rgba(0,0,0,0.06);color:var(--dim);white-space:nowrap">${escHtml(p.status)}</span>` : ''}
+        </div>
+      </div>`).join('')}
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: data.lacity.org · LA Building & Safety</div>
+    </div>`;
+  }
+
+  // HUD Multifamily Inspection
+  if (sc.hud_inspection) {
+    const hi = sc.hud_inspection;
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem">HUD Multifamily Physical Inspection</div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        ${hi.inspection_score !== undefined ? `<div style="font-family:var(--mono);font-size:1.3rem;font-weight:500;color:${hi.inspection_score >= 60 ? 'var(--green)' : 'var(--red)'};">${hi.inspection_score}<span style="font-size:.6rem;color:var(--muted)"> / 100</span></div>` : ''}
+        <div style="font-size:.82rem;color:var(--sub)">${escHtml(hi.property_name || '')}${hi.inspection_date ? ' · Inspected ' + escHtml(hi.inspection_date) : ''}</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: HUD REAC · HUD.gov Multifamily Inspection Scores</div>
+    </div>`;
+  }
+
+  if (!html) {
+    html = `<div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">No government records found for this landlord in our connected data sources.<br><span style="font-size:.63rem;margin-top:.5rem;display:block">Government API coverage is currently limited to Los Angeles (LAHD, building permits) and nationwide HUD multifamily inspections.</span></div>`;
+  }
+
+  return html;
+}
+
+async function loadListingHistory(landlordName, city) {
+  const section = document.getElementById('listingHistSection');
+  if (!section) return;
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'landlord_history', landlord: landlordName }),
+    });
+    if (!res.ok) throw new Error('Fetch failed');
+    const d = await res.json();
+    if (!d.ok) throw new Error(d.error || 'Failed');
+
+    const listings = d.listings || [];
+    const priceHistory = d.price_history || [];
+    const rentRange = d.rent_range;
+
+    if (!listings.length && !priceHistory.length) {
+      section.innerHTML = `<div style="padding:1.25rem;background:var(--card);border:1px solid var(--line);border-radius:14px;font-family:var(--mono);font-size:.68rem;color:var(--muted)">No listings found for this landlord in the Threshold community board.</div>`;
+      return;
+    }
+
+    const spaceLabels = { private_room:'Private room', whole_unit:'Whole unit', studio:'Studio', sublet:'Sublet' };
+
+    let html = `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-top:.25rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Listing history · Community board</div>`;
+
+    if (rentRange) {
+      const trendIcon = d.rent_trend === 'up' ? '↑' : d.rent_trend === 'down' ? '↓' : '→';
+      const trendColor = d.rent_trend === 'up' ? 'var(--red)' : d.rent_trend === 'down' ? 'var(--green)' : 'var(--muted)';
+      html += `<div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem;background:var(--surface);border-radius:8px;border:1px solid var(--line)">
+        <div><div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem">Rent range</div><div style="font-family:var(--mono);font-size:.9rem;font-weight:500;color:var(--white)">$${Math.round(rentRange.min).toLocaleString()} – $${Math.round(rentRange.max).toLocaleString()}</div></div>
+        <div><div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem">Trend</div><div style="font-family:var(--mono);font-size:.9rem;font-weight:500;color:${trendColor}">${trendIcon} ${d.rent_trend}</div></div>
+        <div><div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem">Total listings</div><div style="font-family:var(--mono);font-size:.9rem;font-weight:500;color:var(--white)">${listings.length}</div></div>
+      </div>`;
+    }
+
+    html += listings.map(l => {
+      const posted = l.created_at ? new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
+      const isActive = l.status === 'active';
+      const metaLoc = escHtml(l.neighborhood || l.city || '');
+      const metaType = spaceLabels[l.space_type] || escHtml(l.space_type || '');
+      const meta = [metaType, metaLoc].filter(Boolean).join(' · ');
+      return `<div class="listing-hist-card">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.78rem;color:var(--sub)">${l.title ? escHtml(l.title) : meta}</div>
+          <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-top:.18rem">${meta}${posted ? ' · ' + posted : ''}</div>
+        </div>
+        <div class="lhc-rent">$${Math.round(l.rent).toLocaleString()}</div>
+        <span class="lhc-badge ${isActive ? 'active-badge' : 'old-badge'}">${isActive ? 'Active' : 'Archived'}</span>
+      </div>`;
+    }).join('');
+
+    html += `<div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.75rem">Source: Threshold community board · User-submitted listings</div></div>`;
+    section.innerHTML = html;
+  } catch (e) {
+    section.innerHTML = `<div style="font-family:var(--mono);font-size:.68rem;color:var(--muted);padding:1rem">Could not load listing history.</div>`;
   }
 }
 
@@ -988,6 +1576,416 @@ async function submitReport() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// COMMUNITY LISTINGS BOARD
+// ─────────────────────────────────────────────────────────────────────────────
+const SPACE_LABELS = { private_room:'Private room', whole_unit:'Whole unit', studio:'Studio', sublet:'Sublet' };
+const LEASE_LABELS = { month_to_month:'Month-to-month', semester:'Semester lease', '6_month':'6-month lease', '12_month':'12-month lease', flexible:'Flexible lease' };
+let _listingsPrefilled = false;
+
+function escListHtml(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function loadListings() {
+  const results = document.getElementById('listResults');
+
+  // Profile-aware defaults (applied once per session, never overriding user input)
+  if (!_listingsPrefilled) {
+    _listingsPrefilled = true;
+    const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+    if ((profile.renter_type || '').toLowerCase() === 'student' && !document.getElementById('lsType').value) {
+      document.getElementById('lsType').value = 'private_room';
+    }
+    if (profile.budget && !document.getElementById('lsMaxRent').value) {
+      const b = parseInt(String(profile.budget).replace(/[^0-9]/g, ''), 10);
+      if (b > 0) document.getElementById('lsMaxRent').value = b;
+    }
+    if (profile.city && !document.getElementById('lsCity').value) {
+      document.getElementById('lsCity').value = profile.city;
+    }
+  }
+
+  const city = document.getElementById('lsCity').value.trim();
+  const space_type = document.getElementById('lsType').value;
+  const max_rent = document.getElementById('lsMaxRent').value;
+  const neighborhood = window._activeNeighborhood || undefined;
+
+  results.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Loading listings...</div>`;
+
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'fetch',
+        city: city || undefined,
+        space_type: space_type || undefined,
+        max_rent: max_rent || undefined,
+        neighborhood,
+      }),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const d = await res.json();
+    if (!d.ok) throw new Error(d.error || 'Fetch failed');
+    const rows = d.listings || [];
+
+    if (!rows.length) {
+      results.innerHTML = `
+      <div style="text-align:center;padding:3.5rem 1rem">
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:1rem">No listings yet for these filters. Be the first —</div>
+        <button class="btn btn-solid" onclick="go('postlisting')">+ Post a listing</button>
+      </div>`;
+      return;
+    }
+
+    results.innerHTML = `<div class="sch-ct">${rows.length} listing${rows.length === 1 ? '' : 's'}</div>`
+      + rows.map(renderListingCard).join('');
+  } catch (e) {
+    results.innerHTML = `<div style="background:var(--rdim);border:1px solid rgba(153,27,27,0.2);border-radius:10px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;color:var(--red)">Could not load listings: ${escListHtml(e.message)}</div>`;
+  }
+}
+
+function renderListingCard(l) {
+  const typeLabel = SPACE_LABELS[l.space_type] || 'Space';
+  const place = l.neighborhood || l.city || '';
+  const title = l.title ? escListHtml(l.title) : `${typeLabel}${place ? ' · ' + escListHtml(place) : ''}`;
+
+  const badges = [];
+  if (l.roommates > 0) badges.push(`<span class="ibadge teal">👥 ${l.roommates} roommate${l.roommates === 1 ? '' : 's'}</span>`);
+  if (l.furnished) badges.push(`<span class="ibadge teal">🛋 Furnished</span>`);
+  if (l.utilities_included) badges.push(`<span class="ibadge teal">💡 Utilities incl.</span>`);
+  if (l.pets_ok) badges.push(`<span class="ibadge teal">🐾 Pets ok</span>`);
+  if (l.near_campus) badges.push(`<span class="ibadge teal">🎓 Near ${escListHtml(l.near_campus)}</span>`);
+  if (l.near_transit) badges.push(`<span class="ibadge teal">🚇 Near transit</span>`);
+  if (l.vouchers_ok) badges.push(`<span class="ibadge teal">🎫 Vouchers ok</span>`);
+  if (!l.app_fee) badges.push(`<span class="ibadge green">No app fee</span>`);
+  if (l.fees_disclosed) badges.push(`<span class="ibadge green">All fees disclosed upfront</span>`);
+
+  const meta = [];
+  if (l.bedrooms != null) meta.push(`${l.bedrooms} bd`);
+  if (l.bathrooms != null) meta.push(`${l.bathrooms} ba`);
+  if (l.lease_term) meta.push(LEASE_LABELS[l.lease_term] || l.lease_term);
+  if (l.available_date) meta.push('Available ' + new Date(l.available_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+
+  const desc = l.description
+    ? escListHtml(l.description.slice(0, 200)) + (l.description.length > 200 ? '…' : '')
+    : '';
+  const posted = l.created_at
+    ? new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    : '';
+  const landlordArg = l.landlord_name ? escListHtml(l.landlord_name).replace(/'/g, "\\'") : '';
+
+  const hoodArg = l.neighborhood ? escListHtml(l.neighborhood).replace(/'/g, "\\'") : '';
+
+  return `
+  <div class="glow-card" style="padding:1.4rem 1.5rem;margin-bottom:.85rem">
+    <div style="display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">
+          ${typeLabel}${l.city ? ' · ' + escListHtml(l.city) : ''}
+          ${l.neighborhood ? ` · <span class="neigh-tag" onclick="filterByNeighborhood('${hoodArg}')">${escListHtml(l.neighborhood)}</span>` : ''}
+        </div>
+        <div style="font-family:var(--display);font-size:1.15rem;font-weight:700;color:var(--white);letter-spacing:-.02em;margin-bottom:.3rem">${title}</div>
+        ${meta.length ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">${meta.join(' · ')}</div>` : ''}
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:var(--display);font-size:1.7rem;font-weight:800;color:var(--white);line-height:1">$${Math.round(l.rent).toLocaleString()}</div>
+        <div style="font-family:var(--mono);font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem">/ month</div>
+        ${l.deposit ? `<div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);margin-top:.3rem">$${Math.round(l.deposit).toLocaleString()} deposit</div>` : ''}
+      </div>
+    </div>
+    ${badges.length ? `<div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem">${badges.join('')}</div>` : ''}
+    ${desc ? `<p style="font-size:.82rem;color:var(--sub);line-height:1.65;margin-top:.8rem">${desc}</p>` : ''}
+    ${l.contact_method ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--text);margin-top:.7rem">Contact: ${escListHtml(l.contact_method)}</div>` : ''}
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-top:.9rem;padding-top:.85rem;border-top:1px solid var(--line);flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:.58rem;color:var(--muted)">Posted ${posted} · via Threshold community</span>
+      ${l.landlord_name ? `<button class="btn btn-ghost" style="font-size:.72rem" onclick="checkLandlordFromListing('${landlordArg}')">Check landlord →</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function checkLandlordFromListing(name) {
+  document.getElementById('schQuery').value = name;
+  go('search');
+  doSearch();
+}
+
+async function submitListing() {
+  const space_type = document.getElementById('plType').value;
+  const city = document.getElementById('plCity').value.trim();
+  const rent = parseFloat(document.getElementById('plRent').value);
+
+  if (!space_type) { toast('Select a space type', 'error'); return; }
+  if (!city) { toast('City is required', 'error'); return; }
+  if (!rent || rent <= 0) { toast('Enter a monthly rent', 'error'); return; }
+
+  const v = id => document.getElementById(id).value.trim();
+  const c = id => document.getElementById(id).checked;
+
+  const payload = {
+    action: 'submit',
+    space_type,
+    city,
+    rent,
+    title: v('plTitle') || undefined,
+    neighborhood: v('plHood') || undefined,
+    bedrooms: v('plBeds') !== '' ? v('plBeds') : undefined,
+    bathrooms: v('plBaths') !== '' ? v('plBaths') : undefined,
+    roommates: document.getElementById('plRoommates').value,
+    app_fee: v('plAppFee') !== '' ? v('plAppFee') : undefined,
+    deposit: v('plDeposit') !== '' ? v('plDeposit') : undefined,
+    fees_disclosed: c('plFeesDisclosed'),
+    utilities_included: c('plUtilities'),
+    lease_term: document.getElementById('plLease').value || undefined,
+    available_date: document.getElementById('plAvail').value || undefined,
+    furnished: c('plFurnished'),
+    pets_ok: c('plPets'),
+    near_transit: c('plTransit'),
+    vouchers_ok: c('plVouchers'),
+    near_campus: v('plCampus') || undefined,
+    landlord_name: v('plLandlord') || undefined,
+    contact_method: v('plContact') || undefined,
+    description: v('plDesc') || undefined,
+  };
+
+  const btn = document.getElementById('plSubBtn');
+  btn.disabled = true;
+  btn.textContent = 'Posting...';
+
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok || !d.ok) throw new Error(d.error || `API ${res.status}`);
+
+    toast('Listing posted. Thank you!', 'success');
+    resetListingForm();
+    go('listings'); // go() hook reloads the board
+  } catch (e) {
+    toast('Post failed: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Post listing →';
+  }
+}
+
+function resetListingForm() {
+  ['plTitle','plCity','plHood','plRent','plBeds','plBaths','plAppFee','plDeposit','plCampus','plLandlord','plContact','plDesc','plAvail']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('plType').value = '';
+  document.getElementById('plRoommates').value = '0';
+  document.getElementById('plLease').value = '';
+  document.getElementById('plFeesDisclosed').checked = true;
+  ['plUtilities','plFurnished','plPets','plTransit','plVouchers']
+    .forEach(id => { document.getElementById(id).checked = false; });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NEIGHBORHOOD FILTER
+// ─────────────────────────────────────────────────────────────────────────────
+let _pillsCity = null;
+
+async function loadNeighborhoodPills(forceCity) {
+  const el = document.getElementById('lsNeighborhoodPills');
+  if (!el) return;
+  const city = forceCity || document.getElementById('lsCity')?.value.trim() || '';
+  if (!city || city === _pillsCity) { if (!city) el.innerHTML = ''; return; }
+  _pillsCity = city;
+  el.innerHTML = `<span style="font-family:var(--mono);font-size:.6rem;color:var(--muted)">Loading neighborhoods…</span>`;
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'neighborhoods', city }),
+    });
+    const d = res.ok ? await res.json() : {};
+    const hoods = d.neighborhoods || [];
+    if (!hoods.length) { el.innerHTML = ''; return; }
+    el.innerHTML = `<span style="font-family:var(--mono);font-size:.6rem;color:var(--muted);padding:.32rem 0">Neighborhoods:</span>` +
+      hoods.map(h => {
+        const safe = h.replace(/'/g,"\\'");
+        const active = window._activeNeighborhood === h ? ' active' : '';
+        return `<button class="hood-pill${active}" onclick="filterByNeighborhood('${safe}')" data-hood="${h.replace(/"/g,'&quot;')}">${h}</button>`;
+      }).join('');
+  } catch (_e) { el.innerHTML = ''; }
+}
+
+function filterByNeighborhood(hood) {
+  if (window._activeNeighborhood === hood) {
+    window._activeNeighborhood = null;
+  } else {
+    window._activeNeighborhood = hood;
+  }
+  document.querySelectorAll('.hood-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.hood === window._activeNeighborhood);
+  });
+  loadListings();
+}
+
+function clearNeighborhoodFilter() {
+  window._activeNeighborhood = null;
+  _pillsCity = null;
+}
+
+function onCityBlur() {
+  const city = document.getElementById('lsCity')?.value.trim();
+  if (city) loadNeighborhoodPills(city);
+  else document.getElementById('lsNeighborhoodPills').innerHTML = '';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SAVED LANDLORDS — 100% localStorage, infinite concurrent users, no auth
+// ─────────────────────────────────────────────────────────────────────────────
+const SAVED_KEY = 'threshold_saved_landlords';
+const MAX_SAVED = 30;
+
+function getSaved() {
+  try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch (_e) { return []; }
+}
+
+function isSaved(name) {
+  return getSaved().some(s => s.name.toLowerCase() === name.toLowerCase());
+}
+
+function toggleSaveLandlord(name, city, score, riskLevel) {
+  let saved = getSaved();
+  const idx = saved.findIndex(s => s.name.toLowerCase() === name.toLowerCase());
+  if (idx >= 0) {
+    saved.splice(idx, 1);
+    toast('Removed from saved', 'default');
+  } else {
+    saved.unshift({ name, city, score, risk_level: riskLevel, saved_at: new Date().toISOString() });
+    if (saved.length > MAX_SAVED) saved = saved.slice(0, MAX_SAVED);
+    toast('Saved! View in the Saved tab.', 'success');
+  }
+  localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
+  updateSavedBadge();
+  // Update button state inline
+  const btnId = 'saveBtn-' + name.replace(/[^a-z0-9]/gi,'_');
+  const btn = document.getElementById(btnId);
+  if (btn) {
+    const nowSaved = isSaved(name);
+    btn.textContent = nowSaved ? '★ Saved' : '☆ Save';
+    btn.classList.toggle('saved', nowSaved);
+  }
+}
+
+function renderSavedPage() {
+  const content = document.getElementById('savedContent');
+  const titleEl = document.getElementById('savedPageTitle');
+  const subEl = document.getElementById('savedPageSub');
+  if (!content) return;
+
+  const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+  const saved = getSaved();
+
+  // Update page header
+  if (profile.renter_type) {
+    titleEl.textContent = `Hi, ${profile.renter_type} renter`;
+    subEl.textContent = `${saved.length} saved landlord${saved.length !== 1 ? 's' : ''} · ${profile.city ? profile.city + ' · ' : ''}profile active`;
+  } else {
+    titleEl.textContent = 'Saved';
+    subEl.textContent = 'Your saved landlord searches.';
+  }
+
+  let html = '';
+
+  // Profile summary block
+  if (profile.renter_type) {
+    const concerns = (profile.concerns || []).slice(0, 3).map(escHtml).join(', ') || 'none set';
+    const looking = (profile.looking_for || []).slice(0, 2).join(', ') || 'any';
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:.85rem">
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Your profile</div>
+        <button onclick="editProfile()" style="background:none;border:1px solid var(--line2);color:var(--muted);border-radius:7px;padding:.28rem .75rem;font-family:var(--mono);font-size:.62rem;cursor:pointer;transition:all .15s">Edit profile</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.65rem">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">Renter type</div>
+          <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--white)">${escHtml(profile.renter_type)}</div>
+        </div>
+        ${profile.city ? `<div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">City</div>
+          <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--white)">${escHtml(profile.city)}</div>
+        </div>` : ''}
+        ${profile.budget ? `<div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">Budget</div>
+          <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--white)">${escHtml(profile.budget)}</div>
+        </div>` : ''}
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.22rem">Top concerns</div>
+          <div style="font-size:.78rem;color:var(--sub)">${concerns}</div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    html += `<div style="background:var(--gdim);border:1px solid rgba(139,105,20,0.2);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <div style="flex:1;font-family:var(--mono);font-size:.72rem;color:var(--teal)">Set up your renter profile to get personalized scores and warnings.</div>
+      <button onclick="document.getElementById('obOverlay').classList.remove('hidden')" class="btn btn-solid" style="font-size:.75rem">Set up profile →</button>
+    </div>`;
+  }
+
+  // Saved landlords
+  html += `<div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Saved landlords (${saved.length}/${MAX_SAVED})</div>`;
+
+  if (!saved.length) {
+    html += `<div style="text-align:center;padding:2.5rem 1rem;background:var(--card);border:1px solid var(--line);border-radius:14px">
+      <div style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:.75rem">No saved landlords yet.</div>
+      <p style="font-size:.8rem;color:var(--sub);max-width:360px;margin:0 auto .75rem">Search any landlord and click "☆ Save" to track them here. All data stays on your device — no account needed.</p>
+      <button onclick="go('search')" class="btn btn-solid" style="font-size:.8rem">Search landlords →</button>
+    </div>`;
+  } else {
+    html += saved.map(s => {
+      const rl = s.risk_level || 'warn';
+      const ringColor = rl === 'safe' ? 'var(--green)' : rl === 'warn' ? 'var(--amber)' : 'var(--red)';
+      const riskLabel = rl === 'safe' ? 'Low risk' : rl === 'warn' ? 'Moderate' : 'High risk';
+      const savedDate = s.saved_at ? new Date(s.saved_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+      const nameSafe = escHtml(s.name).replace(/'/g, "\\'");
+      const citySafe = escHtml(s.city || '').replace(/'/g, "\\'");
+      return `<div class="saved-card" onclick="recheckSaved('${nameSafe}','${citySafe}')">
+        <div class="saved-card-logo">${s.name[0].toUpperCase()}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.15rem">${escHtml(s.name)}</div>
+          <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">${escHtml(s.city || 'No city')}${savedDate ? ' · Saved ' + savedDate : ''}</div>
+        </div>
+        <div style="text-align:center;flex-shrink:0">
+          <div style="font-family:var(--mono);font-size:1.05rem;font-weight:500;color:${ringColor}">${s.score || '—'}</div>
+          <div style="font-family:var(--mono);font-size:.55rem;color:var(--muted)">${riskLabel}</div>
+        </div>
+        <button class="saved-card-del" onclick="event.stopPropagation();removeSaved('${nameSafe}')" title="Remove">✕</button>
+      </div>`;
+    }).join('');
+  }
+
+  content.innerHTML = html;
+}
+
+function recheckSaved(name, city) {
+  document.getElementById('schQuery').value = name;
+  document.getElementById('schCity').value = city || '';
+  go('search');
+  doSearch();
+}
+
+function removeSaved(name) {
+  let saved = getSaved();
+  saved = saved.filter(s => s.name.toLowerCase() !== name.toLowerCase());
+  localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
+  renderSavedPage();
+  toast('Removed from saved');
+  // Update nav badge count
+  updateSavedBadge();
+}
+
+function updateSavedBadge() {
+  const count = getSaved().length;
+  const btn = document.getElementById('nt-saved');
+  if (btn) btn.textContent = count > 0 ? `Saved (${count})` : 'Saved';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // FAQ
 // ─────────────────────────────────────────────────────────────────────────────
 const FAQ_DATA = [
@@ -1023,6 +2021,105 @@ function toggleFaq(i) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// ONBOARDING
+// ─────────────────────────────────────────────────────────────────────────────
+const obData = { renter_type: '', looking_for: [], concerns: [], budget: '', max_fee: '' };
+
+function selectTile(tile, gridId) {
+  document.querySelectorAll(`#${gridId} .ob-tile`).forEach(t => t.classList.remove('selected'));
+  tile.classList.add('selected');
+  obData.renter_type = tile.dataset.value;
+}
+
+function togglePill(pill) {
+  pill.classList.toggle('selected');
+}
+
+function togglePillMax(pill, groupId, max) {
+  const group = document.getElementById(groupId);
+  const selected = group.querySelectorAll('.ob-pill.selected');
+  if (!pill.classList.contains('selected') && selected.length >= max) {
+    toast('Pick up to ' + max, 'error');
+    return;
+  }
+  pill.classList.toggle('selected');
+}
+
+function obNext(step) {
+  if (step === 1) {
+    if (!obData.renter_type) { toast('Please select who\'s renting', 'error'); return; }
+    document.getElementById('obStep1').classList.remove('active');
+    document.getElementById('obStep2').classList.add('active');
+  } else if (step === 2) {
+    obData.looking_for = [...document.querySelectorAll('#obLookingPills .ob-pill.selected')].map(p => p.dataset.value);
+    document.getElementById('obStep2').classList.remove('active');
+    document.getElementById('obStep3').classList.add('active');
+  }
+}
+
+function obBack(step) {
+  if (step === 2) {
+    document.getElementById('obStep2').classList.remove('active');
+    document.getElementById('obStep1').classList.add('active');
+  } else if (step === 3) {
+    document.getElementById('obStep3').classList.remove('active');
+    document.getElementById('obStep2').classList.add('active');
+  }
+}
+
+function obFinish() {
+  obData.concerns = [...document.querySelectorAll('#obConcernPills .ob-pill.selected')].map(p => p.dataset.value);
+  obData.budget = document.getElementById('obBudget').value.trim();
+  obData.max_fee = document.getElementById('obMaxFee').value;
+  localStorage.setItem('threshold_profile', JSON.stringify(obData));
+  document.getElementById('obOverlay').classList.add('hidden');
+  updateProfileChip();
+  toast('Profile saved!', 'success');
+}
+
+function skipOnboarding() {
+  localStorage.setItem('threshold_profile', JSON.stringify({}));
+  document.getElementById('obOverlay').classList.add('hidden');
+}
+
+function editProfile() {
+  // Reset pill selections to match saved profile
+  const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+  // Reset step 1 tiles
+  document.querySelectorAll('#obRenterTiles .ob-tile').forEach(t => {
+    t.classList.toggle('selected', t.dataset.value === profile.renter_type);
+  });
+  if (profile.renter_type) obData.renter_type = profile.renter_type;
+  // Reset step 2 pills
+  document.querySelectorAll('#obLookingPills .ob-pill').forEach(p => {
+    p.classList.toggle('selected', (profile.looking_for || []).includes(p.dataset.value));
+  });
+  // Reset step 3 pills
+  document.querySelectorAll('#obConcernPills .ob-pill').forEach(p => {
+    p.classList.toggle('selected', (profile.concerns || []).includes(p.dataset.value));
+  });
+  if (profile.budget) document.getElementById('obBudget').value = profile.budget;
+  if (profile.max_fee) document.getElementById('obMaxFee').value = profile.max_fee;
+  // Go back to step 1
+  document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('obStep1').classList.add('active');
+  document.getElementById('obOverlay').classList.remove('hidden');
+}
+
+function updateProfileChip() {
+  const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+  const chip = document.getElementById('profileChip');
+  if (!chip) return;
+  if (profile.renter_type) {
+    const budgetStr = profile.budget ? ' · ' + profile.budget : '';
+    chip.textContent = profile.renter_type + budgetStr + ' ✎';
+    chip.style.display = 'inline-flex';
+  } else {
+    chip.style.display = 'none';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -1030,6 +2127,17 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('popstate', e => {
     if (e.state?.page) go(e.state.page);
   });
+
+  // Show onboarding if no profile saved yet
+  const savedProfile = localStorage.getItem('threshold_profile');
+  if (!savedProfile) {
+    document.getElementById('obOverlay').classList.remove('hidden');
+  } else {
+    updateProfileChip();
+  }
+
+  // Update saved count badge on load
+  updateSavedBadge();
 });
 </script>
 </body>

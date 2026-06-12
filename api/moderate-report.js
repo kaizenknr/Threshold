@@ -1,20 +1,29 @@
+import {
+  checkRateLimit, getClientIP, setCORSHeaders, setSecurityHeaders, parseBody,
+} from './_security.js';
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  setCORSHeaders(req, res);
+  setSecurityHeaders(res);
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end('Method not allowed');
 
-  let body = req.body;
-  if (typeof body === 'string') try { body = JSON.parse(body); } catch (e) { body = {}; }
-  body = body || {};
+  // Rate limit: 30 moderation checks per IP per hour
+  const ip = getClientIP(req);
+  if (!checkRateLimit(ip, 'moderate', 30)) {
+    return res.status(429).json({ error: 'Too many requests. Try again later.' });
+  }
 
-  const { landlord, city, experience_text } = body;
+  const body = parseBody(req);
+  const landlord = String(body.landlord || '').trim().slice(0, 200);
+  const city     = String(body.city     || '').trim().slice(0, 200);
+  const experience_text = String(body.experience_text || '').trim().slice(0, 2000);
+
   if (!landlord || !city) return res.status(400).json({ error: 'landlord and city required' });
 
   const results = { ok: true, city_valid: true, city_normalized: city, content_ok: true, flags: [] };
 
-  // Validate city via Nominatim (free, no key)
+  // Validate city via Nominatim (fail open)
   try {
     const geoRes = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1&addressdetails=1`,
@@ -33,9 +42,9 @@ export default async function handler(req, res) {
     }
   } catch (_e) {}
 
-  // Content moderation via Claude (fail open if unavailable)
+  // Content moderation via Claude (fail open)
   const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-  if (ANTHROPIC_KEY && experience_text?.trim()) {
+  if (ANTHROPIC_KEY && experience_text) {
     try {
       const modRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -56,7 +65,8 @@ Text: "${experience_text.slice(0, 1000)}"
 
 Return ONLY: {"ok":true|false,"reason":"string or null"}`
           }],
-        })
+        }),
+        signal: AbortSignal.timeout(10000),
       });
       if (modRes.ok) {
         const d = await modRes.json();
