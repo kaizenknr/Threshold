@@ -54,6 +54,19 @@ export default async function handler(req, res) {
     const description  = str(body.description, 2000);
     const landlord_name = str(body.landlord_name, 200);
 
+    // Associate listing with logged-in user if token provided (fail open)
+    let user_id = null;
+    const access_token = str(body.access_token, 2048);
+    if (access_token) {
+      try {
+        const uRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+          headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${access_token}` },
+          signal: AbortSignal.timeout(4000),
+        });
+        if (uRes.ok) { const u = await uRes.json(); user_id = u?.id || null; }
+      } catch (_e) {}
+    }
+
     // Content moderation (fail open)
     const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
     if (ANTHROPIC_KEY && description) {
@@ -119,6 +132,7 @@ Return ONLY: {"ok":true|false,"reason":"string or null"}`
       description,
       contact_method:     str(body.contact_method, 200),
       status:             'active',
+      user_id,
     };
 
     try {

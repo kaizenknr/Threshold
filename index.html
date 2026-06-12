@@ -354,6 +354,32 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 .saved-card-logo{width:42px;height:42px;border-radius:10px;background:rgba(139,105,20,0.12);border:1px solid rgba(139,105,20,0.18);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.05rem;font-weight:800;color:var(--teal);flex-shrink:0}
 .saved-card-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:.3rem;border-radius:6px;font-size:.9rem;transition:color .15s;flex-shrink:0}
 .saved-card-del:hover{color:var(--red)}
+
+/* AUTH */
+.auth-ov{position:fixed;inset:0;background:rgba(0,0,0,0.38);backdrop-filter:blur(6px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.auth-ov.hidden{display:none}
+.auth-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,0.14)}
+.auth-title{font-family:var(--display);font-size:1.55rem;font-weight:800;color:var(--white);margin-bottom:.25rem}
+.auth-sub{font-size:.8rem;color:var(--sub);margin-bottom:1.5rem;line-height:1.5}
+.auth-inp{width:100%;padding:.75rem 1rem;border:1px solid var(--line2);border-radius:10px;font-family:var(--body);font-size:.9rem;color:var(--text);background:#fff;outline:none;transition:border-color .15s;box-sizing:border-box}
+.auth-inp:focus{border-color:#111}
+.auth-submit{width:100%;padding:.8rem;background:#111;color:#fff;border:none;border-radius:10px;font-family:var(--body);font-weight:600;font-size:.875rem;cursor:pointer;margin-top:.65rem;transition:background .15s}
+.auth-submit:hover{background:#000}
+.auth-submit:disabled{background:var(--muted);cursor:not-allowed}
+.auth-err{font-size:.75rem;color:var(--red);margin-top:.45rem;min-height:1rem}
+.auth-back{background:none;border:none;font-size:.75rem;color:var(--muted);cursor:pointer;margin-top:.65rem;text-decoration:underline;display:block}
+.nav-user{display:flex;align-items:center;gap:.35rem;padding:.3rem .55rem;border-radius:8px;background:rgba(0,0,0,0.05);border:1px solid var(--line2);cursor:pointer;transition:background .15s}
+.nav-user:hover{background:rgba(0,0,0,0.09)}
+.nav-user-av{width:22px;height:22px;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;flex-shrink:0}
+.nav-user-email{max-width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.68rem;color:var(--sub)}
+.my-listing-card{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;flex-wrap:wrap}
+.mlc-badge{font-family:var(--mono);font-size:.57rem;padding:.2rem .48rem;border-radius:5px;white-space:nowrap}
+.mlc-badge.active{background:rgba(139,105,20,0.1);color:var(--green)}
+.mlc-badge.inactive{background:rgba(0,0,0,0.05);color:var(--muted)}
+.mlc-badge.rented{background:rgba(17,17,17,0.07);color:var(--sub)}
+.ptab-row{display:flex;gap:.35rem;margin-bottom:1.1rem}
+.ptab{background:none;border:none;padding:.32rem .72rem;font-family:var(--mono);font-size:.63rem;font-weight:500;color:var(--muted);cursor:pointer;border-radius:8px;transition:all .15s}
+.ptab.active{background:rgba(0,0,0,0.07);color:#111;font-weight:600}
 </style>
 </head>
 <body>
@@ -488,6 +514,11 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
   </div>
   <button class="profile-chip" id="profileChip" onclick="editProfile()" style="display:none"></button>
   <div class="nav-right">
+    <button class="btn btn-ghost" id="navAuthBtn" onclick="openAuth()" style="font-size:.72rem;padding:.36rem .75rem">Log in</button>
+    <div class="nav-user hidden" id="navUser" onclick="go('saved')" title="Your profile">
+      <div class="nav-user-av" id="navUserAv">?</div>
+      <span class="nav-user-email" id="navUserEmail"></span>
+    </div>
     <button class="btn btn-solid" onclick="go('report')">+ Add report</button>
   </div>
 </nav>
@@ -497,6 +528,31 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
   <div class="modal">
     <div class="m-hdr"><div class="m-ti" id="mTitle">Researching...</div><button class="m-cl" onclick="closeModalDirect()">✕</button></div>
     <div class="m-body" id="mBody"><div style="display:flex;justify-content:center;padding:3rem"><div class="spinner"></div></div></div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-ov hidden" id="authOverlay">
+  <div class="auth-box">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.4rem">
+      <div>
+        <div class="auth-title" id="authTitle">Sign in</div>
+        <div class="auth-sub" id="authSub">No password needed — we'll email you a code.</div>
+      </div>
+      <button onclick="closeAuth()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted);line-height:1;padding:.2rem">✕</button>
+    </div>
+    <div id="authStep1">
+      <input class="auth-inp" id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"/>
+      <button class="auth-submit" id="authSendBtn" onclick="sendOTP()">Send code →</button>
+      <div class="auth-err" id="authErr1"></div>
+    </div>
+    <div id="authStep2" style="display:none">
+      <p style="font-size:.8rem;color:var(--sub);margin-bottom:.85rem;line-height:1.55">Check your email for a 6-digit code. It expires in 10 minutes.</p>
+      <input class="auth-inp" id="authCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="123456" autocomplete="one-time-code"/>
+      <button class="auth-submit" id="authVerifyBtn" onclick="verifyOTP()">Verify →</button>
+      <div class="auth-err" id="authErr2"></div>
+      <button class="auth-back" onclick="showAuthStep1()">← Use a different email</button>
+    </div>
   </div>
 </div>
 
@@ -1746,6 +1802,7 @@ async function submitListing() {
     landlord_name: v('plLandlord') || undefined,
     contact_method: v('plContact') || undefined,
     description: v('plDesc') || undefined,
+    access_token: getAuthToken() || undefined,
   };
 
   const btn = document.getElementById('plSubBtn');
@@ -1959,7 +2016,13 @@ function renderSavedPage() {
     }).join('');
   }
 
-  content.innerHTML = html;
+  const tabs = isLoggedIn() ? `<div class="ptab-row"><button class="ptab active" id="ptab-saved" onclick="switchSavedTab('saved')">Profile & Saved</button><button class="ptab" id="ptab-listings" onclick="switchSavedTab('listings')">My Listings</button></div>` : '';
+  content.innerHTML = tabs + `<div id="savedTabContent">${html}</div><div id="myListingsContent" style="display:none"></div>`;
+  if (isLoggedIn()) {
+    // Show logout option at bottom of profile section
+    const profileSection = content.querySelector('#savedTabContent');
+    if (profileSection) profileSection.insertAdjacentHTML('beforeend', `<div style="text-align:center;margin-top:1.5rem"><button onclick="logout()" style="background:none;border:none;font-family:var(--mono);font-size:.65rem;color:var(--muted);cursor:pointer;text-decoration:underline">Sign out</button></div>`);
+  }
 }
 
 function recheckSaved(name, city) {
@@ -2120,6 +2183,221 @@ function updateProfileChip() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────────────────────────────────────
+let _authSession = null; // { access_token, user_id, email }
+
+function getAuthToken() { return _authSession?.access_token || null; }
+function isLoggedIn() { return !!_authSession?.user_id; }
+
+async function initAuth() {
+  const stored = localStorage.getItem('threshold_auth');
+  if (!stored) return;
+  try {
+    const s = JSON.parse(stored);
+    if (!s?.access_token) return;
+    const r = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'session', access_token: s.access_token }),
+    });
+    const d = r.ok ? await r.json() : {};
+    if (d.ok) {
+      _authSession = { access_token: s.access_token, user_id: d.user_id, email: d.email };
+      updateNavAuth();
+      return;
+    }
+  } catch (_e) {}
+  localStorage.removeItem('threshold_auth');
+}
+
+function openAuth() {
+  document.getElementById('authOverlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('authEmail')?.focus(), 80);
+}
+
+function closeAuth() {
+  document.getElementById('authOverlay').classList.add('hidden');
+  document.getElementById('authErr1').textContent = '';
+  document.getElementById('authErr2').textContent = '';
+}
+
+function showAuthStep1() {
+  document.getElementById('authStep1').style.display = '';
+  document.getElementById('authStep2').style.display = 'none';
+  document.getElementById('authErr1').textContent = '';
+}
+
+async function sendOTP() {
+  const email = document.getElementById('authEmail').value.trim();
+  const btn = document.getElementById('authSendBtn');
+  const err = document.getElementById('authErr1');
+  err.textContent = '';
+  if (!email) { err.textContent = 'Email required'; return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    const r = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'send-otp', email }),
+    });
+    const d = await r.json();
+    if (!d.ok) { err.textContent = d.error || 'Could not send code.'; return; }
+    document.getElementById('authStep1').style.display = 'none';
+    document.getElementById('authStep2').style.display = '';
+    document.getElementById('authCode').focus();
+  } catch (_e) {
+    err.textContent = 'Network error. Try again.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send code →';
+  }
+}
+
+async function verifyOTP() {
+  const email = document.getElementById('authEmail').value.trim();
+  const token = document.getElementById('authCode').value.trim();
+  const btn = document.getElementById('authVerifyBtn');
+  const err = document.getElementById('authErr2');
+  err.textContent = '';
+  btn.disabled = true; btn.textContent = 'Verifying...';
+  try {
+    const r = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'verify-otp', email, token }),
+    });
+    const d = await r.json();
+    if (!d.ok || !d.access_token) { err.textContent = d.error || 'Invalid or expired code.'; return; }
+    _authSession = { access_token: d.access_token, user_id: d.user_id, email: d.email };
+    localStorage.setItem('threshold_auth', JSON.stringify(_authSession));
+    closeAuth();
+    updateNavAuth();
+    toast('Signed in!');
+    syncProfileToCloud();
+    if (document.getElementById('page-saved')?.classList.contains('active')) renderSavedPage();
+  } catch (_e) {
+    err.textContent = 'Network error. Try again.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Verify →';
+  }
+}
+
+async function logout() {
+  if (!_authSession) return;
+  try {
+    await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'logout', access_token: _authSession.access_token }),
+    });
+  } catch (_e) {}
+  _authSession = null;
+  localStorage.removeItem('threshold_auth');
+  updateNavAuth();
+  toast('Signed out.');
+  if (document.getElementById('page-saved')?.classList.contains('active')) renderSavedPage();
+}
+
+function updateNavAuth() {
+  const loginBtn = document.getElementById('navAuthBtn');
+  const userChip = document.getElementById('navUser');
+  const av = document.getElementById('navUserAv');
+  const emailEl = document.getElementById('navUserEmail');
+  if (_authSession?.user_id) {
+    loginBtn?.classList.add('hidden');
+    userChip?.classList.remove('hidden');
+    if (av) av.textContent = (_authSession.email || '?')[0].toUpperCase();
+    if (emailEl) emailEl.textContent = _authSession.email || '';
+  } else {
+    loginBtn?.classList.remove('hidden');
+    userChip?.classList.add('hidden');
+  }
+}
+
+async function syncProfileToCloud() {
+  if (!isLoggedIn()) return;
+  const local = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+  if (!local.renter_type) return;
+  try {
+    await fetch('/api/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'update', access_token: _authSession.access_token, profile: { ...local, profile_type: 'renter' } }),
+    });
+  } catch (_e) {}
+}
+
+function switchSavedTab(tab) {
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  document.getElementById('ptab-' + tab)?.classList.add('active');
+  const sc = document.getElementById('savedTabContent');
+  const ml = document.getElementById('myListingsContent');
+  if (tab === 'saved') {
+    if (sc) sc.style.display = '';
+    if (ml) ml.style.display = 'none';
+  } else {
+    if (sc) sc.style.display = 'none';
+    if (ml) { ml.style.display = ''; renderMyListings(ml); }
+  }
+}
+
+async function renderMyListings(container) {
+  container.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:1.5rem 0;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Loading your listings...</div>`;
+  try {
+    const r = await fetch('/api/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'my-listings', access_token: _authSession.access_token }),
+    });
+    const d = await r.json();
+    const listings = d.listings || [];
+    if (!listings.length) {
+      container.innerHTML = `<div style="text-align:center;padding:2.5rem 1rem;background:var(--card);border:1px solid var(--line);border-radius:14px">
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:.75rem">No listings posted yet.</div>
+        <button onclick="go('listings')" class="btn btn-solid" style="font-size:.8rem">Post a listing →</button>
+      </div>`;
+      return;
+    }
+    const spaceLabels = { private_room:'Private room', whole_unit:'Whole unit', studio:'Studio', sublet:'Sublet' };
+    const statusLabels = { active:'Active', inactive:'Inactive', rented:'Rented' };
+    container.innerHTML = listings.map(l => {
+      const meta = [spaceLabels[l.space_type] || escHtml(l.space_type || ''), escHtml(l.city || '')].filter(Boolean).join(' · ');
+      const posted = l.created_at ? new Date(l.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+      const idSafe = escHtml(l.id || '');
+      return `<div class="my-listing-card">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.82rem;font-weight:600;color:var(--white);margin-bottom:.15rem">${l.title ? escHtml(l.title) : meta}</div>
+          <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted)">${meta}${posted ? ' · '+posted : ''}</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:.88rem;font-weight:500;color:var(--white)">$${Math.round(l.rent||0).toLocaleString()}</div>
+        <span class="mlc-badge ${escHtml(l.status||'active')}">${escHtml(statusLabels[l.status]||l.status)}</span>
+        <div style="display:flex;flex-direction:column;gap:.28rem">
+          ${l.status !== 'rented' ? `<button onclick="updateMyListing('${idSafe}','rented')" style="background:none;border:1px solid var(--line2);color:var(--sub);border-radius:6px;padding:.2rem .45rem;font-family:var(--mono);font-size:.58rem;cursor:pointer;white-space:nowrap">Mark rented</button>` : ''}
+          ${l.status === 'active' ? `<button onclick="updateMyListing('${idSafe}','inactive')" style="background:none;border:1px solid var(--line2);color:var(--muted);border-radius:6px;padding:.2rem .45rem;font-family:var(--mono);font-size:.58rem;cursor:pointer;white-space:nowrap">Deactivate</button>` : ''}
+          ${l.status === 'inactive' ? `<button onclick="updateMyListing('${idSafe}','active')" style="background:none;border:1px solid var(--line2);color:var(--green);border-radius:6px;padding:.2rem .45rem;font-family:var(--mono);font-size:.58rem;cursor:pointer;white-space:nowrap">Reactivate</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  } catch (_e) {
+    container.innerHTML = `<div style="font-family:var(--mono);font-size:.72rem;color:var(--muted);padding:1rem">Could not load listings.</div>`;
+  }
+}
+
+async function updateMyListing(id, status) {
+  if (!isLoggedIn()) return;
+  try {
+    const r = await fetch('/api/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'update-listing', access_token: _authSession.access_token, listing_id: id, status }),
+    });
+    const d = await r.json();
+    if (d.ok) { toast('Updated'); const c = document.getElementById('myListingsContent'); if (c) renderMyListings(c); }
+    else toast(d.error || 'Could not update.', 'error');
+  } catch (_e) { toast('Error updating.', 'error'); }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -2138,6 +2416,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Update saved count badge on load
   updateSavedBadge();
+  // Restore auth session
+  initAuth();
 });
 </script>
 </body>
