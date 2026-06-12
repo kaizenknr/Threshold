@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   if (typeof body === 'string') try { body = JSON.parse(body); } catch (e) { body = {}; }
   body = body || {};
 
-  const { name, location, force_refresh = false } = body;
+  const { name, location, force_refresh = false, renter_type, concerns, looking_for } = body;
   if (!name) return res.status(400).json({ error: 'name required' });
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -79,9 +79,11 @@ export default async function handler(req, res) {
 
   const locationStr = location ? ` in ${location}` : '';
 
+  const profileNote = renter_type ? `\nThe renter is: ${renter_type}. They are looking for: ${(looking_for||[]).join(', ')||'a rental'}. Their top concerns are: ${(concerns||[]).join(', ')||'general quality'}. Weight your research and scoring to reflect what matters most for this renter type.` : '';
+
   const systemPrompt = `You are a rental housing transparency researcher. Search Reddit (r/renting, r/landlord, r/Tenant, r/FirstTimeRenting), ApartmentRatings.com, Yelp, and Google Reviews for real tenant experiences.
 Focus on posts from 2022-2025. Look for: ghosting inquiries, hidden fees, mold/maintenance complaints, bait-and-switch listings, predatory application fees.
-Return ONLY a valid JSON object — no markdown, no explanation.`;
+Return ONLY a valid JSON object — no markdown, no explanation.${profileNote}`;
 
   const userPrompt = `Research tenant experiences with landlord or property manager "${name}"${locationStr}.
 
@@ -91,7 +93,7 @@ Count evidence: how many posts mention ghosting vs responses? Hidden fees? Mold?
 
 Find 4-6 specific quotes or close paraphrases from real tenants on Reddit, ApartmentRatings, Yelp, or Google Reviews (2022-2025).
 
-Return ONLY this JSON:
+Return ONLY this JSON:${profileNote}
 {
   "ghost_rate": 0.0-1.0,
   "response_rate": 0.0-1.0,
@@ -171,6 +173,38 @@ Return ONLY this JSON:
     year:      (r.year   || '').slice(0, 4),
   })) : [];
 
+  // LAHD Open Data — LA code enforcement violations
+  let lahdViolations = [];
+  try {
+    const cityLower = (location || '').toLowerCase();
+    if (cityLower.includes('los angeles') || cityLower.includes(' la ') || cityLower === 'la') {
+      const nameQ = encodeURIComponent(name.trim().split(' ')[0]);
+      const lahdRes = await fetch(`https://data.lacity.org/resource/tfm3-xwcm.json?$where=landlord_name+like+%27%25${nameQ}%25%27&$limit=5`, {
+        headers: { 'Accept': 'application/json' },
+      });
+      if (lahdRes.ok) {
+        const rows = await lahdRes.json();
+        lahdViolations = rows.slice(0, 5);
+      }
+    }
+  } catch (_e) {}
+
+  // HUD Multifamily inspection scores
+  let hudInspection = null;
+  try {
+    const hudToken = process.env.HUD_API_TOKEN;
+    if (hudToken) {
+      const hudName = encodeURIComponent(name.trim());
+      const hudRes = await fetch(`https://api.hud.gov/api/multifamily_inspections/search?name=${hudName}&limit=1`, {
+        headers: { Authorization: `Bearer ${hudToken}` },
+      });
+      if (hudRes.ok) {
+        const hd = await hudRes.json();
+        if (hd?.results?.[0]) hudInspection = hd.results[0];
+      }
+    }
+  } catch (_e) {}
+
   const score = {
     overall_score: overall, ghost_rate: gr, response_rate: rr,
     hidden_fee_rate: hfr, mold_rate: mol, bait_switch_rate: bsr,
@@ -182,6 +216,8 @@ Return ONLY this JSON:
     property_type: (parsed.property_type || '').slice(0, 80),
     summary: (parsed.summary || '').slice(0, 500),
     web_reviews: reviews,
+    lahd_violations: lahdViolations,
+    hud_inspection: hudInspection,
   };
 
   if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
