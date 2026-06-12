@@ -316,6 +316,12 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 /* LAHD / HUD SECTIONS */
 .violation-item{padding:.6rem .85rem;background:rgba(153,27,27,0.04);border:1px solid rgba(153,27,27,0.14);border-radius:8px;margin-bottom:.4rem;font-size:.78rem;color:var(--sub);line-height:1.5}
 .hud-inspection-box{background:rgba(139,105,20,0.05);border:1px solid rgba(139,105,20,0.18);border-radius:10px;padding:.85rem 1rem;margin-top:1rem}
+
+/* LISTING FORM CHECKBOX */
+.lcb{display:flex;align-items:center;gap:.55rem;padding:.55rem .75rem;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;cursor:pointer;transition:all .15s;user-select:none}
+.lcb:hover{border-color:rgba(139,105,20,0.35);background:var(--gdim)}
+.lcb input{accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.lcb span{font-family:var(--body);font-size:.8rem;color:var(--sub)}
 </style>
 </head>
 <body>
@@ -443,6 +449,7 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
   <a href="#" class="logo" onclick="go('landing');return false"><span class="logo-dot"></span>Threshold</a>
   <div class="nav-pills">
     <button class="ntab" onclick="go('search')" id="nt-search">Search</button>
+    <button class="ntab" onclick="go('listings')" id="nt-listings">Listings</button>
     <button class="ntab" onclick="go('report')" id="nt-report">Report</button>
     <button class="ntab" onclick="go('faq')" id="nt-faq">How it works</button>
   </div>
@@ -477,6 +484,9 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
     </div>
     <div style="margin-top:1.5rem;font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.22);letter-spacing:.04em;animation:fadeUp .5s .3s ease both">
       100% anonymous · no account needed · community-powered
+    </div>
+    <div style="margin-top:.9rem;animation:fadeUp .5s .36s ease both">
+      <a href="#" onclick="go('listings');return false" style="font-family:var(--body);font-size:.8rem;color:var(--sub);text-decoration:underline;text-underline-offset:3px">Looking for a room or sublet? Browse community listings →</a>
     </div>
   </div>
 
@@ -579,6 +589,134 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
       <button class="dtab" onclick="switchDetTab('research',this)">Web research</button>
     </div>
     <div id="detContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     LISTINGS BOARD
+═══════════════════════════════════════ -->
+<div class="page" id="page-listings">
+  <div class="sch-page">
+    <div class="sch-hdr">
+      <div class="eyebrow">Community listings</div>
+      <h1>Find a space.</h1>
+      <p>Community-posted rooms, sublets, and units — every landlord cross-checkable.</p>
+      <div class="sch-bar">
+        <input id="lsCity" class="si" type="text" placeholder="City..." style="flex:1.5;min-width:150px" onkeydown="if(event.key==='Enter')loadListings()"/>
+        <select id="lsType" class="si" style="flex:1;min-width:150px;cursor:pointer">
+          <option value="">Any space type</option>
+          <option value="private_room">Private room</option>
+          <option value="whole_unit">Whole unit</option>
+          <option value="studio">Studio</option>
+          <option value="sublet">Sublet</option>
+        </select>
+        <input id="lsMaxRent" class="si" type="number" min="0" max="50000" placeholder="Max rent $" style="flex:1;min-width:110px" onkeydown="if(event.key==='Enter')loadListings()"/>
+        <button onclick="loadListings()" class="btn btn-ghost" style="padding:.7rem 1.2rem">Search</button>
+        <button onclick="go('postlisting')" class="btn btn-solid" style="padding:.7rem 1.2rem">+ Post a listing</button>
+      </div>
+    </div>
+    <div class="sch-list">
+      <div id="listResults"><div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">Loading listings...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     POST LISTING PAGE
+═══════════════════════════════════════ -->
+<div class="page" id="page-postlisting">
+  <div class="rep-wrap">
+    <button class="back-btn" onclick="go('listings')">← back to listings</button>
+    <div class="eyebrow">Community listing</div>
+    <h1>Post a space.</h1>
+    <p>Free, anonymous-friendly. Help the next renter skip the Facebook-group chaos.</p>
+
+    <div class="fblock">
+      <div class="fb-hd">01 — The space</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Space type *</label>
+          <select class="fs-r" id="plType">
+            <option value="">Select...</option>
+            <option value="private_room">Private room</option>
+            <option value="whole_unit">Whole unit</option>
+            <option value="studio">Studio</option>
+            <option value="sublet">Sublet</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Title</label><input class="fi-r" id="plTitle" type="text" maxlength="120" placeholder="e.g. Sunny room in quiet 3BR"/></div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label class="fl">City *</label><input class="fi-r" id="plCity" type="text" placeholder="e.g. Los Angeles, CA"/></div>
+        <div class="fg"><label class="fl">Neighborhood</label><input class="fi-r" id="plHood" type="text" maxlength="100" placeholder="e.g. Koreatown"/></div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Monthly rent ($) *</label><input class="fi-r" id="plRent" type="number" min="1" max="50000" placeholder="e.g. 1100"/></div>
+        <div class="fg"><label class="fl">Current roommates</label>
+          <select class="fs-r" id="plRoommates">
+            <option value="0">0 — no roommates</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8+</option>
+          </select>
+        </div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Bedrooms</label><input class="fi-r" id="plBeds" type="number" min="0" max="20" placeholder="e.g. 3"/></div>
+        <div class="fg"><label class="fl">Bathrooms</label><input class="fi-r" id="plBaths" type="number" min="0" max="20" step="0.5" placeholder="e.g. 1.5"/></div>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">02 — Money</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Application fee ($)</label><input class="fi-r" id="plAppFee" type="number" min="0" max="50000" placeholder="0 if none"/></div>
+        <div class="fg"><label class="fl">Security deposit ($)</label><input class="fi-r" id="plDeposit" type="number" min="0" max="50000" placeholder="e.g. 1100"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.5rem">
+        <label class="lcb"><input type="checkbox" id="plFeesDisclosed" checked/> <span>All fees are disclosed upfront</span></label>
+        <label class="lcb"><input type="checkbox" id="plUtilities"/> <span>Utilities included in rent</span></label>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">03 — Details</div>
+      <div class="f2">
+        <div class="fg"><label class="fl">Lease term</label>
+          <select class="fs-r" id="plLease">
+            <option value="">Select...</option>
+            <option value="month_to_month">Month-to-month</option>
+            <option value="semester">Semester</option>
+            <option value="6_month">6-month</option>
+            <option value="12_month">12-month</option>
+            <option value="flexible">Flexible</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Available date</label><input class="fi-r" id="plAvail" type="date"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem;margin-bottom:.75rem">
+        <label class="lcb"><input type="checkbox" id="plFurnished"/> <span>Furnished</span></label>
+        <label class="lcb"><input type="checkbox" id="plPets"/> <span>Pets ok</span></label>
+        <label class="lcb"><input type="checkbox" id="plTransit"/> <span>Near public transit</span></label>
+        <label class="lcb"><input type="checkbox" id="plVouchers"/> <span>Vouchers / Section 8 ok</span></label>
+      </div>
+      <div class="fg"><label class="fl">Near campus? Which one?</label><input class="fi-r" id="plCampus" type="text" maxlength="120" placeholder="e.g. USC, UCLA, LACC"/></div>
+    </div>
+
+    <div class="fblock">
+      <div class="fb-hd">04 — Landlord &amp; contact</div>
+      <div class="fg"><label class="fl">Landlord / property manager</label><input class="fi-r" id="plLandlord" type="text" maxlength="200" placeholder="e.g. ABC Properties, John Smith"/>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);margin-top:.3rem">We'll cross-check them against our transparency database.</div>
+      </div>
+      <div class="fg"><label class="fl">Contact method</label><input class="fi-r" id="plContact" type="text" maxlength="200" placeholder="How should interested renters reach you? Email, IG, etc. — optional"/></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="ft-r" id="plDesc" maxlength="2000" placeholder="The space, the vibe, the house rules, who you're hoping to find..."></textarea></div>
+    </div>
+
+    <button class="sub-btn" id="plSubBtn" onclick="submitListing()">Post listing →</button>
   </div>
 </div>
 
@@ -719,7 +857,7 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 // ─────────────────────────────────────────────────────────────────────────────
 // NAVIGATION
 // ─────────────────────────────────────────────────────────────────────────────
-const tabMap = { search:'nt-search', report:'nt-report', faq:'nt-faq' };
+const tabMap = { search:'nt-search', listings:'nt-listings', report:'nt-report', faq:'nt-faq' };
 
 function go(page) {
   document.querySelectorAll('.page, .page-full').forEach(p => p.classList.remove('active'));
@@ -730,6 +868,7 @@ function go(page) {
   if (tabMap[page]) document.getElementById(tabMap[page])?.classList.add('active');
   window.scrollTo(0, 0);
   if (page === 'faq') renderFAQ();
+  if (page === 'listings') loadListings();
 }
 
 window.addEventListener('scroll', () => {
@@ -1213,6 +1352,204 @@ async function submitReport() {
     btn.disabled = false;
     btn.textContent = 'Submit anonymously →';
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COMMUNITY LISTINGS BOARD
+// ─────────────────────────────────────────────────────────────────────────────
+const SPACE_LABELS = { private_room:'Private room', whole_unit:'Whole unit', studio:'Studio', sublet:'Sublet' };
+const LEASE_LABELS = { month_to_month:'Month-to-month', semester:'Semester lease', '6_month':'6-month lease', '12_month':'12-month lease', flexible:'Flexible lease' };
+let _listingsPrefilled = false;
+
+function escListHtml(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function loadListings() {
+  const results = document.getElementById('listResults');
+
+  // Profile-aware defaults (applied once per session, never overriding user input)
+  if (!_listingsPrefilled) {
+    _listingsPrefilled = true;
+    const profile = JSON.parse(localStorage.getItem('threshold_profile') || '{}');
+    if ((profile.renter_type || '').toLowerCase() === 'student' && !document.getElementById('lsType').value) {
+      document.getElementById('lsType').value = 'private_room';
+    }
+    if (profile.budget && !document.getElementById('lsMaxRent').value) {
+      const b = parseInt(String(profile.budget).replace(/[^0-9]/g, ''), 10);
+      if (b > 0) document.getElementById('lsMaxRent').value = b;
+    }
+  }
+
+  const city = document.getElementById('lsCity').value.trim();
+  const space_type = document.getElementById('lsType').value;
+  const max_rent = document.getElementById('lsMaxRent').value;
+
+  results.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Loading listings...</div>`;
+
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'fetch',
+        city: city || undefined,
+        space_type: space_type || undefined,
+        max_rent: max_rent || undefined,
+      }),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const d = await res.json();
+    if (!d.ok) throw new Error(d.error || 'Fetch failed');
+    const rows = d.listings || [];
+
+    if (!rows.length) {
+      results.innerHTML = `
+      <div style="text-align:center;padding:3.5rem 1rem">
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:1rem">No listings yet for these filters. Be the first —</div>
+        <button class="btn btn-solid" onclick="go('postlisting')">+ Post a listing</button>
+      </div>`;
+      return;
+    }
+
+    results.innerHTML = `<div class="sch-ct">${rows.length} listing${rows.length === 1 ? '' : 's'}</div>`
+      + rows.map(renderListingCard).join('');
+  } catch (e) {
+    results.innerHTML = `<div style="background:var(--rdim);border:1px solid rgba(153,27,27,0.2);border-radius:10px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;color:var(--red)">Could not load listings: ${escListHtml(e.message)}</div>`;
+  }
+}
+
+function renderListingCard(l) {
+  const typeLabel = SPACE_LABELS[l.space_type] || 'Space';
+  const place = l.neighborhood || l.city || '';
+  const title = l.title ? escListHtml(l.title) : `${typeLabel}${place ? ' · ' + escListHtml(place) : ''}`;
+
+  const badges = [];
+  if (l.roommates > 0) badges.push(`<span class="ibadge teal">👥 ${l.roommates} roommate${l.roommates === 1 ? '' : 's'}</span>`);
+  if (l.furnished) badges.push(`<span class="ibadge teal">🛋 Furnished</span>`);
+  if (l.utilities_included) badges.push(`<span class="ibadge teal">💡 Utilities incl.</span>`);
+  if (l.pets_ok) badges.push(`<span class="ibadge teal">🐾 Pets ok</span>`);
+  if (l.near_campus) badges.push(`<span class="ibadge teal">🎓 Near ${escListHtml(l.near_campus)}</span>`);
+  if (l.near_transit) badges.push(`<span class="ibadge teal">🚇 Near transit</span>`);
+  if (l.vouchers_ok) badges.push(`<span class="ibadge teal">🎫 Vouchers ok</span>`);
+  if (!l.app_fee) badges.push(`<span class="ibadge green">No app fee</span>`);
+  if (l.fees_disclosed) badges.push(`<span class="ibadge green">All fees disclosed upfront</span>`);
+
+  const meta = [];
+  if (l.bedrooms != null) meta.push(`${l.bedrooms} bd`);
+  if (l.bathrooms != null) meta.push(`${l.bathrooms} ba`);
+  if (l.lease_term) meta.push(LEASE_LABELS[l.lease_term] || l.lease_term);
+  if (l.available_date) meta.push('Available ' + new Date(l.available_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+
+  const desc = l.description
+    ? escListHtml(l.description.slice(0, 200)) + (l.description.length > 200 ? '…' : '')
+    : '';
+  const posted = l.created_at
+    ? new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    : '';
+  const landlordArg = l.landlord_name ? escListHtml(l.landlord_name).replace(/'/g, "\\'") : '';
+
+  return `
+  <div class="glow-card" style="padding:1.4rem 1.5rem;margin-bottom:.85rem">
+    <div style="display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">${typeLabel}${l.city ? ' · ' + escListHtml(l.city) : ''}</div>
+        <div style="font-family:var(--display);font-size:1.15rem;font-weight:700;color:var(--white);letter-spacing:-.02em;margin-bottom:.3rem">${title}</div>
+        ${meta.length ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">${meta.join(' · ')}</div>` : ''}
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:var(--display);font-size:1.7rem;font-weight:800;color:var(--white);line-height:1">$${Math.round(l.rent).toLocaleString()}</div>
+        <div style="font-family:var(--mono);font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem">/ month</div>
+        ${l.deposit ? `<div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);margin-top:.3rem">$${Math.round(l.deposit).toLocaleString()} deposit</div>` : ''}
+      </div>
+    </div>
+    ${badges.length ? `<div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem">${badges.join('')}</div>` : ''}
+    ${desc ? `<p style="font-size:.82rem;color:var(--sub);line-height:1.65;margin-top:.8rem">${desc}</p>` : ''}
+    ${l.contact_method ? `<div style="font-family:var(--mono);font-size:.62rem;color:var(--text);margin-top:.7rem">Contact: ${escListHtml(l.contact_method)}</div>` : ''}
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-top:.9rem;padding-top:.85rem;border-top:1px solid var(--line);flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:.58rem;color:var(--muted)">Posted ${posted} · via Threshold community</span>
+      ${l.landlord_name ? `<button class="btn btn-ghost" style="font-size:.72rem" onclick="checkLandlordFromListing('${landlordArg}')">Check landlord →</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function checkLandlordFromListing(name) {
+  document.getElementById('schQuery').value = name;
+  go('search');
+  doSearch();
+}
+
+async function submitListing() {
+  const space_type = document.getElementById('plType').value;
+  const city = document.getElementById('plCity').value.trim();
+  const rent = parseFloat(document.getElementById('plRent').value);
+
+  if (!space_type) { toast('Select a space type', 'error'); return; }
+  if (!city) { toast('City is required', 'error'); return; }
+  if (!rent || rent <= 0) { toast('Enter a monthly rent', 'error'); return; }
+
+  const v = id => document.getElementById(id).value.trim();
+  const c = id => document.getElementById(id).checked;
+
+  const payload = {
+    action: 'submit',
+    space_type,
+    city,
+    rent,
+    title: v('plTitle') || undefined,
+    neighborhood: v('plHood') || undefined,
+    bedrooms: v('plBeds') !== '' ? v('plBeds') : undefined,
+    bathrooms: v('plBaths') !== '' ? v('plBaths') : undefined,
+    roommates: document.getElementById('plRoommates').value,
+    app_fee: v('plAppFee') !== '' ? v('plAppFee') : undefined,
+    deposit: v('plDeposit') !== '' ? v('plDeposit') : undefined,
+    fees_disclosed: c('plFeesDisclosed'),
+    utilities_included: c('plUtilities'),
+    lease_term: document.getElementById('plLease').value || undefined,
+    available_date: document.getElementById('plAvail').value || undefined,
+    furnished: c('plFurnished'),
+    pets_ok: c('plPets'),
+    near_transit: c('plTransit'),
+    vouchers_ok: c('plVouchers'),
+    near_campus: v('plCampus') || undefined,
+    landlord_name: v('plLandlord') || undefined,
+    contact_method: v('plContact') || undefined,
+    description: v('plDesc') || undefined,
+  };
+
+  const btn = document.getElementById('plSubBtn');
+  btn.disabled = true;
+  btn.textContent = 'Posting...';
+
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok || !d.ok) throw new Error(d.error || `API ${res.status}`);
+
+    toast('Listing posted. Thank you!', 'success');
+    resetListingForm();
+    go('listings'); // go() hook reloads the board
+  } catch (e) {
+    toast('Post failed: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Post listing →';
+  }
+}
+
+function resetListingForm() {
+  ['plTitle','plCity','plHood','plRent','plBeds','plBaths','plAppFee','plDeposit','plCampus','plLandlord','plContact','plDesc','plAvail']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('plType').value = '';
+  document.getElementById('plRoommates').value = '0';
+  document.getElementById('plLease').value = '';
+  document.getElementById('plFeesDisclosed').checked = true;
+  ['plUtilities','plFurnished','plPets','plTransit','plVouchers']
+    .forEach(id => { document.getElementById(id).checked = false; });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
