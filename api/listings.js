@@ -1,5 +1,5 @@
 // Community listings board — rooms, sublets, shared spaces
-// Table: listings
+// Tables: listings, listing_price_history
 
 const SPACE_TYPES = ['private_room', 'whole_unit', 'studio', 'sublet'];
 const LEASE_TERMS = ['month_to_month', 'semester', '6_month', '12_month', 'flexible'];
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     return Math.min(max, Math.max(min, n));
   };
 
-  // ── Submit listing ────────────────────────────────────────────────────────────
+  // ── Submit listing ─────────────────────────────────────────────────────────
   if (body.action === 'submit') {
     const space_type = SPACE_TYPES.includes(body.space_type) ? body.space_type : null;
     const city = str(body.city, 100);
@@ -47,8 +47,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'space_type, city, and rent required' });
 
     const description = str(body.description, 2000);
+    const landlord_name = str(body.landlord_name, 200);
 
-    // Content moderation via Claude (fail open if key missing or call fails)
+    // Content moderation (fail open if key missing or call fails)
     const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
     if (ANTHROPIC_KEY && description) {
       try {
@@ -100,7 +101,7 @@ Return ONLY: {"ok":true|false,"reason":"string or null"}`
       roommates:          Math.round(num(body.roommates, 0, 20) ?? 0),
       bedrooms:           body.bedrooms !== undefined && body.bedrooms !== null && body.bedrooms !== '' ? Math.round(num(body.bedrooms, 0, 20) ?? 0) : null,
       bathrooms:          num(body.bathrooms, 0, 20),
-      landlord_name:      str(body.landlord_name, 200),
+      landlord_name,
       near_campus:        str(body.near_campus, 120),
       near_transit:       body.near_transit === true || body.near_transit === 'true',
       pets_ok:            body.pets_ok === true || body.pets_ok === 'true',
@@ -114,9 +115,10 @@ Return ONLY: {"ok":true|false,"reason":"string or null"}`
       status:             'active',
     };
 
+    // Save listing and return the new row ID
     const saveRes = await fetch(`${SUPABASE_URL}/rest/v1/listings`, {
       method: 'POST',
-      headers: { ...hdrs, Prefer: 'return=minimal' },
+      headers: { ...hdrs, Prefer: 'return=representation' },
       body: JSON.stringify(row),
     });
 
@@ -125,11 +127,71 @@ Return ONLY: {"ok":true|false,"reason":"string or null"}`
       return res.status(500).json({ error: 'Failed to save listing', detail: e.slice(0, 100) });
     }
 
+    const saved = await saveRes.json();
+    const listingId = saved?.[0]?.id;
+
+    // Record price history if landlord name is present
+    if (listingId && landlord_name) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/listing_price_history`, {
+          method: 'POST',
+          headers: { ...hdrs, Prefer: 'return=minimal' },
+          body: JSON.stringify({
+            listing_id: listingId,
+            landlord_name: landlord_name.toLowerCase().trim(),
+            city: city.toLowerCase().trim(),
+            space_type,
+            rent,
+          }),
+        });
+      } catch (_e) {}
+    }
+
     console.log(`LISTING SAVED: ${space_type} @ "${city}" $${rent}`);
     return res.status(200).json({ ok: true });
   }
 
-  // ── Fetch listings ────────────────────────────────────────────────────────────
+  // ── Landlord history — all listings (any status) for a given landlord ──────
+  if (body.action === 'landlord_history') {
+    const landlord = str(body.landlord, 200);
+    if (!landlord) return res.status(400).json({ error: 'landlord required' });
+
+    try {
+      // Get all listings from this landlord (any status, ordered by date)
+      const nameEnc = encodeURIComponent('*' + landlord + '*');
+      const lRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/listings?landlord_name=ilike.${nameEnc}&select=id,space_type,city,neighborhood,rent,status,created_at,bedrooms,bathrooms,title&order=created_at.desc&limit=30`,
+        { headers: hdrs }
+      );
+      const listings = lRes.ok ? await lRes.json() : [];
+
+      // Get price history for this landlord
+      const histEnc = encodeURIComponent(landlord.toLowerCase().trim());
+      const hRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/listing_price_history?landlord_name=ilike.${histEnc}&select=rent,space_type,city,recorded_at&order=recorded_at.desc&limit=20`,
+        { headers: hdrs }
+      );
+      const priceHistory = hRes.ok ? await hRes.json() : [];
+
+      // Compute rent range and trend from price history
+      const rents = priceHistory.map(h => h.rent).filter(Boolean);
+      const rentTrend = rents.length >= 2
+        ? (rents[0] > rents[rents.length - 1] ? 'up' : rents[0] < rents[rents.length - 1] ? 'down' : 'flat')
+        : 'unknown';
+
+      return res.status(200).json({
+        ok: true,
+        listings: listings || [],
+        price_history: priceHistory || [],
+        rent_range: rents.length ? { min: Math.min(...rents), max: Math.max(...rents), count: rents.length } : null,
+        rent_trend: rentTrend,
+      });
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+
+  // ── Fetch active listings ──────────────────────────────────────────────────
   try {
     let url = `${SUPABASE_URL}/rest/v1/listings?status=eq.active&select=*&order=created_at.desc&limit=60`;
 

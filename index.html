@@ -313,9 +313,22 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 .profile-callout{background:rgba(146,64,14,0.06);border:1px solid rgba(146,64,14,0.20);border-radius:10px;padding:.85rem 1rem;margin-top:1rem;font-family:var(--body);font-size:.8rem;color:#92400e;line-height:1.6}
 .profile-callout strong{font-weight:600}
 
-/* LAHD / HUD SECTIONS */
-.violation-item{padding:.6rem .85rem;background:rgba(153,27,27,0.04);border:1px solid rgba(153,27,27,0.14);border-radius:8px;margin-bottom:.4rem;font-size:.78rem;color:var(--sub);line-height:1.5}
-.hud-inspection-box{background:rgba(139,105,20,0.05);border:1px solid rgba(139,105,20,0.18);border-radius:10px;padding:.85rem 1rem;margin-top:1rem}
+/* LAHD / HUD / GOV SECTIONS */
+.violation-item{padding:.65rem .85rem;background:rgba(153,27,27,0.04);border:1px solid rgba(153,27,27,0.14);border-radius:8px;margin-bottom:.4rem;font-size:.78rem;color:var(--sub);line-height:1.5}
+.violation-item .vi-status{display:inline-block;font-family:var(--mono);font-size:.57rem;padding:.18rem .45rem;border-radius:4px;margin-left:.45rem;text-transform:uppercase;letter-spacing:.04em}
+.vi-status.open{background:rgba(153,27,27,0.10);color:var(--red)}.vi-status.closed{background:rgba(0,0,0,0.06);color:var(--dim)}
+.permit-item{padding:.65rem .85rem;background:rgba(0,0,0,0.025);border:1px solid rgba(0,0,0,0.08);border-radius:8px;margin-bottom:.4rem;font-size:.78rem;color:var(--sub);line-height:1.5}
+.hud-inspection-box{background:rgba(139,105,20,0.05);border:1px solid rgba(139,105,20,0.18);border-radius:10px;padding:.85rem 1rem;margin-top:.75rem}
+.corp-info-box{background:rgba(0,0,0,0.025);border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:.85rem 1rem;margin-bottom:.55rem}
+.corp-status{display:inline-block;font-family:var(--mono);font-size:.58rem;padding:.18rem .5rem;border-radius:5px;text-transform:uppercase;letter-spacing:.04em}
+.corp-status.active{background:rgba(139,105,20,0.10);color:var(--green)}.corp-status.inactive{background:rgba(153,27,27,0.09);color:var(--red)}
+.price-hist-row{display:flex;align-items:center;gap:.5rem;padding:.45rem 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.67rem;color:var(--sub)}
+.price-hist-row:last-child{border-bottom:none}
+.price-hist-rent{font-weight:500;color:var(--white);min-width:60px}
+.listing-hist-card{padding:.6rem .85rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:.4rem;display:flex;gap:.75rem;align-items:center;font-size:.78rem;color:var(--sub)}
+.listing-hist-card .lhc-rent{font-family:var(--mono);font-weight:500;color:var(--white);flex-shrink:0}
+.listing-hist-card .lhc-badge{font-family:var(--mono);font-size:.55rem;padding:.15rem .4rem;border-radius:4px;flex-shrink:0}
+.lhc-badge.active-badge{background:rgba(139,105,20,0.10);color:var(--green)}.lhc-badge.old-badge{background:rgba(0,0,0,0.06);color:var(--dim)}
 
 /* LISTING FORM CHECKBOX */
 .lcb{display:flex;align-items:center;gap:.55rem;padding:.55rem .75rem;background:var(--surface);border:1.5px solid var(--line2);border-radius:8px;cursor:pointer;transition:all .15s;user-select:none}
@@ -587,6 +600,7 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
       <button class="dtab active" onclick="switchDetTab('overview',this)">Overview</button>
       <button class="dtab" onclick="switchDetTab('reports',this)">Community reports</button>
       <button class="dtab" onclick="switchDetTab('research',this)">Web research</button>
+      <button class="dtab" onclick="switchDetTab('records',this)">Gov records</button>
     </div>
     <div id="detContent"></div>
   </div>
@@ -1066,18 +1080,17 @@ function renderScoreCard(name, score, reports, city) {
 
     ${renderProfileCallout(score)}
 
-    ${score.lahd_violations?.length > 0 ? `
+    ${(score.lahd_violations?.length || score.building_permits?.length || score.business_info?.length || score.hud_inspection) ? `
     <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--line)">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem">⚠ LAHD Code Violations (${score.lahd_violations.length})</div>
-      ${score.lahd_violations.map(v => `<div class="violation-item">${v.violation_description || v.case_number || JSON.stringify(v)}</div>`).join('')}
-    </div>` : ''}
-
-    ${score.hud_inspection ? `
-    <div class="hud-inspection-box">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.45rem">HUD Multifamily Inspection</div>
-      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-        ${score.hud_inspection.inspection_score !== undefined ? `<div style="font-family:var(--mono);font-size:1.1rem;font-weight:500;color:${score.hud_inspection.inspection_score >= 60 ? 'var(--green)' : 'var(--red)'};">${score.hud_inspection.inspection_score} <span style="font-size:.6rem;color:var(--muted)">/ 100</span></div>` : ''}
-        <div style="font-size:.78rem;color:var(--sub)">${score.hud_inspection.property_name || ''} ${score.hud_inspection.inspection_date ? '· ' + score.hud_inspection.inspection_date : ''}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">
+          Government records available:
+          ${score.lahd_violations?.length ? `<span style="color:var(--red)">⚠ ${score.lahd_violations.length} LAHD violation${score.lahd_violations.length !== 1 ? 's' : ''}</span>` : ''}
+          ${score.building_permits?.length ? `<span style="color:var(--sub)"> · ${score.building_permits.length} permit${score.building_permits.length !== 1 ? 's' : ''}</span>` : ''}
+          ${score.business_info?.length ? `<span style="color:var(--sub)"> · Corp filing found</span>` : ''}
+          ${score.hud_inspection ? `<span style="color:var(--teal)"> · HUD inspection</span>` : ''}
+        </div>
+        <button onclick="window._lastLandlordData && loadLandlordDetail(window._lastLandlordData.name,window._lastLandlordData.score,window._lastLandlordData.reports,window._lastLandlordData.city);go('landlord');setTimeout(()=>{ document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active')); const tb=document.querySelectorAll('.dtab')[3]; if(tb){tb.classList.add('active');switchDetTab('records',tb);}},150)" style="background:none;border:1px solid var(--line2);color:var(--muted);border-radius:7px;padding:.32rem .75rem;font-family:var(--mono);font-size:.62rem;cursor:pointer;transition:all .15s">View all records →</button>
       </div>
     </div>` : ''}
 
@@ -1263,6 +1276,157 @@ function renderDetTab(tab) {
       <div class="wrev-text">"${r.text}"</div>
       <div class="wrev-meta">${r.source||'Community'} · ${r.year||''} · <span style="color:${r.sentiment==='positive'?'var(--green)':r.sentiment==='negative'?'var(--red)':'var(--amber)'}">${r.sentiment}</span></div>
     </div>`).join('')}`;
+
+  } else if (tab === 'records') {
+    const sc = d.score;
+    const hasGov = (sc.lahd_violations?.length || sc.building_permits?.length || sc.business_info?.length || sc.hud_inspection);
+
+    content.innerHTML = `<div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem">Public records · Government data sources</div>
+    ${renderGovRecords(sc)}
+    <div id="listingHistSection"><div style="display:flex;align-items:center;gap:.75rem;padding:1.5rem 0;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Loading listing history...</div></div>`;
+
+    // Async: fetch listing history
+    loadListingHistory(d.name, d.city);
+  }
+}
+
+function renderGovRecords(sc) {
+  let html = '';
+
+  // Business registration (OpenCorporates)
+  if (sc.business_info?.length) {
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Business registration · California Secretary of State</div>
+      ${sc.business_info.map(co => `
+      <div class="corp-info-box">
+        <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:.3rem">
+          <span style="font-family:var(--display);font-size:.95rem;font-weight:700;color:var(--white)">${co.name}</span>
+          <span class="corp-status ${co.inactive || co.status?.toLowerCase().includes('dissolv') || co.status?.toLowerCase().includes('inactiv') ? 'inactive' : 'active'}">${co.status || 'Unknown'}</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">
+          ${co.type ? co.type + ' · ' : ''}${co.incorporated ? 'Incorporated ' + co.incorporated : ''}${co.inactive ? ' · <span style="color:var(--red)">Dissolved / Inactive</span>' : ''}
+        </div>
+        ${co.registered_address ? `<div style="font-size:.76rem;color:var(--sub);margin-top:.25rem">${co.registered_address}</div>` : ''}
+      </div>`).join('')}
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: OpenCorporates · Public company registry data</div>
+    </div>`;
+  }
+
+  // LAHD Code Violations
+  if (sc.lahd_violations?.length) {
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">⚠ LAHD Code Violations (${sc.lahd_violations.length}) · Los Angeles Housing Dept</div>
+      ${sc.lahd_violations.map(v => {
+        const isOpen = !v.closed && (!v.status || v.status.toLowerCase().includes('open') || v.status === '');
+        return `<div class="violation-item">
+          <div style="display:flex;align-items:flex-start;gap:.5rem;flex-wrap:wrap">
+            <div style="flex:1">
+              ${v.description ? `<div style="font-weight:500;color:var(--white);margin-bottom:.2rem">${v.description}</div>` : ''}
+              ${v.address ? `<div style="font-size:.72rem;color:var(--muted)">${v.address}</div>` : ''}
+              ${v.case_number ? `<div style="font-family:var(--mono);font-size:.6rem;color:var(--dim)">Case ${v.case_number}${v.opened ? ' · Opened ' + v.opened.slice(0,10) : ''}${v.closed ? ' · Closed ' + v.closed.slice(0,10) : ''}</div>` : ''}
+            </div>
+            <span class="vi-status ${isOpen ? 'open' : 'closed'}">${isOpen ? 'Open' : 'Closed'}</span>
+          </div>
+        </div>`;
+      }).join('')}
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: data.lacity.org · Housing + Community Investment Dept</div>
+    </div>`;
+  }
+
+  // Building Permits
+  if (sc.building_permits?.length) {
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Building & Safety Permits · Los Angeles</div>
+      ${sc.building_permits.map(p => `
+      <div class="permit-item">
+        <div style="display:flex;align-items:flex-start;gap:.5rem;flex-wrap:wrap">
+          <div style="flex:1">
+            ${p.description ? `<div style="font-weight:500;color:var(--white);margin-bottom:.15rem">${p.description}</div>` : ''}
+            ${p.address ? `<div style="font-size:.72rem;color:var(--muted)">${p.address}</div>` : ''}
+            <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim)">${p.type ? p.type + ' · ' : ''}${p.permit_number ? 'Permit ' + p.permit_number : ''}${p.issued ? ' · ' + p.issued.slice(0,10) : ''}</div>
+          </div>
+          ${p.status ? `<span style="font-family:var(--mono);font-size:.57rem;padding:.18rem .45rem;border-radius:4px;background:rgba(0,0,0,0.06);color:var(--dim);white-space:nowrap">${p.status}</span>` : ''}
+        </div>
+      </div>`).join('')}
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: data.lacity.org · LA Building & Safety</div>
+    </div>`;
+  }
+
+  // HUD Multifamily Inspection
+  if (sc.hud_inspection) {
+    const hi = sc.hud_inspection;
+    html += `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem">HUD Multifamily Physical Inspection</div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        ${hi.inspection_score !== undefined ? `<div style="font-family:var(--mono);font-size:1.3rem;font-weight:500;color:${hi.inspection_score >= 60 ? 'var(--green)' : 'var(--red)'};">${hi.inspection_score}<span style="font-size:.6rem;color:var(--muted)"> / 100</span></div>` : ''}
+        <div style="font-size:.82rem;color:var(--sub)">${hi.property_name || ''}${hi.inspection_date ? ' · Inspected ' + hi.inspection_date : ''}</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.5rem">Source: HUD REAC · HUD.gov Multifamily Inspection Scores</div>
+    </div>`;
+  }
+
+  if (!html) {
+    html = `<div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">No government records found for this landlord in our connected data sources.<br><span style="font-size:.63rem;margin-top:.5rem;display:block">Government API coverage is currently limited to Los Angeles (LAHD, building permits) and nationwide HUD multifamily inspections.</span></div>`;
+  }
+
+  return html;
+}
+
+async function loadListingHistory(landlordName, city) {
+  const section = document.getElementById('listingHistSection');
+  if (!section) return;
+  try {
+    const res = await fetch('/api/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'landlord_history', landlord: landlordName }),
+    });
+    if (!res.ok) throw new Error('Fetch failed');
+    const d = await res.json();
+    if (!d.ok) throw new Error(d.error || 'Failed');
+
+    const listings = d.listings || [];
+    const priceHistory = d.price_history || [];
+    const rentRange = d.rent_range;
+
+    if (!listings.length && !priceHistory.length) {
+      section.innerHTML = `<div style="padding:1.25rem;background:var(--card);border:1px solid var(--line);border-radius:14px;font-family:var(--mono);font-size:.68rem;color:var(--muted)">No listings found for this landlord in the Threshold community board.</div>`;
+      return;
+    }
+
+    const spaceLabels = { private_room:'Private room', whole_unit:'Whole unit', studio:'Studio', sublet:'Sublet' };
+
+    let html = `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.25rem;margin-top:.25rem">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Listing history · Community board</div>`;
+
+    if (rentRange) {
+      const trendIcon = d.rent_trend === 'up' ? '↑' : d.rent_trend === 'down' ? '↓' : '→';
+      const trendColor = d.rent_trend === 'up' ? 'var(--red)' : d.rent_trend === 'down' ? 'var(--green)' : 'var(--muted)';
+      html += `<div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem;background:var(--surface);border-radius:8px;border:1px solid var(--line)">
+        <div><div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem">Rent range</div><div style="font-family:var(--mono);font-size:.9rem;font-weight:500;color:var(--white)">$${Math.round(rentRange.min).toLocaleString()} – $${Math.round(rentRange.max).toLocaleString()}</div></div>
+        <div><div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem">Trend</div><div style="font-family:var(--mono);font-size:.9rem;font-weight:500;color:${trendColor}">${trendIcon} ${d.rent_trend}</div></div>
+        <div><div style="font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.18rem">Total listings</div><div style="font-family:var(--mono);font-size:.9rem;font-weight:500;color:var(--white)">${listings.length}</div></div>
+      </div>`;
+    }
+
+    html += listings.map(l => {
+      const posted = l.created_at ? new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
+      const isActive = l.status === 'active';
+      const meta = [spaceLabels[l.space_type] || l.space_type, l.neighborhood || l.city].filter(Boolean).join(' · ');
+      return `<div class="listing-hist-card">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.78rem;color:var(--sub)">${l.title || meta}</div>
+          <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-top:.18rem">${meta}${posted ? ' · ' + posted : ''}</div>
+        </div>
+        <div class="lhc-rent">$${Math.round(l.rent).toLocaleString()}</div>
+        <span class="lhc-badge ${isActive ? 'active-badge' : 'old-badge'}">${isActive ? 'Active' : 'Archived'}</span>
+      </div>`;
+    }).join('');
+
+    html += `<div style="font-family:var(--mono);font-size:.57rem;color:var(--dim);margin-top:.75rem">Source: Threshold community board · User-submitted listings</div></div>`;
+    section.innerHTML = html;
+  } catch (e) {
+    section.innerHTML = `<div style="font-family:var(--mono);font-size:.68rem;color:var(--muted);padding:1rem">Could not load listing history.</div>`;
   }
 }
 
