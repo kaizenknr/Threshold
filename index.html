@@ -2430,7 +2430,34 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSavedBadge();
   // Restore auth session
   initAuth();
+  // Handle Supabase magic link redirect (tokens arrive in URL hash)
+  handleMagicLinkRedirect();
 });
+
+async function handleMagicLinkRedirect() {
+  const hash = window.location.hash;
+  if (!hash || !hash.includes('access_token=')) return;
+  const params = new URLSearchParams(hash.slice(1));
+  const access_token = params.get('access_token');
+  if (!access_token) return;
+  // Clean the URL immediately
+  history.replaceState(null, '', window.location.pathname);
+  try {
+    const r = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'session', access_token }),
+    });
+    const d = await r.json();
+    if (d.ok) {
+      _authSession = { access_token, user_id: d.user_id, email: d.email };
+      localStorage.setItem('threshold_auth', JSON.stringify(_authSession));
+      updateNavAuth();
+      toast('Signed in!');
+      syncProfileToCloud();
+    }
+  } catch (_e) {}
+}
 </script>
 </body>
 </html>
