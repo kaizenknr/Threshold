@@ -236,6 +236,17 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 .sch-bar{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
 .sch-list{margin-top:1.25rem}
 .sch-ct{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.75rem}
+.mode-tab{padding:.45rem 1rem;border-radius:8px;font-family:var(--body);font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid var(--line2);background:transparent;color:var(--sub);transition:all .15s}
+.mode-tab.active{background:var(--tdim);border-color:rgba(139,105,20,0.5);color:var(--teal)}
+.prop-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+.prop-section{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--line)}
+.prop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-top:.75rem}
+.prop-stat{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:.75rem;text-align:center}
+.prop-stat-v{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--white)}
+.prop-stat-l{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem}
+.score-pill{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .7rem;border-radius:20px;font-family:var(--mono);font-size:.72rem;font-weight:600}
+.comp-row{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;background:var(--bg2);border-radius:8px;margin-bottom:.4rem;font-size:.8rem}
+.comp-addr{color:var(--sub);font-size:.75rem;flex:1;margin-right:.5rem}
 
 /* HOW IT WORKS STEPS */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem}
@@ -389,7 +400,10 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 <!-- ONBOARDING OVERLAY -->
 <div class="ob-overlay hidden" id="obOverlay">
   <div class="ob-inner">
-    <button class="ob-skip" onclick="skipOnboarding()">Skip for now</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:.25rem">
+      <button class="ob-skip" onclick="skipOnboarding()">Skip for now</button>
+      <button onclick="skipOnboarding();openAuth()" style="background:none;border:none;font-family:var(--mono);font-size:.65rem;color:var(--teal);cursor:pointer;text-decoration:underline">Sign in →</button>
+    </div>
 
     <!-- STEP 1 -->
     <div class="ob-step active" id="obStep1">
@@ -647,18 +661,27 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 <div class="page" id="page-search">
   <div class="sch-page">
     <div class="sch-hdr">
-      <div class="eyebrow">Landlord search</div>
-      <h1>Find any landlord or property.</h1>
-      <p>Search by name, building, property management company, or city. We'll show their transparency score, red flags, and real tenant reviews.</p>
-      <div class="sch-bar">
+      <div class="eyebrow">Search</div>
+      <h1>Research any landlord or address.</h1>
+      <p>Look up landlord transparency scores, or enter any address to see ownership, rent estimates, and neighborhood scores.</p>
+      <div style="display:flex;gap:.5rem;margin-top:1rem;margin-bottom:1rem">
+        <button id="modeTabLandlord" class="mode-tab active" onclick="setSearchMode('landlord')">Landlord / Building</button>
+        <button id="modeTabAddress" class="mode-tab" onclick="setSearchMode('address')">Address lookup</button>
+      </div>
+      <div id="landlordBar" class="sch-bar">
         <input id="schQuery" class="si" type="text" placeholder="Landlord or property name..." style="flex:2;min-width:200px" onkeydown="if(event.key==='Enter')doSearch()"/>
         <input id="schCity" class="si" type="text" placeholder="City (optional)" style="flex:1;min-width:130px" onkeydown="if(event.key==='Enter')doSearch()"/>
         <button onclick="doSearch()" class="btn btn-solid">Search →</button>
+      </div>
+      <div id="addressBar" class="sch-bar" style="display:none">
+        <input id="schAddress" class="si" type="text" placeholder="123 Main St, City, State..." style="flex:3;min-width:260px" onkeydown="if(event.key==='Enter')doAddressSearch()"/>
+        <button onclick="doAddressSearch()" class="btn btn-solid">Look up →</button>
       </div>
     </div>
     <div class="sch-list">
       <div class="sch-ct" id="schCt"></div>
       <div id="schResults"><div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">Search any landlord or property above to see their transparency score.</div></div>
+      <div id="propResults" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -2137,7 +2160,15 @@ function obFinish() {
   localStorage.setItem('threshold_profile', JSON.stringify(obData));
   document.getElementById('obOverlay').classList.add('hidden');
   updateProfileChip();
-  toast('Profile saved!', 'success');
+  if (!isLoggedIn()) {
+    setTimeout(() => {
+      toast('Profile saved! Sign in to sync across devices.', 'success');
+      setTimeout(() => openAuth(), 2200);
+    }, 300);
+  } else {
+    toast('Profile saved!', 'success');
+    syncProfileToCloud();
+  }
 }
 
 function skipOnboarding() {
@@ -2418,7 +2449,170 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSavedBadge();
   // Restore auth session
   initAuth();
+  // Handle Supabase magic link redirect (tokens arrive in URL hash)
+  handleMagicLinkRedirect();
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADDRESS LOOKUP (property data)
+// ─────────────────────────────────────────────────────────────────────────────
+let _searchMode = 'landlord';
+
+function setSearchMode(mode) {
+  _searchMode = mode;
+  document.getElementById('modeTabLandlord').classList.toggle('active', mode === 'landlord');
+  document.getElementById('modeTabAddress').classList.toggle('active', mode === 'address');
+  document.getElementById('landlordBar').style.display = mode === 'landlord' ? '' : 'none';
+  document.getElementById('addressBar').style.display = mode === 'address' ? '' : 'none';
+  document.getElementById('schResults').style.display = mode === 'landlord' ? '' : 'none';
+  document.getElementById('propResults').style.display = mode === 'address' ? '' : 'none';
+}
+
+async function doAddressSearch() {
+  const address = document.getElementById('schAddress').value.trim();
+  if (!address) { toast('Enter an address', 'error'); return; }
+
+  const propEl = document.getElementById('propResults');
+  propEl.style.display = '';
+  document.getElementById('schResults').style.display = 'none';
+  propEl.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Looking up ${escHtml(address)}…</div>`;
+
+  try {
+    const res = await fetch('/api/property-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address }),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Lookup failed');
+    propEl.innerHTML = renderPropertyCard(data);
+  } catch (e) {
+    propEl.innerHTML = `<div style="background:var(--rdim);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;color:var(--red)">Lookup failed: ${escHtml(e.message)}</div>`;
+  }
+}
+
+function renderPropertyCard(d) {
+  const addr = escHtml(d.normalized_address || d.address || '');
+
+  // Owner block
+  let ownerHtml = '';
+  if (d.owner) {
+    const name = escHtml(d.owner.name || 'Unknown');
+    const mail = escHtml(d.owner.mailing_address || '');
+    ownerHtml = `
+    <div class="prop-section">
+      <div class="fb-hd">Ownership</div>
+      <div style="font-size:.9rem;color:var(--white);font-weight:600">${name}</div>
+      ${mail ? `<div style="font-size:.78rem;color:var(--sub);margin-top:.3rem">${mail}</div>` : ''}
+      <button class="btn btn-ghost" style="margin-top:.75rem;font-size:.72rem" onclick="document.getElementById('schQuery').value=${JSON.stringify(d.owner.name||'')};setSearchMode('landlord');doSearch()">Check landlord score →</button>
+    </div>`;
+  }
+
+  // Property details block
+  let propHtml = '';
+  if (d.property) {
+    const p = d.property;
+    const stats = [
+      p.bedrooms   != null ? { v: p.bedrooms,   l: 'Beds' }   : null,
+      p.bathrooms  != null ? { v: p.bathrooms,   l: 'Baths' }  : null,
+      p.sqft       != null ? { v: p.sqft.toLocaleString(), l: 'Sq ft' } : null,
+      p.year_built != null ? { v: p.year_built,  l: 'Built' }  : null,
+    ].filter(Boolean);
+    const statsHtml = stats.map(s => `<div class="prop-stat"><div class="prop-stat-v">${escHtml(String(s.v))}</div><div class="prop-stat-l">${escHtml(s.l)}</div></div>`).join('');
+    const saleDate   = escHtml(p.last_sale_date   || '');
+    const saleAmount = p.last_sale_amount != null ? '$' + Number(p.last_sale_amount).toLocaleString() : '';
+    propHtml = `
+    <div class="prop-section">
+      <div class="fb-hd">Property details</div>
+      ${stats.length ? `<div class="prop-grid">${statsHtml}</div>` : ''}
+      ${saleDate || saleAmount ? `<div style="margin-top:.75rem;font-size:.78rem;color:var(--sub)">Last sale: ${[saleAmount, saleDate].filter(Boolean).join(' · ')}</div>` : ''}
+    </div>`;
+  }
+
+  // Rent estimate block
+  let rentHtml = '';
+  if (d.rent_estimate) {
+    const r = d.rent_estimate;
+    const rent = r.rent != null ? '$' + Math.round(r.rent).toLocaleString() + '/mo' : '—';
+    const lo   = r.rent_range_low  != null ? '$' + Math.round(r.rent_range_low).toLocaleString()  : '';
+    const hi   = r.rent_range_high != null ? '$' + Math.round(r.rent_range_high).toLocaleString() : '';
+    const range = lo && hi ? `<span style="font-size:.75rem;color:var(--sub)"> (${lo} – ${hi})</span>` : '';
+    const comps = (r.comparables || []).map(c => `
+      <div class="comp-row">
+        <span class="comp-addr">${escHtml(c.address || '')}</span>
+        <span style="font-family:var(--mono);font-size:.78rem;color:var(--teal)">${c.rent != null ? '$' + Math.round(c.rent).toLocaleString() : '—'}</span>
+        ${c.bedrooms != null ? `<span style="font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-left:.5rem">${c.bedrooms}bd</span>` : ''}
+      </div>`).join('');
+    rentHtml = `
+    <div class="prop-section">
+      <div class="fb-hd">Rent estimate <span style="color:var(--muted);font-size:.6rem">via RentCast</span></div>
+      <div style="font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--white)">${rent}${range}</div>
+      ${comps ? `<div style="margin-top:1rem"><div style="font-family:var(--mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Nearby comparables</div>${comps}</div>` : ''}
+    </div>`;
+  }
+
+  // Walk score block
+  let walkHtml = '';
+  if (d.walk_score) {
+    const w = d.walk_score;
+    function scoreColor(n) { return n >= 70 ? 'var(--teal)' : n >= 50 ? 'var(--amber)' : 'var(--red)'; }
+    const pills = [
+      w.walk    != null ? { label: 'Walk',    score: w.walk,    desc: w.walk_description }    : null,
+      w.transit != null ? { label: 'Transit', score: w.transit, desc: w.transit_description } : null,
+      w.bike    != null ? { label: 'Bike',    score: w.bike,    desc: w.bike_description }    : null,
+    ].filter(Boolean);
+    const pillsHtml = pills.map(p => `
+      <div class="prop-stat">
+        <div class="prop-stat-v" style="color:${scoreColor(p.score)}">${p.score}</div>
+        <div class="prop-stat-l">${escHtml(p.label)}</div>
+        ${p.desc ? `<div style="font-size:.65rem;color:var(--muted);margin-top:.25rem">${escHtml(p.desc)}</div>` : ''}
+      </div>`).join('');
+    walkHtml = `
+    <div class="prop-section">
+      <div class="fb-hd">Neighborhood scores <span style="color:var(--muted);font-size:.6rem">via Walk Score</span></div>
+      <div class="prop-grid">${pillsHtml}</div>
+    </div>`;
+  }
+
+  const noData = !d.owner && !d.property && !d.rent_estimate && !d.walk_score;
+
+  return `
+  <div class="prop-card">
+    <div class="eyebrow">Address lookup</div>
+    <div style="font-size:1rem;font-weight:700;color:var(--white);font-family:var(--display)">${addr}</div>
+    ${noData ? `<div style="margin-top:1rem;font-size:.8rem;color:var(--sub)">No data found for this address. Try adding the full street address, city, and state.</div>` : ''}
+    ${ownerHtml}
+    ${propHtml}
+    ${rentHtml}
+    ${walkHtml}
+  </div>`;
+}
+
+async function handleMagicLinkRedirect() {
+  const hash = window.location.hash;
+  if (!hash || !hash.includes('access_token=')) return;
+  const params = new URLSearchParams(hash.slice(1));
+  const access_token = params.get('access_token');
+  if (!access_token) return;
+  // Clean the URL immediately
+  history.replaceState(null, '', window.location.pathname);
+  try {
+    const r = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'session', access_token }),
+    });
+    const d = await r.json();
+    if (d.ok) {
+      _authSession = { access_token, user_id: d.user_id, email: d.email };
+      localStorage.setItem('threshold_auth', JSON.stringify(_authSession));
+      updateNavAuth();
+      toast('Signed in!');
+      syncProfileToCloud();
+    }
+  } catch (_e) {}
+}
 </script>
 </body>
 </html>

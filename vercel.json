@@ -24,6 +24,8 @@
     "api/apartment-reports.js": { "maxDuration": 20 },
     "api/moderate-report.js":   { "maxDuration": 20 },
     "api/auth.js":              { "maxDuration": 20 },
-    "api/profile.js":           { "maxDuration": 20 }
+    "api/profile.js":           { "maxDuration": 20 },
+    "api/listings.js":          { "maxDuration": 20 },
+    "api/property-data.js":     { "maxDuration": 20 }
   }
 }
