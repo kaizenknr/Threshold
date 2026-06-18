@@ -236,17 +236,6 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 .sch-bar{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
 .sch-list{margin-top:1.25rem}
 .sch-ct{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:.75rem}
-.mode-tab{padding:.45rem 1rem;border-radius:8px;font-family:var(--body);font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid var(--line2);background:transparent;color:var(--sub);transition:all .15s}
-.mode-tab.active{background:var(--tdim);border-color:rgba(139,105,20,0.5);color:var(--teal)}
-.prop-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
-.prop-section{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--line)}
-.prop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-top:.75rem}
-.prop-stat{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:.75rem;text-align:center}
-.prop-stat-v{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--white)}
-.prop-stat-l{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem}
-.score-pill{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .7rem;border-radius:20px;font-family:var(--mono);font-size:.72rem;font-weight:600}
-.comp-row{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;background:var(--bg2);border-radius:8px;margin-bottom:.4rem;font-size:.8rem}
-.comp-addr{color:var(--sub);font-size:.75rem;flex:1;margin-right:.5rem}
 
 /* HOW IT WORKS STEPS */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem}
@@ -272,6 +261,79 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
   .hero-search input{padding-right:6.5rem}
   .hero-search button{font-size:.72rem;padding:.55rem .75rem}
   .issue-grid{grid-template-columns:1fr 1fr}
+}
+
+/* SPLASH */
+#splash{position:fixed;inset:0;z-index:10000;background:#08070a;display:flex;align-items:center;justify-content:center;transition:opacity .5s ease}
+#splash.out{opacity:0;pointer-events:none}
+.splash-inner{display:flex;flex-direction:column;align-items:center;gap:.85rem;animation:fadeUp .75s ease both}
+.splash-brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:600;letter-spacing:.22em;color:#e8d5c4;text-transform:uppercase;margin-top:.35rem}
+.splash-sub{font-family:'DM Mono',monospace;font-size:.55rem;color:rgba(196,168,130,0.45);letter-spacing:.26em;text-transform:uppercase}
+
+/* NAV DARK (used on landing page) */
+.nav-dark{background:rgba(8,7,10,0.88)!important;border-bottom-color:rgba(255,255,255,0.06)!important;backdrop-filter:blur(24px)!important}
+.nav-dark .ntab{color:rgba(255,255,255,0.38)!important}
+.nav-dark .ntab:hover{color:rgba(255,255,255,0.72)!important;background:rgba(255,255,255,0.05)!important}
+.nav-dark .ntab.active{color:#e8d5c4!important;background:rgba(196,168,130,0.1)!important;outline-color:rgba(196,168,130,0.2)!important}
+.nav-dark .logo{color:#e8d5c4!important}
+.nav-dark .logo-dot{background:#c4a882!important}
+.nav-dark .btn-ghost{border-color:rgba(255,255,255,0.14)!important;color:rgba(255,255,255,0.55)!important}
+.nav-dark .btn-ghost:hover{background:rgba(255,255,255,0.07)!important;color:#f5f3f0!important}
+.nav-dark .btn-solid{background:#c4a882!important;color:#08070a!important}
+.nav-dark .nav-user{background:rgba(255,255,255,0.06)!important;border-color:rgba(255,255,255,0.1)!important}
+.nav-dark .nav-user-email{color:rgba(245,243,240,0.55)!important}
+
+/* DARK LANDING PAGE */
+.lp-page{background:#08070a}
+.lp-hero{min-height:calc(100vh - 58px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 1.5rem 5rem;text-align:center;position:relative;background:#08070a;overflow:hidden}
+.lp-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse at center,rgba(196,168,130,0.06) 0%,transparent 65%);pointer-events:none}
+.lp-pill{display:inline-flex;align-items:center;gap:.45rem;background:rgba(196,168,130,0.1);border:1px solid rgba(196,168,130,0.22);color:#c4a882;font-family:'DM Mono',monospace;font-size:.62rem;padding:.3rem 1rem;border-radius:100px;margin-bottom:2rem;letter-spacing:.03em;animation:fadeUp .5s ease both}
+.lp-pill-dot{width:5px;height:5px;border-radius:50%;background:#c4a882;animation:pulse 2s infinite}
+.lp-h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.8rem,6.5vw,5.2rem);font-weight:700;line-height:1.07;letter-spacing:-.03em;color:#f5f3f0;margin-bottom:1.1rem;animation:fadeUp .5s .07s ease both}
+.lp-h1 em{color:#c4a882;font-style:italic}
+.lp-sub{font-family:'DM Mono',monospace;font-size:clamp(.68rem,1.3vw,.82rem);color:rgba(245,243,240,0.42);letter-spacing:.02em;line-height:1.7;max-width:460px;margin:0 auto 2.5rem;animation:fadeUp .5s .14s ease both}
+.lp-search{width:100%;max-width:580px;position:relative;animation:fadeUp .5s .21s ease both}
+.lp-search input{width:100%;background:rgba(255,255,255,0.05);backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,0.11);border-radius:14px;padding:1.05rem 8.5rem 1.05rem 1.35rem;color:#f5f3f0;font-family:'Inter',-apple-system,sans-serif;font-size:.95rem;outline:none;caret-color:#c4a882;transition:border-color .2s,box-shadow .2s}
+.lp-search input:focus{border-color:rgba(196,168,130,0.55);box-shadow:0 0 0 3px rgba(196,168,130,0.1)}
+.lp-search input::placeholder{color:rgba(245,243,240,0.25)}
+.lp-search button{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:#c4a882;color:#08070a;border:none;border-radius:10px;padding:.62rem 1.15rem;font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .15s;white-space:nowrap}
+.lp-search button:hover{background:#e8d5c4;transform:translateY(calc(-50% - 1px))}
+.lp-anon{font-family:'DM Mono',monospace;font-size:.58rem;color:rgba(245,243,240,0.2);letter-spacing:.05em;margin-top:1.4rem;animation:fadeUp .5s .28s ease both}
+.lp-stats{display:flex;gap:2rem;margin-top:2.5rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .5s .32s ease both;border-top:1px solid rgba(255,255,255,0.06);padding-top:2rem}
+.lp-stat{text-align:center}
+.lp-stat-n{font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:500;color:#c4a882}
+.lp-stat-l{font-family:'DM Mono',monospace;font-size:.55rem;color:rgba(245,243,240,0.3);letter-spacing:.06em;text-transform:uppercase;margin-top:.15rem}
+.lp-section{padding:4rem 0;background:#08070a}
+.lp-section.alt{background:#0d0c13}
+.lp-eyebrow{color:#c4a882!important}
+.lp-h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.9rem,3.5vw,2.9rem);font-weight:700;line-height:1.1;letter-spacing:-.025em;color:#f5f3f0;margin-bottom:.7rem}
+.lp-h2 em{color:#c4a882;font-style:italic}
+.lp-body{font-size:.875rem;color:rgba(245,243,240,0.45);line-height:1.75;margin-bottom:1.5rem;max-width:520px}
+.lp-issue-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.65rem;margin-top:1.5rem}
+.lp-issue-tile{background:#111018;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1.1rem 1.2rem;transition:border-color .2s,transform .2s;cursor:pointer}
+.lp-issue-tile:hover{border-color:rgba(196,168,130,0.3);transform:translateY(-2px)}
+.lp-issue-icon{font-size:1.35rem;margin-bottom:.55rem}
+.lp-issue-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:.88rem;font-weight:700;color:#f5f3f0;margin-bottom:.22rem}
+.lp-issue-desc{font-size:.75rem;color:rgba(245,243,240,0.38);line-height:1.55}
+.lp-listing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.9rem;margin-top:1.5rem}
+.lp-listing-card{background:#111018;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:1.3rem 1.4rem;transition:border-color .2s,transform .2s;cursor:pointer}
+.lp-listing-card:hover{border-color:rgba(196,168,130,0.28);transform:translateY(-2px)}
+.lp-listing-type{font-family:'DM Mono',monospace;font-size:.58rem;color:#c4a882;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.35rem}
+.lp-listing-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;font-weight:700;color:#f5f3f0;margin-bottom:.3rem}
+.lp-listing-meta{font-family:'DM Mono',monospace;font-size:.6rem;color:rgba(245,243,240,0.38)}
+.lp-listing-price{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:500;color:#c4a882}
+.lp-cta-inner{border:1px solid rgba(196,168,130,0.2);border-radius:20px;padding:3.5rem 2rem;text-align:center;background:rgba(196,168,130,0.04);max-width:640px;margin:0 auto}
+.lp-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border-radius:10px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:.92rem;cursor:pointer;text-decoration:none;transition:all .2s;border:none;white-space:nowrap}
+.lp-btn-gold{background:#c4a882;color:#08070a}
+.lp-btn-gold:hover{background:#e8d5c4;transform:translateY(-1px);box-shadow:0 8px 24px rgba(196,168,130,0.25)}
+.lp-btn-outline{background:transparent;border:1.5px solid rgba(196,168,130,0.35);color:#c4a882}
+.lp-btn-outline:hover{background:rgba(196,168,130,0.08);border-color:rgba(196,168,130,0.6)}
+.lp-divider{border:none;border-top:1px solid rgba(255,255,255,0.05);margin:0}
+@media(max-width:640px){
+  .lp-h1{font-size:2.6rem}
+  .lp-search input{padding-right:6.5rem}
+  .lp-search button{font-size:.75rem;padding:.58rem .75rem}
+  .lp-stats{gap:1.25rem}
 }
 
 /* ONBOARDING OVERLAY */
@@ -394,6 +456,20 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 </style>
 </head>
 <body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-inner">
+    <svg width="52" height="62" viewBox="0 0 52 62" fill="none" aria-hidden="true">
+      <path d="M15 28V18C15 10.268 19.925 4 26 4C32.075 4 37 10.268 37 18V28" stroke="#c4a882" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <rect x="4" y="28" width="44" height="30" rx="8" fill="#c4a882"/>
+      <circle cx="26" cy="41" r="5" fill="#08070a"/>
+      <rect x="23" y="44" width="6" height="8" rx="2.5" fill="#08070a"/>
+    </svg>
+    <div class="splash-brand">Threshold</div>
+    <div class="splash-sub">Rental Intelligence</div>
+  </div>
+</div>
 
 <div class="aurora"></div>
 
@@ -573,86 +649,106 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 <!-- ═══════════════════════════════════════
      LANDING
 ═══════════════════════════════════════ -->
-<div class="page-full active" id="page-landing" style="overflow-y:auto">
-  <div class="hero">
-    <div class="hero-pill">
-      <span style="width:5px;height:5px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite;display:inline-block"></span>
-      Real tenant reviews · Free forever
+<div class="page-full active" id="page-landing" style="overflow-y:auto" class="lp-page">
+
+  <!-- ── HERO ─────────────────────────── -->
+  <div class="lp-hero">
+    <div class="lp-pill">
+      <span class="lp-pill-dot"></span>
+      Community-powered · Free forever
     </div>
-    <h1>Know before<br><span class="grad-text">you sign.</span></h1>
-    <p>Ghost rates. Hidden fee alerts. Mold reports. Predatory app fees. Check any landlord or property — before they get your money.</p>
-    <div class="hero-search">
-      <input id="heroSearch" type="text" placeholder="Search any landlord, building, or property manager..." onkeydown="if(event.key==='Enter')heroSearchGo()"/>
+    <h1 class="lp-h1">Every landlord<br>has a record.<br><em>Now you can read it.</em></h1>
+    <p class="lp-sub">Ghost rates. Hidden fees. Mold reports. Real tenant reviews — before you sign anything.</p>
+    <div class="lp-search">
+      <input id="heroSearch" type="text" placeholder="Search any landlord, building, or address…" onkeydown="if(event.key==='Enter')heroSearchGo()"/>
       <button onclick="heroSearchGo()">Check it →</button>
     </div>
-    <div style="margin-top:1.5rem;font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.22);letter-spacing:.04em;animation:fadeUp .5s .3s ease both">
-      100% anonymous · no account needed · community-powered
-    </div>
-    <div style="margin-top:.9rem;animation:fadeUp .5s .36s ease both">
-      <a href="#" onclick="go('listings');return false" style="font-family:var(--body);font-size:.8rem;color:var(--sub);text-decoration:underline;text-underline-offset:3px">Looking for a room or sublet? Browse community listings →</a>
-    </div>
-  </div>
-
-  <!-- HOW IT WORKS -->
-  <div class="wrap recent-section" style="border-top:1px solid var(--line);padding-top:3rem">
-    <div class="eyebrow">How it works</div>
-    <h2 class="section-h">No more flying blind.</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">01 — Search</div>
-        <div class="step-t">Look up any landlord</div>
-        <div class="step-d">Type a property manager, apartment complex name, or individual landlord. We search Reddit, ApartmentRatings, Yelp, and more.</div>
-      </div>
-      <div class="step">
-        <div class="step-n">02 — Score</div>
-        <div class="step-t">See the full picture</div>
-        <div class="step-d">Transparency score, ghost rate, hidden fee percentage, mold complaints, average response time — all in one card.</div>
-      </div>
-      <div class="step">
-        <div class="step-n">03 — Report</div>
-        <div class="step-t">Pay it forward</div>
-        <div class="step-d">Had a bad experience? Took a non-refundable app fee and disappeared? Mold on move-in? Report it anonymously in 60 seconds.</div>
-      </div>
+    <div class="lp-anon">100% anonymous · no account needed · community-powered</div>
+    <div class="lp-stats">
+      <div class="lp-stat"><div class="lp-stat-n">Ghost rate</div><div class="lp-stat-l">Most common complaint</div></div>
+      <div class="lp-stat"><div class="lp-stat-n">Hidden fees</div><div class="lp-stat-l">#2 most reported</div></div>
+      <div class="lp-stat"><div class="lp-stat-n">Mold / maintenance</div><div class="lp-stat-l">#3 most reported</div></div>
     </div>
   </div>
 
-  <!-- WHAT WE TRACK -->
-  <div class="wrap" style="padding:2rem 1.25rem 4rem">
-    <div class="eyebrow">What we track</div>
-    <h2 class="section-h">The stuff they <span style="color:var(--muted)">hope you don't know.</span></h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-top:1.25rem">
-      <div class="glow-card" style="padding:1.1rem 1.25rem">
-        <div style="font-size:1.4rem;margin-bottom:.6rem">👻</div>
-        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Ghost Rate</div>
-        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">% of inquiries that get no response. Yours might be next.</div>
+  <hr class="lp-divider"/>
+
+  <!-- ── ISSUES ────────────────────────── -->
+  <div class="lp-section alt">
+    <div class="wrap">
+      <div class="eyebrow lp-eyebrow">What renters are reporting</div>
+      <h2 class="lp-h2">Find the most common issues<br><em>near you.</em></h2>
+      <p class="lp-body">Search any landlord or address — we'll surface the issues other tenants already reported.</p>
+      <div class="lp-issue-grid">
+        <div class="lp-issue-tile" onclick="document.getElementById('heroSearch').value='ghost';heroSearchGo()">
+          <div class="lp-issue-icon">👻</div>
+          <div class="lp-issue-name">Ghost Rate</div>
+          <div class="lp-issue-desc">Landlords who go silent after collecting your app fee.</div>
+        </div>
+        <div class="lp-issue-tile" onclick="document.getElementById('heroSearch').value='hidden fee';heroSearchGo()">
+          <div class="lp-issue-icon">💸</div>
+          <div class="lp-issue-name">Hidden Fees</div>
+          <div class="lp-issue-desc">Admin fees, amenity fees, pet rent added after interest shown.</div>
+        </div>
+        <div class="lp-issue-tile" onclick="go('report')">
+          <div class="lp-issue-icon">🟫</div>
+          <div class="lp-issue-name">Mold & Maintenance</div>
+          <div class="lp-issue-desc">Unresolved repairs. Mold discovered after move-in. Ignored requests.</div>
+        </div>
+        <div class="lp-issue-tile" onclick="go('report')">
+          <div class="lp-issue-icon">🚩</div>
+          <div class="lp-issue-name">App Fee Theft</div>
+          <div class="lp-issue-desc">Non-refundable fees with zero intent to rent the unit.</div>
+        </div>
+        <div class="lp-issue-tile" onclick="go('report')">
+          <div class="lp-issue-icon">📸</div>
+          <div class="lp-issue-name">Listing Accuracy</div>
+          <div class="lp-issue-desc">Photos that don't match reality. Sqft lies. "Renovated" from 1994.</div>
+        </div>
+        <div class="lp-issue-tile" onclick="go('report')">
+          <div class="lp-issue-icon">⏱</div>
+          <div class="lp-issue-name">Response Time</div>
+          <div class="lp-issue-desc">Average days to respond. Some landlords treat tenants like a bother.</div>
+        </div>
       </div>
-      <div class="glow-card" style="padding:1.1rem 1.25rem">
-        <div style="font-size:1.4rem;margin-bottom:.6rem">💸</div>
-        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Hidden Fees</div>
-        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Admin fees, "amenity" fees, pet rent bait-and-switch — all flagged.</div>
-      </div>
-      <div class="glow-card" style="padding:1.1rem 1.25rem">
-        <div style="font-size:1.4rem;margin-bottom:.6rem">🟢</div>
-        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Mold & Maintenance</div>
-        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Unresolved maintenance requests. Mold discovered after signing.</div>
-      </div>
-      <div class="glow-card" style="padding:1.1rem 1.25rem">
-        <div style="font-size:1.4rem;margin-bottom:.6rem">🚩</div>
-        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">App Fee Theft</div>
-        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Non-refundable fees charged with zero intent to rent. We call it out.</div>
-      </div>
-      <div class="glow-card" style="padding:1.1rem 1.25rem">
-        <div style="font-size:1.4rem;margin-bottom:.6rem">📸</div>
-        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Listing Accuracy</div>
-        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Photos that don't match reality. Square footage lies. "Renovated" kitchens from 1994.</div>
-      </div>
-      <div class="glow-card" style="padding:1.1rem 1.25rem">
-        <div style="font-size:1.4rem;margin-bottom:.6rem">⏱</div>
-        <div style="font-family:var(--display);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Response Time</div>
-        <div style="font-size:.78rem;color:var(--sub);line-height:1.6">Average days to respond. Because some landlords treat you like a bother.</div>
+      <div style="margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="lp-btn lp-btn-gold" onclick="go('search')">Search your area →</button>
+        <button class="lp-btn lp-btn-outline" onclick="go('report')">File a report</button>
       </div>
     </div>
   </div>
+
+  <hr class="lp-divider"/>
+
+  <!-- ── LISTINGS PREVIEW ──────────────── -->
+  <div class="lp-section">
+    <div class="wrap">
+      <div class="eyebrow lp-eyebrow">From the community</div>
+      <h2 class="lp-h2">Rooms, sublets, units.<br><em>Fee-transparent.</em></h2>
+      <p class="lp-body">Every listing is cross-checkable. See the landlord's score before you even reply.</p>
+      <div id="homepageListings">
+        <div style="display:flex;align-items:center;gap:.75rem;padding:1.5rem 0;font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(245,243,240,0.3)"><div class="spinner" style="border-color:rgba(255,255,255,0.1);border-top-color:#c4a882"></div>Loading…</div>
+      </div>
+      <div style="margin-top:1.75rem">
+        <button class="lp-btn lp-btn-outline" onclick="go('listings')">Browse all listings →</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="lp-divider"/>
+
+  <!-- ── REPORT CTA ─────────────────────── -->
+  <div class="lp-section alt">
+    <div class="wrap">
+      <div class="lp-cta-inner">
+        <div class="eyebrow lp-eyebrow" style="margin-bottom:.6rem">Pay it forward</div>
+        <h2 class="lp-h2" style="margin-bottom:.75rem">Had a nightmare landlord?<br><em>Tell us.</em></h2>
+        <p style="font-size:.85rem;color:rgba(245,243,240,0.42);line-height:1.75;max-width:420px;margin:0 auto 2rem">Anonymous. Free. Takes 60 seconds. Helps hundreds of renters avoid the same trap.</p>
+        <button class="lp-btn lp-btn-gold" onclick="go('report')">File a report →</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -661,27 +757,18 @@ input[type=radio]:checked+.rl{background:var(--tdim);border-color:rgba(139,105,2
 <div class="page" id="page-search">
   <div class="sch-page">
     <div class="sch-hdr">
-      <div class="eyebrow">Search</div>
-      <h1>Research any landlord or address.</h1>
-      <p>Look up landlord transparency scores, or enter any address to see ownership, rent estimates, and neighborhood scores.</p>
-      <div style="display:flex;gap:.5rem;margin-top:1rem;margin-bottom:1rem">
-        <button id="modeTabLandlord" class="mode-tab active" onclick="setSearchMode('landlord')">Landlord / Building</button>
-        <button id="modeTabAddress" class="mode-tab" onclick="setSearchMode('address')">Address lookup</button>
-      </div>
-      <div id="landlordBar" class="sch-bar">
+      <div class="eyebrow">Landlord search</div>
+      <h1>Find any landlord or property.</h1>
+      <p>Search by name, building, property management company, or city. We'll show their transparency score, red flags, and real tenant reviews.</p>
+      <div class="sch-bar">
         <input id="schQuery" class="si" type="text" placeholder="Landlord or property name..." style="flex:2;min-width:200px" onkeydown="if(event.key==='Enter')doSearch()"/>
         <input id="schCity" class="si" type="text" placeholder="City (optional)" style="flex:1;min-width:130px" onkeydown="if(event.key==='Enter')doSearch()"/>
         <button onclick="doSearch()" class="btn btn-solid">Search →</button>
-      </div>
-      <div id="addressBar" class="sch-bar" style="display:none">
-        <input id="schAddress" class="si" type="text" placeholder="123 Main St, City, State..." style="flex:3;min-width:260px" onkeydown="if(event.key==='Enter')doAddressSearch()"/>
-        <button onclick="doAddressSearch()" class="btn btn-solid">Look up →</button>
       </div>
     </div>
     <div class="sch-list">
       <div class="sch-ct" id="schCt"></div>
       <div id="schResults"><div style="text-align:center;padding:3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)">Search any landlord or property above to see their transparency score.</div></div>
-      <div id="propResults" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -1003,9 +1090,11 @@ function go(page) {
   document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
   if (tabMap[page]) document.getElementById(tabMap[page])?.classList.add('active');
   window.scrollTo(0, 0);
+  document.getElementById('mainNav').classList.toggle('nav-dark', page === 'landing');
   if (page === 'faq') renderFAQ();
   if (page === 'listings') { loadListings(); loadNeighborhoodPills(); }
   if (page === 'saved') renderSavedPage();
+  if (page === 'landing') loadHomepageListings();
 }
 
 window.addEventListener('scroll', () => {
@@ -2161,6 +2250,7 @@ function obFinish() {
   document.getElementById('obOverlay').classList.add('hidden');
   updateProfileChip();
   if (!isLoggedIn()) {
+    // Prompt to create account to sync across devices
     setTimeout(() => {
       toast('Profile saved! Sign in to sync across devices.', 'success');
       setTimeout(() => openAuth(), 2200);
@@ -2451,142 +2541,77 @@ document.addEventListener('DOMContentLoaded', () => {
   initAuth();
   // Handle Supabase magic link redirect (tokens arrive in URL hash)
   handleMagicLinkRedirect();
+  // Dark nav for landing page (it's the default active page)
+  document.getElementById('mainNav').classList.add('nav-dark');
+  // Load homepage listings preview
+  loadHomepageListings();
+  // Splash screen
+  initSplash();
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ADDRESS LOOKUP (property data)
+// SPLASH
 // ─────────────────────────────────────────────────────────────────────────────
-let _searchMode = 'landlord';
-
-function setSearchMode(mode) {
-  _searchMode = mode;
-  document.getElementById('modeTabLandlord').classList.toggle('active', mode === 'landlord');
-  document.getElementById('modeTabAddress').classList.toggle('active', mode === 'address');
-  document.getElementById('landlordBar').style.display = mode === 'landlord' ? '' : 'none';
-  document.getElementById('addressBar').style.display = mode === 'address' ? '' : 'none';
-  document.getElementById('schResults').style.display = mode === 'landlord' ? '' : 'none';
-  document.getElementById('propResults').style.display = mode === 'address' ? '' : 'none';
+function initSplash() {
+  const s = document.getElementById('splash');
+  if (!s) return;
+  setTimeout(() => {
+    s.classList.add('out');
+    setTimeout(() => { s.style.display = 'none'; }, 520);
+  }, 1700);
 }
 
-async function doAddressSearch() {
-  const address = document.getElementById('schAddress').value.trim();
-  if (!address) { toast('Enter an address', 'error'); return; }
+// ─────────────────────────────────────────────────────────────────────────────
+// HOMEPAGE LISTINGS PREVIEW
+// ─────────────────────────────────────────────────────────────────────────────
+let _homepageListingsLoaded = false;
 
-  const propEl = document.getElementById('propResults');
-  propEl.style.display = '';
-  document.getElementById('schResults').style.display = 'none';
-  propEl.innerHTML = `<div style="display:flex;align-items:center;gap:.75rem;padding:2rem;font-family:var(--mono);font-size:.7rem;color:var(--muted)"><div class="spinner"></div>Looking up ${escHtml(address)}…</div>`;
-
+async function loadHomepageListings() {
+  if (_homepageListingsLoaded) return;
+  const el = document.getElementById('homepageListings');
+  if (!el) return;
   try {
-    const res = await fetch('/api/property-data', {
+    const res = await fetch('/api/listings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ address }),
+      body: JSON.stringify({ action: 'fetch' }),
     });
-    if (!res.ok) throw new Error(`API ${res.status}`);
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Lookup failed');
-    propEl.innerHTML = renderPropertyCard(data);
-  } catch (e) {
-    propEl.innerHTML = `<div style="background:var(--rdim);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:1.25rem;font-family:var(--mono);font-size:.7rem;color:var(--red)">Lookup failed: ${escHtml(e.message)}</div>`;
+    if (!res.ok) throw new Error('fetch failed');
+    const d = await res.json();
+    const rows = (d.listings || []).slice(0, 4);
+    if (!rows.length) {
+      el.innerHTML = `
+        <div style="border:1px dashed rgba(196,168,130,0.2);border-radius:12px;padding:2.5rem;text-align:center">
+          <div style="font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(245,243,240,0.28);margin-bottom:1rem">No listings yet — be the first.</div>
+          <button class="lp-btn lp-btn-gold" onclick="go('postlisting')">+ Post a listing</button>
+        </div>`;
+      _homepageListingsLoaded = true;
+      return;
+    }
+    el.innerHTML = `<div class="lp-listing-grid">${rows.map(l => {
+      const SPACE_MAP = { private_room:'Private Room', whole_unit:'Whole Unit', studio:'Studio', sublet:'Sublet' };
+      const typeLabel = SPACE_MAP[l.space_type] || 'Space';
+      const place = l.neighborhood || l.city || '';
+      const title = l.title ? escHtml(l.title) : `${typeLabel}${place ? ' · ' + escHtml(place) : ''}`;
+      const meta = [];
+      if (l.bedrooms != null) meta.push(`${l.bedrooms}bd`);
+      if (l.bathrooms != null) meta.push(`${l.bathrooms}ba`);
+      if (l.city) meta.push(escHtml(l.city));
+      const landlordArg = l.landlord_name ? escHtml(l.landlord_name).replace(/'/g,"\\'") : '';
+      return `<div class="lp-listing-card" onclick="go('listings')">
+        <div class="lp-listing-type">${escHtml(typeLabel)}${l.city ? ' · ' + escHtml(l.city) : ''}</div>
+        <div class="lp-listing-title">${title}</div>
+        ${meta.length ? `<div class="lp-listing-meta" style="margin-top:.25rem">${meta.join(' · ')}</div>` : ''}
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.85rem">
+          <div class="lp-listing-price">$${Math.round(l.rent).toLocaleString()}<span style="font-size:.65rem;color:rgba(245,243,240,0.35)">/mo</span></div>
+          ${landlordArg ? `<button class="lp-btn lp-btn-outline" style="font-size:.65rem;padding:.28rem .65rem" onclick="event.stopPropagation();document.getElementById('schQuery').value='${landlordArg}';go('search');doSearch()">Check landlord →</button>` : ''}
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+    _homepageListingsLoaded = true;
+  } catch (_e) {
+    document.getElementById('homepageListings').innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(245,243,240,0.25);padding:1.5rem 0">Listings unavailable right now.</div>`;
   }
-}
-
-function renderPropertyCard(d) {
-  const addr = escHtml(d.normalized_address || d.address || '');
-
-  // Owner block
-  let ownerHtml = '';
-  if (d.owner) {
-    const name = escHtml(d.owner.name || 'Unknown');
-    const mail = escHtml(d.owner.mailing_address || '');
-    ownerHtml = `
-    <div class="prop-section">
-      <div class="fb-hd">Ownership</div>
-      <div style="font-size:.9rem;color:var(--white);font-weight:600">${name}</div>
-      ${mail ? `<div style="font-size:.78rem;color:var(--sub);margin-top:.3rem">${mail}</div>` : ''}
-      <button class="btn btn-ghost" style="margin-top:.75rem;font-size:.72rem" onclick="document.getElementById('schQuery').value=${JSON.stringify(d.owner.name||'')};setSearchMode('landlord');doSearch()">Check landlord score →</button>
-    </div>`;
-  }
-
-  // Property details block
-  let propHtml = '';
-  if (d.property) {
-    const p = d.property;
-    const stats = [
-      p.bedrooms   != null ? { v: p.bedrooms,   l: 'Beds' }   : null,
-      p.bathrooms  != null ? { v: p.bathrooms,   l: 'Baths' }  : null,
-      p.sqft       != null ? { v: p.sqft.toLocaleString(), l: 'Sq ft' } : null,
-      p.year_built != null ? { v: p.year_built,  l: 'Built' }  : null,
-    ].filter(Boolean);
-    const statsHtml = stats.map(s => `<div class="prop-stat"><div class="prop-stat-v">${escHtml(String(s.v))}</div><div class="prop-stat-l">${escHtml(s.l)}</div></div>`).join('');
-    const saleDate   = escHtml(p.last_sale_date   || '');
-    const saleAmount = p.last_sale_amount != null ? '$' + Number(p.last_sale_amount).toLocaleString() : '';
-    propHtml = `
-    <div class="prop-section">
-      <div class="fb-hd">Property details</div>
-      ${stats.length ? `<div class="prop-grid">${statsHtml}</div>` : ''}
-      ${saleDate || saleAmount ? `<div style="margin-top:.75rem;font-size:.78rem;color:var(--sub)">Last sale: ${[saleAmount, saleDate].filter(Boolean).join(' · ')}</div>` : ''}
-    </div>`;
-  }
-
-  // Rent estimate block
-  let rentHtml = '';
-  if (d.rent_estimate) {
-    const r = d.rent_estimate;
-    const rent = r.rent != null ? '$' + Math.round(r.rent).toLocaleString() + '/mo' : '—';
-    const lo   = r.rent_range_low  != null ? '$' + Math.round(r.rent_range_low).toLocaleString()  : '';
-    const hi   = r.rent_range_high != null ? '$' + Math.round(r.rent_range_high).toLocaleString() : '';
-    const range = lo && hi ? `<span style="font-size:.75rem;color:var(--sub)"> (${lo} – ${hi})</span>` : '';
-    const comps = (r.comparables || []).map(c => `
-      <div class="comp-row">
-        <span class="comp-addr">${escHtml(c.address || '')}</span>
-        <span style="font-family:var(--mono);font-size:.78rem;color:var(--teal)">${c.rent != null ? '$' + Math.round(c.rent).toLocaleString() : '—'}</span>
-        ${c.bedrooms != null ? `<span style="font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-left:.5rem">${c.bedrooms}bd</span>` : ''}
-      </div>`).join('');
-    rentHtml = `
-    <div class="prop-section">
-      <div class="fb-hd">Rent estimate <span style="color:var(--muted);font-size:.6rem">via RentCast</span></div>
-      <div style="font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--white)">${rent}${range}</div>
-      ${comps ? `<div style="margin-top:1rem"><div style="font-family:var(--mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Nearby comparables</div>${comps}</div>` : ''}
-    </div>`;
-  }
-
-  // Walk score block
-  let walkHtml = '';
-  if (d.walk_score) {
-    const w = d.walk_score;
-    function scoreColor(n) { return n >= 70 ? 'var(--teal)' : n >= 50 ? 'var(--amber)' : 'var(--red)'; }
-    const pills = [
-      w.walk    != null ? { label: 'Walk',    score: w.walk,    desc: w.walk_description }    : null,
-      w.transit != null ? { label: 'Transit', score: w.transit, desc: w.transit_description } : null,
-      w.bike    != null ? { label: 'Bike',    score: w.bike,    desc: w.bike_description }    : null,
-    ].filter(Boolean);
-    const pillsHtml = pills.map(p => `
-      <div class="prop-stat">
-        <div class="prop-stat-v" style="color:${scoreColor(p.score)}">${p.score}</div>
-        <div class="prop-stat-l">${escHtml(p.label)}</div>
-        ${p.desc ? `<div style="font-size:.65rem;color:var(--muted);margin-top:.25rem">${escHtml(p.desc)}</div>` : ''}
-      </div>`).join('');
-    walkHtml = `
-    <div class="prop-section">
-      <div class="fb-hd">Neighborhood scores <span style="color:var(--muted);font-size:.6rem">via Walk Score</span></div>
-      <div class="prop-grid">${pillsHtml}</div>
-    </div>`;
-  }
-
-  const noData = !d.owner && !d.property && !d.rent_estimate && !d.walk_score;
-
-  return `
-  <div class="prop-card">
-    <div class="eyebrow">Address lookup</div>
-    <div style="font-size:1rem;font-weight:700;color:var(--white);font-family:var(--display)">${addr}</div>
-    ${noData ? `<div style="margin-top:1rem;font-size:.8rem;color:var(--sub)">No data found for this address. Try adding the full street address, city, and state.</div>` : ''}
-    ${ownerHtml}
-    ${propHtml}
-    ${rentHtml}
-    ${walkHtml}
-  </div>`;
 }
 
 async function handleMagicLinkRedirect() {
