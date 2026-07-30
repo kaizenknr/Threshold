@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { EffectiveTarget } from "@kidney/shared";
+import type { EffectiveTarget, PregnancyConsideration } from "@kidney/shared";
 import { supabase } from "@/lib/supabaseClient";
 import { api } from "@/lib/api";
 import { LineChart, type ChartPoint } from "./LineChart";
@@ -18,6 +18,7 @@ const TABS = [
   { id: "episodes", label: "Flare-ups" },
   { id: "questions", label: "Doctor Qs" },
   { id: "appts", label: "Appointments" },
+  { id: "pregnancy", label: "Pregnancy" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
@@ -48,6 +49,7 @@ export function Dashboard({ userId }: { userId: string }) {
       {tab === "episodes" && <EpisodesSection userId={userId} />}
       {tab === "questions" && <QuestionsSection userId={userId} />}
       {tab === "appts" && <AppointmentsSection userId={userId} />}
+      {tab === "pregnancy" && <PregnancySection />}
       <button style={{ ...btnGhost, marginTop: 18 }} onClick={() => supabase.auth.signOut()}>Sign out</button>
     </section>
   );
@@ -405,6 +407,82 @@ function AppointmentsSection({ userId }: { userId: string }) {
   );
 }
 
+/* ============================ Pregnancy (condition-aware) ============================ */
+type ConditionRow = { id: string; name: string };
+
+function PregnancySection() {
+  const [conditions, setConditions] = useState<ConditionRow[]>([]);
+  const [rows, setRows] = useState<PregnancyConsideration[]>([]);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    (async () => {
+      const [c, p] = await Promise.all([
+        supabase.from("conditions").select("id,name").eq("active", true).order("name"),
+        supabase.from("pregnancy_considerations").select("id,condition_id,category,title,detail,source,sort").order("sort"),
+      ]);
+      setConditions((c.data ?? []) as ConditionRow[]);
+      setRows((p.data ?? []) as PregnancyConsideration[]);
+    })();
+  }, []);
+
+  const nameById = useMemo(() => new Map(conditions.map((c) => [c.id, c.name])), [conditions]);
+  const toggle = (id: string) =>
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+
+  const visible = rows.filter((r) => r.condition_id === null || selected.has(r.condition_id));
+  // group: general first, then each selected condition
+  const groups: { key: string; label: string; items: PregnancyConsideration[] }[] = [];
+  const general = visible.filter((r) => r.condition_id === null);
+  if (general.length) groups.push({ key: "general", label: "For any pregnancy", items: general });
+  for (const c of conditions) {
+    if (!selected.has(c.id)) continue;
+    const items = visible.filter((r) => r.condition_id === c.id);
+    if (items.length) groups.push({ key: c.id, label: nameById.get(c.id) ?? c.id, items });
+  }
+
+  return (
+    <div>
+      <h3 style={h3}>Pregnancy & your conditions</h3>
+      <div style={disclaimer}>
+        General information only — <strong>not medical advice</strong>. Pregnancy with a chronic condition is higher-risk:
+        please work with an OB (ideally a high-risk / maternal-fetal medicine specialist) and the doctor who manages your
+        condition, and ask about <strong>preconception counseling</strong>. Never start, stop, or change a medication based on this app.
+      </div>
+
+      <p style={hint}>Select the conditions that apply to you to see what to watch for:</p>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "6px 0 12px" }}>
+        {conditions.map((c) => (
+          <label key={c.id} style={{ ...chip, ...(selected.has(c.id) ? chipOn : {}) }}>
+            <input type="checkbox" checked={selected.has(c.id)} onChange={() => toggle(c.id)} style={{ marginRight: 6 }} />
+            {c.name}
+          </label>
+        ))}
+      </div>
+
+      {groups.map((g) => (
+        <div key={g.key} style={{ marginBottom: 16 }}>
+          <h4 style={{ margin: "8px 0 4px", fontSize: "0.98rem", color: "#0f172a" }}>{g.label}</h4>
+          {g.items.map((r) => (
+            <div key={r.id} style={{ padding: "8px 0", borderBottom: "1px solid #f1f5f9" }}>
+              <div>
+                <span style={catBadge}>{r.category.replace("-", " ")}</span> <strong>{r.title}</strong>
+              </div>
+              <div style={{ fontSize: 14, margin: "4px 0" }}>{r.detail}</div>
+              <small style={hint}>Source: {r.source}</small>
+            </div>
+          ))}
+        </div>
+      ))}
+      {selected.size === 0 && <p style={hint}>Showing general guidance. Tick a condition above for tailored notes.</p>}
+    </div>
+  );
+}
+
 /* ---------- shared inline styles ---------- */
 const card: React.CSSProperties = { background: "white", borderRadius: 12, padding: 20, marginTop: 16, boxShadow: "0 1px 3px rgba(0,0,0,0.08)" };
 const h3: React.CSSProperties = { fontSize: "1.05rem", margin: "0 0 8px" };
@@ -417,3 +495,7 @@ const tabActive: React.CSSProperties = { background: "#2563eb", color: "white" }
 const ul: React.CSSProperties = { listStyle: "none", padding: 0, marginTop: 12 };
 const li: React.CSSProperties = { padding: "10px 0", borderBottom: "1px solid #f1f5f9", fontSize: 14 };
 const errText: React.CSSProperties = { color: "#b91c1c", fontSize: 13 };
+const disclaimer: React.CSSProperties = { background: "#fff7ed", border: "1px solid #fed7aa", color: "#7c2d12", borderRadius: 8, padding: "10px 12px", fontSize: 13, margin: "4px 0 12px", lineHeight: 1.45 };
+const chip: React.CSSProperties = { background: "#f1f5f9", color: "#334155", borderRadius: 999, padding: "5px 10px", fontSize: 13, cursor: "pointer", display: "inline-flex", alignItems: "center" };
+const chipOn: React.CSSProperties = { background: "#dbeafe", color: "#1e40af" };
+const catBadge: React.CSSProperties = { fontSize: 10, textTransform: "uppercase", letterSpacing: 0.4, color: "#2563eb", background: "#eff6ff", borderRadius: 4, padding: "1px 5px", marginRight: 4 };

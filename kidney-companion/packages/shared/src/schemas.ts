@@ -130,6 +130,25 @@ export const doctorQuestionSchema = z.object({
 });
 export type DoctorQuestion = z.infer<typeof doctorQuestionSchema>;
 
+/** Read-only, condition-aware pregnancy guidance (reference data). */
+export const pregnancyConsiderationCategory = z.enum([
+  "preconception",
+  "target-change",
+  "watch-for",
+  "monitoring",
+  "nutrition",
+  "general",
+]);
+export interface PregnancyConsideration {
+  id: string;
+  condition_id: string | null; // null = applies to any pregnancy
+  category: z.infer<typeof pregnancyConsiderationCategory>;
+  title: string;
+  detail: string;
+  source: string;
+  sort: number;
+}
+
 /* -------------------------------------------------------------------------
  * Server API — request/response contracts (see BUILD SPEC §7)
  * Every AI response is strict JSON; never a prose verdict.
