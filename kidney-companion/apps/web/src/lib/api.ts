@@ -1,5 +1,5 @@
 import { createApiClient } from "@kidney/shared";
-import { supabase } from "./supabaseClient.js";
+import { supabase } from "./supabaseClient";
 
 /** Typed Server API client that attaches the current Supabase session JWT. */
 export const api = createApiClient({

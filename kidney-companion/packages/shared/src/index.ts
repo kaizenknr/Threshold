@@ -1,3 +1,3 @@
-export * from "./schemas.js";
-export * from "./guidelines.js";
-export * from "./api-client.js";
+export * from "./schemas";
+export * from "./guidelines";
+export * from "./api-client";

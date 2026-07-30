@@ -17,7 +17,7 @@ import {
   signUploadRequest,
   signUploadResponse,
   targetsResponse,
-} from "./schemas.js";
+} from "./schemas";
 
 export class ApiClientError extends Error {
   constructor(
