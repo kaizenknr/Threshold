@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Kidney Companion",
+    "slug": "kidney-companion",
+    "scheme": "kidneycompanion",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.kidneycompanion.app" },
+    "android": { "package": "com.kidneycompanion.app" },
+    "plugins": ["expo-image-picker"]
+  }
+}
