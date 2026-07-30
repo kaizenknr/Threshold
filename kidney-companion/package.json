@@ -1,0 +1,22 @@
+{
+  "name": "kidney-companion",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Kidney Companion — a chronic-illness management tool. First module: Chronic Kidney Disease (CKD).",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "scan:secrets": "node scripts/secret-scan.mjs",
+    "dev:api": "pnpm --filter @kidney/api dev",
+    "dev:web": "pnpm --filter @kidney/web dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
+}

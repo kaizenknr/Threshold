@@ -1,0 +1,21 @@
+# deps
+node_modules/
+.pnpm-store/
+
+# secrets — NEVER commit real env files
+.env
+.env.*
+!.env.example
+
+# builds
+dist/
+build/
+.next/
+out/
+.expo/
+.turbo/
+*.tsbuildinfo
+
+# logs / os
+*.log
+.DS_Store
