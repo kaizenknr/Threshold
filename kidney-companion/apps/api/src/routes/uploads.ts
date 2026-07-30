@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { Router } from "express";
 import { signUploadRequest, signUploadResponse } from "@kidney/shared";
 import { requireAuth } from "../middleware/auth.js";
+import { requireConsent } from "../middleware/consent.js";
 import { rateLimitMiddleware } from "../middleware/rateLimit.js";
 import { UPLOAD_LIMIT } from "../lib/rateLimit.js";
 import { asyncHandler, HttpError } from "../middleware/errorHandler.js";
@@ -23,6 +24,7 @@ const BUCKET = { doctor_doc: "doctor-docs", pantry: "pantry" } as const;
 uploadsRouter.post(
   "/uploads/sign",
   requireAuth,
+  requireConsent,
   rateLimitMiddleware("upload", UPLOAD_LIMIT),
   asyncHandler(async (req, res) => {
     const { kind, contentType } = signUploadRequest.parse(req.body);

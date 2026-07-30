@@ -59,6 +59,10 @@ async function storageFileBlock(
   bucket: string,
   path: string,
 ): Promise<Anthropic.ContentBlockParam> {
+  // Defense in depth: never let a path escape a user's own folder.
+  if (path.includes("..") || path.startsWith("/")) {
+    throw new HttpError(400, "invalid_path", "Invalid file path.");
+  }
   const { data, error } = await supabaseAdmin.storage.from(bucket).download(path);
   if (error || !data) throw new HttpError(404, "file_not_found", "Uploaded file not found.");
   const mediaType = data.type || (path.endsWith(".pdf") ? "application/pdf" : "image/jpeg");
@@ -147,8 +151,9 @@ aiRouter.post(
   "/ai/pantry",
   asyncHandler(async (req, res) => {
     const { imagePath } = pantryRequest.parse(req.body);
-    // Confine to the caller's own folder in the pantry bucket.
-    if (!imagePath.startsWith(`${req.userId}/`)) {
+    // Confine strictly to the caller's own pantry folder — no other user, no
+    // other bucket prefix, no traversal.
+    if (!imagePath.startsWith(`${req.userId}/pantry/`) || imagePath.includes("..")) {
       throw new HttpError(403, "forbidden", "Not your file.");
     }
     const targets = await getEffectiveTargets(req.userId!);
@@ -187,7 +192,11 @@ aiRouter.post(
 
     // Store what the LLM read for user review, and stage overrides as UNVERIFIED
     // (user confirms in the app before they take effect as "Doctor's number").
-    await supabaseAdmin.from("doctor_documents").update({ extracted }).eq("id", documentId);
+    await supabaseAdmin
+      .from("doctor_documents")
+      .update({ extracted })
+      .eq("id", documentId)
+      .eq("user_id", req.userId!);
 
     const staged = (["sodium", "protein", "potassium", "phosphorus", "fluid"] as const)
       .filter((k) => extracted[k])
