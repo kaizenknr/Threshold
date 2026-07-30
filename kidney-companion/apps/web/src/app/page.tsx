@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import type { EffectiveTarget } from "@kidney/shared";
 import { supabase } from "@/lib/supabaseClient";
-import { api } from "@/lib/api";
+import { Dashboard } from "@/components/Dashboard";
 
 const TERMS_VERSION = process.env.NEXT_PUBLIC_CONSENT_TERMS_VERSION ?? "2026-07-01";
 
@@ -16,7 +15,6 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [consented, setConsented] = useState(false);
-  const [targets, setTargets] = useState<EffectiveTarget[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -47,16 +45,6 @@ export default function Home() {
       .insert({ user_id: session!.user.id, terms_version: TERMS_VERSION });
     if (error) setError(error.message);
     else setConsented(true);
-  }
-
-  async function loadTargets() {
-    setError(null);
-    try {
-      const res = await api.getTargets("ckd");
-      setTargets(res.metrics);
-    } catch (e) {
-      setError((e as Error).message);
-    }
   }
 
   return (
@@ -96,39 +84,7 @@ export default function Home() {
         </section>
       )}
 
-      {session && consented && (
-        <section style={card}>
-          <h2 style={h2}>My targets</h2>
-          <button style={btn} onClick={loadTargets}>
-            Load my CKD targets
-          </button>
-          {targets && (
-            <ul style={{ paddingLeft: 18 }}>
-              {targets.map((t) => (
-                <li key={t.key} style={{ marginBottom: 8 }}>
-                  <strong>{t.label}</strong>{" "}
-                  {t.override ? (
-                    <span>
-                      — Doctor&apos;s number: <em>{t.override.value}</em>{" "}
-                      {!t.override.verified && <span style={{ color: "#b45309" }}>(unconfirmed)</span>}
-                      <br />
-                      <small style={{ color: "#64748b" }}>Guideline: {t.range}</small>
-                    </span>
-                  ) : (
-                    <span>
-                      — {t.range}{" "}
-                      {t.conditional && <small style={{ color: "#64748b" }}>(only if advised)</small>}
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-          <button style={{ ...btn, background: "#e2e8f0", color: "#0f172a" }} onClick={() => supabase.auth.signOut()}>
-            Sign out
-          </button>
-        </section>
-      )}
+      {session && consented && <Dashboard userId={session.user.id} />}
 
       {error && <p style={{ color: "#b91c1c" }}>{error}</p>}
     </div>

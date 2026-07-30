@@ -83,6 +83,54 @@ export const consentSchema = z.object({
 export type Consent = z.infer<typeof consentSchema>;
 
 /* -------------------------------------------------------------------------
+ * Tracking module (graphable readings, episodes, questions, appointments).
+ * Client-side CRUD via the Supabase SDK; RLS enforces ownership.
+ * ---------------------------------------------------------------------- */
+
+export const metricReadingSchema = z.object({
+  condition_id: conditionIdSchema.nullable().optional(),
+  metric_key: z.string().min(1).max(60),
+  label: z.string().max(120).nullable().optional(),
+  value: z.number(),
+  unit: z.string().max(30).nullable().optional(),
+  recorded_at: z.string().datetime().optional(),
+  note: z.string().max(1000).nullable().optional(),
+});
+export type MetricReading = z.infer<typeof metricReadingSchema>;
+
+export const episodeSchema = z.object({
+  condition_id: conditionIdSchema.nullable().optional(),
+  title: z.string().min(1).max(200),
+  severity: z.number().int().min(1).max(10).nullable().optional(),
+  started_at: z.string().datetime().optional(),
+  ended_at: z.string().datetime().nullable().optional(),
+  symptoms: z.string().max(2000).nullable().optional(),
+  triggers: z.string().max(2000).nullable().optional(),
+  notes: z.string().max(2000).nullable().optional(),
+});
+export type Episode = z.infer<typeof episodeSchema>;
+
+export const appointmentSchema = z.object({
+  title: z.string().min(1).max(200),
+  provider: z.string().max(200).nullable().optional(),
+  location: z.string().max(300).nullable().optional(),
+  scheduled_at: z.string().datetime(),
+  reminder_at: z.string().datetime().nullable().optional(),
+  notes: z.string().max(2000).nullable().optional(),
+  status: z.enum(["scheduled", "completed", "cancelled"]).default("scheduled"),
+});
+export type Appointment = z.infer<typeof appointmentSchema>;
+
+export const doctorQuestionSchema = z.object({
+  condition_id: conditionIdSchema.nullable().optional(),
+  appointment_id: z.string().uuid().nullable().optional(),
+  question: z.string().min(1).max(1000),
+  answered: z.boolean().default(false),
+  answer: z.string().max(2000).nullable().optional(),
+});
+export type DoctorQuestion = z.infer<typeof doctorQuestionSchema>;
+
+/* -------------------------------------------------------------------------
  * Server API — request/response contracts (see BUILD SPEC §7)
  * Every AI response is strict JSON; never a prose verdict.
  * ---------------------------------------------------------------------- */
