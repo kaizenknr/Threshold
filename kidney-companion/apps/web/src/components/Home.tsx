@@ -6,14 +6,15 @@ import { Onboarding } from "./Onboarding";
 import { Feed } from "./Feed";
 import { Targets } from "./Targets";
 import { Profile } from "./Profile";
-import { AppointmentsSection, EpisodesSection, PregnancySection, QuestionsSection, TrackSection } from "./sections";
+import { AppointmentsSection, EpisodesSection, MedsSection, PregnancySection, QuestionsSection, TrackSection } from "./sections";
 
 type Cond = { id: string; name: string };
-type View = "home" | "targets" | "track" | "episodes" | "questions" | "appts" | "pregnancy" | "profile";
+type View = "home" | "targets" | "track" | "meds" | "episodes" | "questions" | "appts" | "pregnancy" | "profile";
 
 const NAV: { id: View; label: string }[] = [
   { id: "home", label: "Home" },
   { id: "targets", label: "Targets" },
+  { id: "meds", label: "Meds" },
   { id: "track", label: "Track" },
   { id: "episodes", label: "Flare-ups" },
   { id: "questions", label: "Questions" },
@@ -87,6 +88,7 @@ export function Home({ userId, email }: { userId: string; email: string | undefi
         {view === "home" && <Feed myConditions={conditions} onNavigate={setView} />}
         {view === "targets" && <Targets userId={userId} myConditions={conditions} />}
         {view === "track" && <TrackSection userId={userId} />}
+        {view === "meds" && <MedsSection userId={userId} />}
         {view === "episodes" && <EpisodesSection userId={userId} />}
         {view === "questions" && <QuestionsSection userId={userId} />}
         {view === "appts" && <AppointmentsSection userId={userId} />}

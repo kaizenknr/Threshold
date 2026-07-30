@@ -6,6 +6,7 @@ import { btn, btnGhost, card, chip, chipOn, errText, h3, hint, input, li, ul } f
 
 type Cond = { id: string; name: string };
 type OverrideRow = { id: string; condition_id: string | null; metric_key: string; value: string; verified: boolean };
+type InstructionRow = { id: string; condition_id: string | null; instruction: string };
 
 export function Profile({
   userId,
@@ -34,6 +35,11 @@ export function Profile({
   const [ovKey, setOvKey] = useState("");
   const [ovVal, setOvVal] = useState("");
 
+  // written instructions
+  const [instructions, setInstructions] = useState<InstructionRow[]>([]);
+  const [instrText, setInstrText] = useState("");
+  const [instrCond, setInstrCond] = useState("");
+
   async function loadAll() {
     const { data } = await supabase.from("conditions").select("id,name").eq("active", true).order("name");
     setAll((data ?? []) as Cond[]);
@@ -51,7 +57,25 @@ export function Profile({
     const { data } = await supabase.from("target_overrides").select("id,condition_id,metric_key,value,verified").order("created_at", { ascending: false });
     setOverrides((data ?? []) as OverrideRow[]);
   }
-  useEffect(() => { loadAll(); loadCkd(); loadOverrides(); }, [myConditions.length]);
+  async function loadInstructions() {
+    const { data } = await supabase.from("care_instructions").select("id,condition_id,instruction").order("created_at", { ascending: false });
+    setInstructions((data ?? []) as InstructionRow[]);
+  }
+  useEffect(() => { loadAll(); loadCkd(); loadOverrides(); loadInstructions(); }, [myConditions.length]);
+
+  async function addInstruction() {
+    setErr(null);
+    if (!instrText.trim()) return;
+    const { error } = await supabase.from("care_instructions").insert({
+      user_id: userId, instruction: instrText.trim(), condition_id: instrCond || null,
+    });
+    if (error) setErr(error.message);
+    else { setInstrText(""); await loadInstructions(); }
+  }
+  async function removeInstruction(id: string) {
+    await supabase.from("care_instructions").delete().eq("id", id);
+    await loadInstructions();
+  }
 
   const available = all.filter((c) => !myConditions.some((m) => m.id === c.id));
 
@@ -150,10 +174,34 @@ export function Profile({
         </div>
       )}
 
-      {/* Doctor's numbers */}
+      {/* Doctor's written instructions */}
       <div style={card}>
-        <h3 style={h3}>Doctor’s numbers</h3>
-        <p style={hint}>Add a specific target your doctor gave you — it overrides the general guideline on the Targets screen.</p>
+        <h3 style={h3}>Doctor’s instructions</h3>
+        <p style={hint}>Anything your care team told you to do — reminders, do’s and don’ts, things to watch. Kept in your own words.</p>
+        <select style={input} value={instrCond} onChange={(e) => setInstrCond(e.target.value)}>
+          <option value="">General (any condition)</option>
+          {myConditions.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+        <div style={{ display: "flex", gap: 8 }}>
+          <input style={{ ...input, flex: 1 }} placeholder="e.g. Weigh yourself daily; call if up 2+ kg" value={instrText} onChange={(e) => setInstrText(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addInstruction()} />
+          <button style={btn} onClick={addInstruction}>Add</button>
+        </div>
+        <ul style={ul}>
+          {instructions.map((i) => (
+            <li key={i.id} style={li}>
+              {i.condition_id && <span style={{ color: "#64748b", fontSize: 12 }}>[{nameById.get(i.condition_id) ?? i.condition_id}] </span>}
+              {i.instruction}
+              <span style={{ marginLeft: 8, color: "#b91c1c", cursor: "pointer" }} onClick={() => removeInstruction(i.id)}>remove</span>
+            </li>
+          ))}
+          {instructions.length === 0 && <li style={{ ...li, color: "#94a3b8" }}>No instructions saved yet.</li>}
+        </ul>
+      </div>
+
+      {/* Doctor's specific target numbers (overrides) */}
+      <div style={card}>
+        <h3 style={h3}>Specific target numbers</h3>
+        <p style={hint}>Exact numbers your care team gave you (e.g. “sodium under 1500 mg/day”). These replace the general guideline on your Targets screen.</p>
         <select style={input} value={ovCond} onChange={(e) => setOvCond(e.target.value)}>
           <option value="">Choose a condition…</option>
           {myConditions.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}

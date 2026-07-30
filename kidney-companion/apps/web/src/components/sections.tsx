@@ -253,6 +253,123 @@ export function AppointmentsSection({ userId }: { userId: string }) {
   );
 }
 
+/* ============================ Prescriptions / meds ============================ */
+type MedRow = { id: string; name: string; dose: string | null; schedule: string | null; prescriber: string | null; notes: string | null; active: boolean };
+
+export function MedsSection({ userId }: { userId: string }) {
+  const [meds, setMeds] = useState<MedRow[]>([]);
+  const [name, setName] = useState("");
+  const [dose, setDose] = useState("");
+  const [schedule, setSchedule] = useState("");
+  const [prescriber, setPrescriber] = useState("");
+  const [err, setErr] = useState<string | null>(null);
+
+  async function load() {
+    const { data } = await supabase.from("medications").select("id,name,dose,schedule,prescriber,notes,active").order("created_at", { ascending: false });
+    setMeds((data ?? []) as MedRow[]);
+  }
+  useEffect(() => { load(); }, []);
+
+  async function add() {
+    setErr(null);
+    if (!name.trim()) return setErr("Enter the medication name.");
+    const { error } = await supabase.from("medications").insert({
+      user_id: userId, name: name.trim(), dose: dose.trim() || null, schedule: schedule.trim() || null, prescriber: prescriber.trim() || null,
+    });
+    if (error) setErr(error.message);
+    else { setName(""); setDose(""); setSchedule(""); setPrescriber(""); await load(); }
+  }
+  async function stop(id: string) {
+    await supabase.from("medications").update({ active: false }).eq("id", id);
+    await load();
+  }
+
+  const active = meds.filter((m) => m.active);
+  const stopped = meds.filter((m) => !m.active);
+
+  return (
+    <div style={card}>
+      <h3 style={h3}>Add a prescription</h3>
+      <input style={input} placeholder="medication name" value={name} onChange={(e) => setName(e.target.value)} />
+      <div style={{ display: "flex", gap: 8 }}>
+        <input style={{ ...input, flex: 1 }} placeholder="dose (e.g. 10 mg)" value={dose} onChange={(e) => setDose(e.target.value)} />
+        <input style={{ ...input, flex: 1 }} placeholder="schedule (e.g. twice daily)" value={schedule} onChange={(e) => setSchedule(e.target.value)} />
+      </div>
+      <input style={input} placeholder="prescriber (optional)" value={prescriber} onChange={(e) => setPrescriber(e.target.value)} />
+      <button style={btn} onClick={add}>Add prescription</button>
+      {err && <p style={errText}>{err}</p>}
+
+      <h3 style={{ ...h3, marginTop: 18 }}>Current medications</h3>
+      {active.length === 0 && <p style={hint}>None yet.</p>}
+      {active.map((m) => <MedCard key={m.id} med={m} userId={userId} onStop={() => stop(m.id)} />)}
+
+      {stopped.length > 0 && (
+        <>
+          <h3 style={{ ...h3, marginTop: 14, color: "#94a3b8" }}>Stopped</h3>
+          <ul style={ul}>{stopped.map((m) => <li key={m.id} style={{ ...li, color: "#94a3b8" }}>{m.name}{m.dose ? ` · ${m.dose}` : ""}</li>)}</ul>
+        </>
+      )}
+      <p style={{ ...hint, marginTop: 8 }}>Logging how a med is working builds a record you can share with your prescriber. This app never judges whether a medication is working — that’s your prescriber’s call.</p>
+    </div>
+  );
+}
+
+function MedCard({ med, userId, onStop }: { med: MedRow; userId: string; onStop: () => void }) {
+  const [last, setLast] = useState<{ taken_at: string; count: number } | null>(null);
+  const [eff, setEff] = useState("");
+  const [side, setSide] = useState("");
+  const [open, setOpen] = useState(false);
+
+  async function loadLast() {
+    const { data, count } = await supabase
+      .from("medication_logs")
+      .select("taken_at", { count: "exact" })
+      .eq("medication_id", med.id)
+      .order("taken_at", { ascending: false })
+      .limit(1);
+    const rows = (data ?? []) as { taken_at: string }[];
+    setLast(rows[0] ? { taken_at: rows[0].taken_at, count: count ?? 0 } : { taken_at: "", count: 0 });
+  }
+  useEffect(() => { loadLast(); }, []);
+
+  async function logDose() {
+    await supabase.from("medication_logs").insert({
+      user_id: userId, medication_id: med.id, taken_at: new Date().toISOString(),
+      effectiveness: eff ? Number(eff) : null, side_effects: side.trim() || null,
+    });
+    setEff(""); setSide(""); setOpen(false);
+    await loadLast();
+  }
+
+  return (
+    <div style={{ padding: "12px 0", borderBottom: "1px solid #f1f5f9" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+        <strong>{med.name}{med.dose ? ` · ${med.dose}` : ""}</strong>
+        <span style={{ color: "#b91c1c", fontSize: 12, cursor: "pointer" }} onClick={onStop}>stop</span>
+      </div>
+      {(med.schedule || med.prescriber) && <div style={hint}>{med.schedule}{med.schedule && med.prescriber ? " · " : ""}{med.prescriber}</div>}
+      <div style={hint}>
+        {last && last.count > 0 ? `Logged ${last.count} time${last.count === 1 ? "" : "s"} · last ${new Date(last.taken_at).toLocaleString()}` : "No doses logged yet"}
+      </div>
+      {!open ? (
+        <button style={{ ...btnGhost, marginTop: 6 }} onClick={() => setOpen(true)}>Log a dose</button>
+      ) : (
+        <div style={{ marginTop: 6 }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            <select style={{ ...input, width: 150 }} value={eff} onChange={(e) => setEff(e.target.value)}>
+              <option value="">how well? (optional)</option>
+              {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}/5</option>)}
+            </select>
+            <input style={{ ...input, flex: 1 }} placeholder="side effects (optional)" value={side} onChange={(e) => setSide(e.target.value)} />
+          </div>
+          <button style={btn} onClick={logDose}>Save dose</button>
+          <button style={{ ...btnGhost, marginLeft: 8 }} onClick={() => setOpen(false)}>Cancel</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ============================ Pregnancy (condition-aware) ============================ */
 export function PregnancySection({ myConditionIds }: { myConditionIds: string[] }) {
   const [conditions, setConditions] = useState<ConditionRow[]>([]);

@@ -38,8 +38,11 @@ export function Onboarding({ userId, onDone }: { userId: string; onDone: () => v
     setSaving(true);
     try {
       const conditionIds = [...selected];
+      // Include any text still sitting in the input that wasn't "Add"-ed yet.
+      const pending = custom.trim();
+      const allCustoms = pending && !customs.includes(pending) ? [...customs, pending] : customs;
       // Create any custom conditions the user typed (owned by them).
-      for (const name of customs) {
+      for (const name of allCustoms) {
         const id = `custom_${crypto.randomUUID().slice(0, 8)}`;
         const { error } = await supabase.from("conditions").insert({ id, name, created_by: userId, active: true });
         if (error) throw error;

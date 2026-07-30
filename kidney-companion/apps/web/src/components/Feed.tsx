@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { btn, btnGhost, card, chip, chipOn, h3, hint, sectionTitle } from "./ui";
 
 type Cond = { id: string; name: string };
-type View = "home" | "targets" | "track" | "episodes" | "questions" | "appts" | "pregnancy" | "profile";
+type View = "home" | "targets" | "track" | "meds" | "episodes" | "questions" | "appts" | "pregnancy" | "profile";
 
 export function Feed({ myConditions, onNavigate }: { myConditions: Cond[]; onNavigate: (v: View) => void }) {
   const [nextAppt, setNextAppt] = useState<{ title: string; scheduled_at: string; provider: string | null } | null>(null);
@@ -41,6 +41,7 @@ export function Feed({ myConditions, onNavigate }: { myConditions: Cond[]; onNav
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button style={btn} onClick={() => onNavigate("track")}>＋ Reading</button>
           <button style={btn} onClick={() => onNavigate("episodes")}>＋ Flare-up</button>
+          <button style={btnGhost} onClick={() => onNavigate("meds")}>＋ Med / dose</button>
           <button style={btnGhost} onClick={() => onNavigate("questions")}>＋ Doctor question</button>
           <button style={btnGhost} onClick={() => onNavigate("appts")}>＋ Appointment</button>
         </div>
