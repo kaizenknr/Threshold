@@ -5,7 +5,7 @@
   "description": "Kidney Companion — a chronic-illness management tool. First module: Chronic Kidney Disease (CKD).",
   "packageManager": "pnpm@9.12.0",
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   },
   "scripts": {
     "build": "pnpm -r build",
