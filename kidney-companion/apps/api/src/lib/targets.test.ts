@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CKD_GUIDELINES, CKD_METRICS } from "@kidney/shared";
-import { computeTargets, type GuidelineRow, type ProfileInput } from "./targets-core.js";
+import { CKD_GUIDELINES, CKD_METRICS, computeTargets, type GuidelineRow, type ProfileInput } from "@kidney/shared";
 
 // Reuse the shared seed as the engine's guideline input (mirrors the DB seed).
 const guidelines: GuidelineRow[] = CKD_GUIDELINES.map((g) => ({

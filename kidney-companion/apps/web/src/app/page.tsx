@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
-import { Dashboard } from "@/components/Dashboard";
+import { Home } from "@/components/Home";
 
 const TERMS_VERSION = process.env.NEXT_PUBLIC_CONSENT_TERMS_VERSION ?? "2026-07-01";
 
 const DISCLAIMER =
   "Kidney Companion is an informational tool, not a medical device. It does not diagnose or treat, and it never tells you to start, stop, or change a medication, food, or fluid. Your care team decides what fits you.";
 
-export default function Home() {
+export default function Page() {
   const [session, setSession] = useState<Session | null>(null);
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
@@ -34,7 +34,13 @@ export default function Home() {
   }, [session]);
 
   async function signIn() {
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      // Land the magic link back on whatever URL the user is currently using
+      // (works across Vercel preview/production URLs; the redirect allow-list
+      // is a wildcard for this project).
+      options: { emailRedirectTo: window.location.origin },
+    });
     if (error) setError(error.message);
     else setSent(true);
   }
@@ -84,7 +90,7 @@ export default function Home() {
         </section>
       )}
 
-      {session && consented && <Dashboard userId={session.user.id} />}
+      {session && consented && <Home userId={session.user.id} email={session.user.email} />}
 
       {error && <p style={{ color: "#b91c1c" }}>{error}</p>}
     </div>

@@ -1,8 +1,9 @@
-import type { ConditionMetricDef, EffectiveTarget, GuidelineRule } from "@kidney/shared";
+import type { ConditionMetricDef, GuidelineRule } from "./guidelines";
+import type { EffectiveTarget } from "./schemas";
 
 /* -------------------------------------------------------------------------
- * Pure targets engine — NO I/O, no server imports (BUILD SPEC §12).
- * Kept free of DB/env dependencies so it is fully unit-testable and reusable.
+ * Pure targets engine — no I/O. Shared by the server API and the web client
+ * (which reads the same RLS-protected reference tables directly).
  * ---------------------------------------------------------------------- */
 
 export interface GuidelineRow {
@@ -11,13 +12,11 @@ export interface GuidelineRow {
   source: string;
   version: string;
 }
-
 export interface ProfileInput {
   stage: "early" | "nondialysis" | "dialysis";
   diabetes: boolean;
   weight_kg: number | null;
 }
-
 export interface OverrideInput {
   metric_key: string;
   value: string;
@@ -25,7 +24,6 @@ export interface OverrideInput {
   source: string;
   verified: boolean;
 }
-
 export interface ComputeInput {
   condition: string;
   metrics: ConditionMetricDef[];
@@ -102,7 +100,6 @@ export function computeTargets(input: ComputeInput): EffectiveTarget[] {
         source,
         conditional: metric.conditional,
       };
-
       const ov = overrideByKey.get(metric.key);
       if (ov) target.override = { value: ov.value, source: ov.source, verified: ov.verified };
       return target;

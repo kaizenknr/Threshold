@@ -1,14 +1,12 @@
-import type { ConditionMetricDef, EffectiveTarget } from "@kidney/shared";
-import { supabaseAdmin } from "./supabaseAdmin.js";
 import {
   computeTargets,
+  type ConditionMetricDef,
+  type EffectiveTarget,
   type GuidelineRow,
   type OverrideInput,
   type ProfileInput,
-} from "./targets-core.js";
-
-export { computeTargets } from "./targets-core.js";
-export type { GuidelineRow, OverrideInput, ProfileInput, ComputeInput } from "./targets-core.js";
+} from "@kidney/shared";
+import { supabaseAdmin } from "./supabaseAdmin.js";
 
 /** Load profile + guidelines + overrides and compute effective targets for a user. */
 export async function getEffectiveTargets(
