@@ -254,7 +254,7 @@ export function AppointmentsSection({ userId }: { userId: string }) {
 }
 
 /* ============================ Prescriptions / meds ============================ */
-type MedRow = { id: string; name: string; dose: string | null; schedule: string | null; prescriber: string | null; notes: string | null; active: boolean };
+type MedRow = { id: string; name: string; dose: string | null; schedule: string | null; prescriber: string | null; notes: string | null; active: boolean; started_on: string | null };
 
 export function MedsSection({ userId }: { userId: string }) {
   const [meds, setMeds] = useState<MedRow[]>([]);
@@ -262,10 +262,11 @@ export function MedsSection({ userId }: { userId: string }) {
   const [dose, setDose] = useState("");
   const [schedule, setSchedule] = useState("");
   const [prescriber, setPrescriber] = useState("");
+  const [startedOn, setStartedOn] = useState("");
   const [err, setErr] = useState<string | null>(null);
 
   async function load() {
-    const { data } = await supabase.from("medications").select("id,name,dose,schedule,prescriber,notes,active").order("created_at", { ascending: false });
+    const { data } = await supabase.from("medications").select("id,name,dose,schedule,prescriber,notes,active,started_on").order("created_at", { ascending: false });
     setMeds((data ?? []) as MedRow[]);
   }
   useEffect(() => { load(); }, []);
@@ -274,10 +275,11 @@ export function MedsSection({ userId }: { userId: string }) {
     setErr(null);
     if (!name.trim()) return setErr("Enter the medication name.");
     const { error } = await supabase.from("medications").insert({
-      user_id: userId, name: name.trim(), dose: dose.trim() || null, schedule: schedule.trim() || null, prescriber: prescriber.trim() || null,
+      user_id: userId, name: name.trim(), dose: dose.trim() || null, schedule: schedule.trim() || null,
+      prescriber: prescriber.trim() || null, started_on: startedOn || null,
     });
     if (error) setErr(error.message);
-    else { setName(""); setDose(""); setSchedule(""); setPrescriber(""); await load(); }
+    else { setName(""); setDose(""); setSchedule(""); setPrescriber(""); setStartedOn(""); await load(); }
   }
   async function stop(id: string) {
     await supabase.from("medications").update({ active: false }).eq("id", id);
@@ -296,6 +298,8 @@ export function MedsSection({ userId }: { userId: string }) {
         <input style={{ ...input, flex: 1 }} placeholder="schedule (e.g. twice daily)" value={schedule} onChange={(e) => setSchedule(e.target.value)} />
       </div>
       <input style={input} placeholder="prescriber (optional)" value={prescriber} onChange={(e) => setPrescriber(e.target.value)} />
+      <label style={hint}>first prescribed (optional)</label>
+      <input style={input} type="date" value={startedOn} onChange={(e) => setStartedOn(e.target.value)} />
       <button style={btn} onClick={add}>Add prescription</button>
       {err && <p style={errText}>{err}</p>}
 
@@ -314,31 +318,41 @@ export function MedsSection({ userId }: { userId: string }) {
   );
 }
 
+type ChangeRow = { id: string; changed_on: string; new_dose: string; note: string | null };
+
 function MedCard({ med, userId, onStop }: { med: MedRow; userId: string; onStop: () => void }) {
   const [last, setLast] = useState<{ taken_at: string; count: number } | null>(null);
+  const [changes, setChanges] = useState<ChangeRow[]>([]);
   const [eff, setEff] = useState("");
   const [side, setSide] = useState("");
   const [open, setOpen] = useState(false);
+  // dose-change form
+  const [chOpen, setChOpen] = useState(false);
+  const [newDose, setNewDose] = useState("");
+  const [chOn, setChOn] = useState(new Date().toISOString().slice(0, 10));
+  const [chNote, setChNote] = useState("");
 
   async function loadLast() {
-    const { data, count } = await supabase
-      .from("medication_logs")
-      .select("taken_at", { count: "exact" })
-      .eq("medication_id", med.id)
-      .order("taken_at", { ascending: false })
-      .limit(1);
+    const { data, count } = await supabase.from("medication_logs").select("taken_at", { count: "exact" }).eq("medication_id", med.id).order("taken_at", { ascending: false }).limit(1);
     const rows = (data ?? []) as { taken_at: string }[];
     setLast(rows[0] ? { taken_at: rows[0].taken_at, count: count ?? 0 } : { taken_at: "", count: 0 });
   }
-  useEffect(() => { loadLast(); }, []);
+  async function loadChanges() {
+    const { data } = await supabase.from("medication_changes").select("id,changed_on,new_dose,note").eq("medication_id", med.id).order("changed_on", { ascending: false });
+    setChanges((data ?? []) as ChangeRow[]);
+  }
+  useEffect(() => { loadLast(); loadChanges(); }, []);
 
   async function logDose() {
-    await supabase.from("medication_logs").insert({
-      user_id: userId, medication_id: med.id, taken_at: new Date().toISOString(),
-      effectiveness: eff ? Number(eff) : null, side_effects: side.trim() || null,
-    });
-    setEff(""); setSide(""); setOpen(false);
-    await loadLast();
+    await supabase.from("medication_logs").insert({ user_id: userId, medication_id: med.id, taken_at: new Date().toISOString(), effectiveness: eff ? Number(eff) : null, side_effects: side.trim() || null });
+    setEff(""); setSide(""); setOpen(false); await loadLast();
+  }
+  async function recordChange() {
+    if (!newDose.trim()) return;
+    await supabase.from("medication_changes").insert({ user_id: userId, medication_id: med.id, changed_on: chOn, new_dose: newDose.trim(), note: chNote.trim() || null });
+    // Reflect the new current dose on the medication itself.
+    await supabase.from("medications").update({ dose: newDose.trim() }).eq("id", med.id);
+    setNewDose(""); setChNote(""); setChOpen(false); await loadChanges();
   }
 
   return (
@@ -348,12 +362,22 @@ function MedCard({ med, userId, onStop }: { med: MedRow; userId: string; onStop:
         <span style={{ color: "#b91c1c", fontSize: 12, cursor: "pointer" }} onClick={onStop}>stop</span>
       </div>
       {(med.schedule || med.prescriber) && <div style={hint}>{med.schedule}{med.schedule && med.prescriber ? " · " : ""}{med.prescriber}</div>}
-      <div style={hint}>
-        {last && last.count > 0 ? `Logged ${last.count} time${last.count === 1 ? "" : "s"} · last ${new Date(last.taken_at).toLocaleString()}` : "No doses logged yet"}
+      {med.started_on && <div style={hint}>First prescribed {new Date(med.started_on).toLocaleDateString()}</div>}
+      <div style={hint}>{last && last.count > 0 ? `Logged ${last.count} time${last.count === 1 ? "" : "s"} · last ${new Date(last.taken_at).toLocaleString()}` : "No doses logged yet"}</div>
+
+      {changes.length > 0 && (
+        <div style={{ margin: "6px 0" }}>
+          <div style={{ ...hint, fontWeight: 600 }}>Dose history</div>
+          {changes.map((c) => <div key={c.id} style={hint}>{new Date(c.changed_on).toLocaleDateString()} → {c.new_dose}{c.note ? ` (${c.note})` : ""}</div>)}
+        </div>
+      )}
+
+      <div style={{ display: "flex", gap: 8, marginTop: 6, flexWrap: "wrap" }}>
+        {!open && <button style={btnGhost} onClick={() => setOpen(true)}>Log a dose</button>}
+        {!chOpen && <button style={btnGhost} onClick={() => setChOpen(true)}>Record dose change</button>}
       </div>
-      {!open ? (
-        <button style={{ ...btnGhost, marginTop: 6 }} onClick={() => setOpen(true)}>Log a dose</button>
-      ) : (
+
+      {open && (
         <div style={{ marginTop: 6 }}>
           <div style={{ display: "flex", gap: 8 }}>
             <select style={{ ...input, width: 150 }} value={eff} onChange={(e) => setEff(e.target.value)}>
@@ -364,6 +388,18 @@ function MedCard({ med, userId, onStop }: { med: MedRow; userId: string; onStop:
           </div>
           <button style={btn} onClick={logDose}>Save dose</button>
           <button style={{ ...btnGhost, marginLeft: 8 }} onClick={() => setOpen(false)}>Cancel</button>
+        </div>
+      )}
+
+      {chOpen && (
+        <div style={{ marginTop: 6 }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input style={{ ...input, flex: 1 }} placeholder="new dose (e.g. 20 mg)" value={newDose} onChange={(e) => setNewDose(e.target.value)} />
+            <input style={{ ...input, width: 150 }} type="date" value={chOn} onChange={(e) => setChOn(e.target.value)} />
+          </div>
+          <input style={input} placeholder="note (optional, e.g. increased by Dr. Lee)" value={chNote} onChange={(e) => setChNote(e.target.value)} />
+          <button style={btn} onClick={recordChange}>Save change</button>
+          <button style={{ ...btnGhost, marginLeft: 8 }} onClick={() => setChOpen(false)}>Cancel</button>
         </div>
       )}
     </div>

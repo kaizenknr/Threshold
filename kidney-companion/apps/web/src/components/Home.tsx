@@ -7,18 +7,22 @@ import { Feed } from "./Feed";
 import { Targets } from "./Targets";
 import { Profile } from "./Profile";
 import { AppointmentsSection, EpisodesSection, MedsSection, PregnancySection, QuestionsSection, TrackSection } from "./sections";
+import { Nutrition } from "./Nutrition";
+import { Labs } from "./Labs";
 
 type Cond = { id: string; name: string };
-type View = "home" | "targets" | "track" | "meds" | "episodes" | "questions" | "appts" | "pregnancy" | "profile";
+type View = "home" | "nutrition" | "labs" | "targets" | "track" | "meds" | "episodes" | "questions" | "appts" | "pregnancy" | "profile";
 
 const NAV: { id: View; label: string }[] = [
   { id: "home", label: "Home" },
-  { id: "targets", label: "Targets" },
+  { id: "nutrition", label: "Nutrition" },
+  { id: "labs", label: "Labs" },
   { id: "meds", label: "Meds" },
+  { id: "targets", label: "Targets" },
   { id: "track", label: "Track" },
   { id: "episodes", label: "Flare-ups" },
-  { id: "questions", label: "Questions" },
   { id: "appts", label: "Visits" },
+  { id: "questions", label: "Questions" },
   { id: "pregnancy", label: "Pregnancy" },
 ];
 
@@ -86,6 +90,8 @@ export function Home({ userId, email }: { userId: string; email: string | undefi
       {/* Scrolling content */}
       <main style={{ padding: "16px 0 40px" }}>
         {view === "home" && <Feed myConditions={conditions} onNavigate={setView} />}
+        {view === "nutrition" && <Nutrition userId={userId} />}
+        {view === "labs" && <Labs userId={userId} />}
         {view === "targets" && <Targets userId={userId} myConditions={conditions} />}
         {view === "track" && <TrackSection userId={userId} />}
         {view === "meds" && <MedsSection userId={userId} />}
